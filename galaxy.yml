@@ -5,7 +5,7 @@
 namespace: qaxi
 
 # The name of the collection. Has the same character restrictions as 'namespace'
-name: csmb
+name: ciscosmb 
 
 # The version of the collection. Must be compatible with semantic versioning
 version: 0.0.1
@@ -38,7 +38,7 @@ tags: [cisco,SG300,SG500,SG350,SG550,smb,small bussiness]
 dependencies: {}
 
 # The URL of the originating SCM repository
-repository: https://github.com/qaxi/ansible-cisco_smb
+repository: https://github.com/qaxi/ansible-ciscosmb
 
 # The URL to any online docs
 #documentation: http://docs.example.com
@@ -47,7 +47,7 @@ repository: https://github.com/qaxi/ansible-cisco_smb
 #homepage: http://example.com
 
 # The URL to the collection issue tracker
-issues: https://github.com/qaxi/ansible-cisco_smb/issues
+issues: https://github.com/qaxi/ansible-ciscosmb/issues
 
 # A list of file glob-like patterns used to filter any files or directories that should not be included in the build
 # artifact. A pattern is matched from the relative path of the file or directory of the collection directory. This
