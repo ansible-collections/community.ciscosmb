@@ -8,11 +8,11 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: ciscosmb_facts
-author: "Egor Zaitsev (@heuels)"
+author: "Petr Klima (@qaxi)"
 short_description: Collect facts from remote devices running Cisco SMB
 description:
   - Collects a base set of device facts from a remote device that
-    is running RotuerOS.  This module prepends all of the
+    is running Cisco SMB.  This module prepends all of the
     base network fact keys with C(ansible_net_<fact>).  The facts
     module will always collect a base set of facts from the device
     and can enable or disable collection of additional facts.
@@ -83,6 +83,14 @@ ansible_net_cpu_load:
   returned: always
   type: str
   version_added: 1.2.0
+ansible_net_stacked_models:
+  description: The model names of each device in the stack
+  returned: when multiple devices are configured in a stack
+  type: list
+ansible_net_stacked_serialnums:
+  description: The serial numbers of each device in the stack
+  returned: when multiple devices are configured in a stack
+  type: list
 
 # hardware
 ansible_net_spacefree_mb:
@@ -185,61 +193,86 @@ class FactsBase(object):
 class Default(FactsBase):
 
     COMMANDS = [
-        '/system identity print without-paging',
-        '/system resource print without-paging',
-        '/system routerboard print without-paging'
+        'show version',
+        'show inventory',
+	'show cpu utilization',
+	'show system',
     ]
 
     def populate(self):
         super(Default, self).populate()
+
         data = self.responses[0]
         if data:
-            self.facts['hostname'] = self.parse_hostname(data)
+            self.facts['version'] = self.parse_version(data)
+            self.facts['boot_version'] = self.parse_boot_version(data)
+            self.facts['hw_version'] = self.parse_hw_version(data)
+
         data = self.responses[1]
         if data:
-            self.facts['version'] = self.parse_version(data)
-            self.facts['arch'] = self.parse_arch(data)
-            self.facts['uptime'] = self.parse_uptime(data)
-            self.facts['cpu_load'] = self.parse_cpu_load(data)
+            self.facts['model'] = self.parse_model(data)
+            #self.facts['stacked_models'] = self.parse_stacked_models(data)
+            self.facts['serialnum'] = self.parse_serialnum(data)
+            #self.facts['stacked_serialnums'] = self.parse_stacked_serialnums(data)
+
         data = self.responses[2]
         if data:
-            self.facts['model'] = self.parse_model(data)
-            self.facts['serialnum'] = self.parse_serialnum(data)
+            self.facts['cpu_load'] = self.parse_cpu_load(data)
+
+        data = self.responses[3]
+        if data:
+            self.facts['uptime'] = self.parse_uptime(data)
+            self.facts['hostname'] = self.parse_hostname(data)
 
     def parse_hostname(self, data):
-        match = re.search(r'name:\s(.*)\s*$', data, re.M)
+        match = re.search(r'^System Name:\s*(\S+)\s*$', data, re.M)
         if match:
             return match.group(1)
 
     def parse_version(self, data):
-        match = re.search(r'version:\s(.*)\s*$', data, re.M)
+        match = re.search(r'SW version\s*(\S+)\s*.*$', data, re.M)
+        if match:
+            return match.group(1)
+
+    def parse_boot_version(self, data):
+        match = re.search(r'Boot version\s*(\S+)\s*.*$', data, re.M)
+        if match:
+            return match.group(1)
+
+    def parse_hw_version(self, data):
+        match = re.search(r'HW version\s*(\S+)\s*.*$', data, re.M)
         if match:
             return match.group(1)
 
     def parse_model(self, data):
-        match = re.search(r'model:\s(.*)\s*$', data, re.M)
+        match = re.search(r'PID:\s(\S+)\s*', data, re.M)
         if match:
             return match.group(1)
 
-    def parse_arch(self, data):
-        match = re.search(r'architecture-name:\s(.*)\s*$', data, re.M)
-        if match:
-            return match.group(1)
+###     def parse_stacked_models(self, data):
+###         match = re.search(r'PID:\s(.*)\s*', data, re.M)
+###         if match:
+###             return match
 
     def parse_uptime(self, data):
-        match = re.search(r'uptime:\s(.*)\s*$', data, re.M)
+        match = re.search(r'System Up Time \(days,hour:min:sec\):\s+(\S+)\s*$', data, re.M)
         if match:
             return match.group(1)
 
     def parse_cpu_load(self, data):
-        match = re.search(r'cpu-load:\s(.*)\s*$', data, re.M)
+        match = re.search(r'one minute:\s(\S+)%\s*$', data, re.M)
         if match:
             return match.group(1)
 
     def parse_serialnum(self, data):
-        match = re.search(r'serial-number:\s(.*)\s*$', data, re.M)
+        match = re.search(r'SN:\s(.*)\s*$', data, re.M)
         if match:
             return match.group(1)
+
+###     def parse_stacked_serialnums(self, data):
+###         match = re.search(r'SN:\s(.*)\s*$', data, re.M)
+###         if match:
+###             return match
 
 
 class Hardware(FactsBase):
@@ -284,7 +317,7 @@ class Hardware(FactsBase):
 
 class Config(FactsBase):
 
-    COMMANDS = ['/export verbose']
+    COMMANDS = ['show running-config detailed']
 
     def populate(self):
         super(Config, self).populate()

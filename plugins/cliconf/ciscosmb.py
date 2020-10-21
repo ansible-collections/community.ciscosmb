@@ -43,17 +43,17 @@ class Cliconf(CliconfBase):
 
     def get_device_info(self):
         device_info = {}
-        device_info['network_os'] = 'RouterOS'
+        device_info['network_os'] = 'ciscosmb'
 
-        resource = self.get('/system resource print')
+        resource = self.get('show verison')
         data = to_text(resource, errors='surrogate_or_strict').strip()
-        match = re.search(r'version: (\S+)', data)
+        match = re.search(r'SW version  +(\S+) \(.*$', data)
         if match:
             device_info['network_os_version'] = match.group(1)
 
-        routerboard = self.get('/system routerboard print')
+        routerboard = self.get('show inventory')
         data = to_text(routerboard, errors='surrogate_or_strict').strip()
-        match = re.search(r'model: (.+)$', data, re.M)
+        match = re.search(r'PID: (.+)$', data, re.M)
         if match:
             device_info['network_os_model'] = match.group(1)
 

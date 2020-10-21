@@ -32,38 +32,86 @@ display = Display()
 
 class TerminalModule(TerminalBase):
 
-    ansi_re = [
-        # check ECMA-48 Section 5.4 (Control Sequences)
-        re.compile(br'(\x1b\[\?1h\x1b=)'),
-        re.compile(br'((?:\x9b|\x1b\x5b)[\x30-\x3f]*[\x20-\x2f]*[\x40-\x7e])'),
-        re.compile(br'\x08.')
-    ]
-
-    terminal_initial_prompt = [
-        br'\x1bZ',
-    ]
-
-    terminal_initial_answer = b'\x1b/Z'
+# https://docs.ansible.com/ansible/latest/collections/ansible/netcommon/network_cli_connection.html
 
     terminal_stdout_re = [
-        re.compile(br"\x1b<"),
-        re.compile(br"\[[\w\.]+\@[\w\s\-\.]+\] ?> ?$"),
-        re.compile(br"Please press \"Enter\" to continue!"),
-        re.compile(br"Do you want to see the software license\? \[Y\/n\]: ?"),
+        re.compile(br"[\r\n]?[\w\+\-\.:\/\[\]]+(?:\([^\)]+\)){0,3}(?:[>#]) ?$")
     ]
 
     terminal_stderr_re = [
-        re.compile(br"\nbad command name"),
-        re.compile(br"\nno such item"),
-        re.compile(br"\ninvalid value for"),
+        re.compile(br"% ?Error"),
+        re.compile(br"^% \w+", re.M),
+        re.compile(br"% ?Bad secret"),
+        re.compile(br"[\r\n%] Bad passwords"),
+        re.compile(br"invalid input", re.I),
+        re.compile(br"(?:incomplete|ambiguous) command", re.I),
+        re.compile(br"connection timed out", re.I),
+        re.compile(br"[^\r\n]+ not found"),
+        re.compile(br"'[^']' +returned error code: ?\d+"),
+        re.compile(br"Bad mask", re.I),
+        re.compile(br"% ?(\S+) ?overlaps with ?(\S+)", re.I),
+        re.compile(br"[%\S] ?Error: ?[\s]+", re.I),
+        re.compile(br"[%\S] ?Informational: ?[\s]+", re.I),
+        re.compile(br"Command authorization failed"),
     ]
 
     def on_open_shell(self):
-        prompt = self._get_prompt()
         try:
-            if prompt.strip().endswith(b':'):
-                self._exec_cli_command(b' ')
-            if prompt.strip().endswith(b'!'):
-                self._exec_cli_command(b'\n')
+            self._exec_cli_command(b"terminal datadump")
         except AnsibleConnectionFailure:
-            raise AnsibleConnectionFailure('unable to bypass license prompt')
+            raise AnsibleConnectionFailure("unable to set terminal parameters")
+
+        try:
+            self._exec_cli_command(b"terminal width 0")
+        except AnsibleConnectionFailure:
+            display.display(
+                "WARNING: Unable to set terminal width, command responses may be truncated"
+            )
+
+    def on_become(self, passwd=None):
+        if self._get_prompt().endswith(b"#"):
+            return
+            
+        cmd = {u"command": u"enable"}
+        if passwd:
+            # Note: python-3.5 cannot combine u"" and r"" together.  Thus make
+            # an r string and use to_text to ensure it's text on both py2 and py3.
+            cmd[u"prompt"] = to_text(
+                r"[\r\n]?(?:.*)?[Pp]assword: ?$", errors="surrogate_or_strict"
+            )
+            cmd[u"answer"] = passwd
+            cmd[u"prompt_retry_check"] = True
+        try:
+            self._exec_cli_command(
+                to_bytes(json.dumps(cmd), errors="surrogate_or_strict")
+            )
+            prompt = self._get_prompt()
+            if prompt is None or not prompt.endswith(b"#"):
+                raise AnsibleConnectionFailure(
+                    "failed to elevate privilege to enable mode still at prompt [%s]"
+                    % prompt
+                )
+        except AnsibleConnectionFailure as e:
+            prompt = self._get_prompt()
+            raise AnsibleConnectionFailure(
+                "unable to elevate privilege to enable mode, at prompt [%s] with error: %s"
+                % (prompt, e.message)
+            )
+
+    def on_unbecome(self):
+        prompt = self._get_prompt()
+        if prompt is None:
+            # if prompt is None most likely the terminal is hung up at a prompt
+            return
+
+        if b"(config" in prompt:
+            self._exec_cli_command(b"end")
+            self._exec_cli_command(b"disable")
+
+        elif prompt.endswith(b"#"):
+            self._exec_cli_command(b"disable")
+
+
+
+
+
