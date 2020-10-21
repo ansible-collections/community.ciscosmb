@@ -43,73 +43,71 @@ options:
     default: '!config'
     type: list
     elements: str
+  gather_network_resources:
+    description:
+    - When supplied, this argument will restrict the facts collected to a given subset.
+      Possible values for this argument include all and the resources like interfaces,
+      vlans etc. Can specify a list of values to include a larger subset. Values can
+      also be used with an initial C(M(!)) to specify that a specific subset should
+      not be collected. Valid subsets are 'all', 'interfaces', 'l2_interfaces', 'vlans',
+      'lag_interfaces', 'lacp', 'lacp_interfaces', 'lldp_global', 'lldp_interfaces',
+      'l3_interfaces', 'acl_interfaces', 'static_routes', 'acls'.
+    type: list
+    elements: str
 """
-###   gather_network_resources:
-###     description:
-###     - When supplied, this argument will restrict the facts collected to a given subset.
-###       Possible values for this argument include all and the resources like interfaces,
-###       vlans etc. Can specify a list of values to include a larger subset. Values can
-###       also be used with an initial C(M(!)) to specify that a specific subset should
-###       not be collected. Valid subsets are 'all', 'interfaces', 'l2_interfaces', 'vlans',
-###       'lag_interfaces', 'lacp', 'lacp_interfaces', 'lldp_global', 'lldp_interfaces',
-###       'l3_interfaces', 'acl_interfaces', 'static_routes', 'acls'.
-###     type: list
-###     elements: str
-### """
 EXAMPLES = """
 - name: Gather all legacy facts
-  cisco.ios.ios_facts:
+  qaxi.ciscosmb.ciscosmb_facts:
     gather_subset: all
 
 - name: Gather only the config and default facts
-  cisco.ios.ios_facts:
+  qaxi.ciscosmb.ciscosmb_facts:
     gather_subset:
     - config
 
 - name: Do not gather hardware facts
-  cisco.ios.ios_facts:
+  qaxi.ciscosmb.ciscosmb_facts:
     gather_subset:
     - '!hardware'
 
+- name: Gather legacy and resource facts
+  qaxi.ciscosmb.ciscosmb_facts:
+    gather_subset: all
+    gather_network_resources: all
+
+- name: Gather only the interfaces resource facts and no legacy facts
+  qaxi.ciscosmb.ciscosmb_facts:
+    gather_subset:
+    - '!all'
+    - '!min'
+    gather_network_resources:
+    - interfaces
+
+- name: Gather interfaces resource and minimal legacy facts
+  qaxi.ciscosmb.ciscosmb_facts:
+    gather_subset: min
+    gather_network_resources: interfaces
+
+- name: Gather L2 interfaces resource and minimal legacy facts
+  qaxi.ciscosmb.ciscosmb_facts:
+    gather_subset: min
+    gather_network_resources: l2_interfaces
+
+- name: Gather L3 interfaces resource and minimal legacy facts
+  qaxi.ciscosmb.ciscosmb_facts:
+    gather_subset: min
+    gather_network_resources: l3_interfaces
 """
-### - name: Gather legacy and resource facts
-###   cisco.ios.ios_facts:
-###     gather_subset: all
-###     gather_network_resources: all
-### 
-### - name: Gather only the interfaces resource facts and no legacy facts
-###   cisco.ios.ios_facts:
-###     gather_subset:
-###     - '!all'
-###     - '!min'
-###     gather_network_resources:
-###     - interfaces
-### 
-### - name: Gather interfaces resource and minimal legacy facts
-###   cisco.ios.ios_facts:
-###     gather_subset: min
-###     gather_network_resources: interfaces
-### 
-### - name: Gather L2 interfaces resource and minimal legacy facts
-###   cisco.ios.ios_facts:
-###     gather_subset: min
-###     gather_network_resources: l2_interfaces
-### 
-### - name: Gather L3 interfaces resource and minimal legacy facts
-###   cisco.ios.ios_facts:
-###     gather_subset: min
-###     gather_network_resources: l3_interfaces
-### """
 RETURN = """
 ansible_net_gather_subset:
   description: The list of fact subsets collected from the device
   returned: always
   type: list
 
-### ansible_net_gather_network_resources:
-###   description: The list of fact for network resource subsets collected from the device
-###   returned: when the resource is configured
-###   type: list
+ansible_net_gather_network_resources:
+  description: The list of fact for network resource subsets collected from the device
+  returned: when the resource is configured
+  type: list
 
 # default
 ansible_net_model:
@@ -124,7 +122,7 @@ ansible_net_version:
   description: The operating system version running on the remote device
   returned: always
   type: str
-ansible_net_iostype:
+ansible_net_ciscosmbtype:
   description: The operating system type (IOS or IOS-XE) running on the remote device
   returned: always
   type: str
@@ -204,11 +202,10 @@ from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.arg
 from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.facts.facts import (
     Facts,
 )
-### from ansible_collections.cisco.ios.plugins.module_utils.network.ios.ios import (
-###     ios_argument_spec,
-### )
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.facts.fac
-ts import (
+from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.ciscosmb import (
+    ciscosmb_argument_spec,
+)
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.facts.facts import (
     FactsBase,
 )
 
@@ -220,7 +217,7 @@ def main():
     :returns: ansible_facts
     """
     argument_spec = FactsArgs.argument_spec
-#    argument_spec.update(ios_argument_spec)
+    argument_spec.update(ciscosmb_argument_spec)
     module = AnsibleModule(
         argument_spec=argument_spec, supports_check_mode=True
     )

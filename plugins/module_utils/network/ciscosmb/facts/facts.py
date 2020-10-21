@@ -4,7 +4,7 @@
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """
-The facts class for ios
+The facts class for ciscosmb
 this file validates each subset of facts and selectively
 calls the appropriate facts gathering function
 """
@@ -17,61 +17,61 @@ __metaclass__ = type
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.facts.facts import (
     FactsBase,
 )
-### from ansible_collections.cisco.ios.plugins.module_utils.network.ios.facts.interfaces.interfaces import (
+### from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.facts.interfaces.interfaces import (
 ###     InterfacesFacts,
 ### )
-### from ansible_collections.cisco.ios.plugins.module_utils.network.ios.facts.l2_interfaces.l2_interfaces import (
+### from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.facts.l2_interfaces.l2_interfaces import (
 ###     L2_InterfacesFacts,
 ### )
-### from ansible_collections.cisco.ios.plugins.module_utils.network.ios.facts.vlans.vlans import (
+### from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.facts.vlans.vlans import (
 ###     VlansFacts,
 ### )
-### from ansible_collections.cisco.ios.plugins.module_utils.network.ios.facts.lag_interfaces.lag_interfaces import (
+### from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.facts.lag_interfaces.lag_interfaces import (
 ###     Lag_interfacesFacts,
 ### )
-### from ansible_collections.cisco.ios.plugins.module_utils.network.ios.facts.lacp.lacp import (
+### from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.facts.lacp.lacp import (
 ###     LacpFacts,
 ### )
-### from ansible_collections.cisco.ios.plugins.module_utils.network.ios.facts.lacp_interfaces.lacp_interfaces import (
+### from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.facts.lacp_interfaces.lacp_interfaces import (
 ###     Lacp_InterfacesFacts,
 ### )
-### from ansible_collections.cisco.ios.plugins.module_utils.network.ios.facts.lldp_global.lldp_global import (
+### from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.facts.lldp_global.lldp_global import (
 ###     Lldp_globalFacts,
 ### )
-### from ansible_collections.cisco.ios.plugins.module_utils.network.ios.facts.lldp_interfaces.lldp_interfaces import (
+### from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.facts.lldp_interfaces.lldp_interfaces import (
 ###     Lldp_InterfacesFacts,
 ### )
-### from ansible_collections.cisco.ios.plugins.module_utils.network.ios.facts.l3_interfaces.l3_interfaces import (
+### from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.facts.l3_interfaces.l3_interfaces import (
 ###     L3_InterfacesFacts,
 ### )
-### from ansible_collections.cisco.ios.plugins.module_utils.network.ios.facts.acl_interfaces.acl_interfaces import (
+### from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.facts.acl_interfaces.acl_interfaces import (
 ###     Acl_InterfacesFacts,
 ### )
-### from ansible_collections.cisco.ios.plugins.module_utils.network.ios.facts.static_routes.static_routes import (
+### from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.facts.static_routes.static_routes import (
 ###     Static_RoutesFacts,
 ### )
-### from ansible_collections.cisco.ios.plugins.module_utils.network.ios.facts.acls.acls import (
+### from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.facts.acls.acls import (
 ###     AclsFacts,
 ### )
-### from ansible_collections.cisco.ios.plugins.module_utils.network.ios.facts.ospfv2.ospfv2 import (
+### from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.facts.ospfv2.ospfv2 import (
 ###     Ospfv2Facts,
 ### )
-### from ansible_collections.cisco.ios.plugins.module_utils.network.ios.facts.ospfv3.ospfv3 import (
+### from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.facts.ospfv3.ospfv3 import (
 ###     Ospfv3Facts,
 ### )
-### from ansible_collections.cisco.ios.plugins.module_utils.network.ios.facts.legacy.base import (
-###     Default,
+from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.facts.legacy.base import (
+     Default,
 ###     Hardware,
 ###     Interfaces,
 ###     Config,
-### )
-### 
+)
+
 
 FACT_LEGACY_SUBSETS = dict(
     default=Default,
-###     hardware=Hardware,
-###     interfaces=Interfaces,
-###     config=Config
+###    hardware=Hardware,
+###    interfaces=Interfaces,
+###    config=Config
 )
 
 FACT_RESOURCE_SUBSETS = dict(
@@ -93,7 +93,7 @@ FACT_RESOURCE_SUBSETS = dict(
 
 
 class Facts(FactsBase):
-    """ The fact class for ios
+    """ The fact class for ciscosmb
     """
 
     VALID_LEGACY_GATHER_SUBSETS = frozenset(FACT_LEGACY_SUBSETS.keys())
@@ -105,7 +105,7 @@ class Facts(FactsBase):
     def get_facts(
         self, legacy_facts_type=None, resource_facts_type=None, data=None
     ):
-        """ Collect the facts for ios
+        """ Collect the facts for ciscosmb
         :param legacy_facts_type: List of legacy facts types
         :param resource_facts_type: List of resource fact types
         :param data: previously collected conf
