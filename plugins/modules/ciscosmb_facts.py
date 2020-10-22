@@ -260,7 +260,7 @@ class Default(FactsBase):
             return match.group(1)
 
     def parse_cpu_load(self, data):
-        match = re.search(r'one minute:\s(\S+)%\s*$', data, re.M)
+        match = re.search(r'one minute:\s+(\d+)%;\s*', data, re.M)
         if match:
             return match.group(1)
 
