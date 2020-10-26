@@ -32,7 +32,7 @@ display = Display()
 
 class TerminalModule(TerminalBase):
 
-# https://docs.ansible.com/ansible/latest/collections/ansible/netcommon/network_cli_connection.html
+    # https://docs.ansible.com/ansible/latest/collections/ansible/netcommon/network_cli_connection.html
 
     terminal_stdout_re = [
         re.compile(br"[\r\n]?[\w\+\-\.:\/\[\]]+(?:\([^\)]+\)){0,3}(?:[>#]) ?$")
@@ -58,8 +58,8 @@ class TerminalModule(TerminalBase):
     def on_open_shell(self):
         try:
             self._exec_cli_command(b"terminal datadump")
-        except AnsibleConnectionFailure:
-            raise AnsibleConnectionFailure("unable to set terminal parameters")
+        except AnsibleConnectionFailure as e:
+            raise AnsibleConnectionFailure("unable to set terminal parameters") from e
 
         try:
             self._exec_cli_command(b"terminal width 0")
@@ -71,7 +71,7 @@ class TerminalModule(TerminalBase):
     def on_become(self, passwd=None):
         if self._get_prompt().endswith(b"#"):
             return
-            
+
         cmd = {u"command": u"enable"}
         if passwd:
             # Note: python-3.5 cannot combine u"" and r"" together.  Thus make
@@ -96,7 +96,7 @@ class TerminalModule(TerminalBase):
             raise AnsibleConnectionFailure(
                 "unable to elevate privilege to enable mode, at prompt [%s] with error: %s"
                 % (prompt, e.message)
-            )
+            ) from e
 
     def on_unbecome(self):
         prompt = self._get_prompt()
@@ -110,8 +110,3 @@ class TerminalModule(TerminalBase):
 
         elif prompt.endswith(b"#"):
             self._exec_cli_command(b"disable")
-
-
-
-
-
