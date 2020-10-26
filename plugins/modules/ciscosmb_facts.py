@@ -194,13 +194,13 @@ class Default(FactsBase):
 
     COMMANDS = [
         'show version',
+        'show cpu utilization',
+        'show system',
         'show inventory',
-	'show cpu utilization',
-	'show system',
     ]
 
     def populate(self):
-        super(Default, self).populate()
+        super().populate()
 
         data = self.responses[0]
         if data:
@@ -210,10 +210,8 @@ class Default(FactsBase):
 
         data = self.responses[1]
         if data:
-            self.facts['model'] = self.parse_model(data)
-            #self.facts['stacked_models'] = self.parse_stacked_models(data)
-            self.facts['serialnum'] = self.parse_serialnum(data)
-            #self.facts['stacked_serialnums'] = self.parse_stacked_serialnums(data)
+            self.facts['uptime'] = self.parse_uptime(data)
+            self.facts['hostname'] = self.parse_hostname(data)
 
         data = self.responses[2]
         if data:
@@ -221,8 +219,8 @@ class Default(FactsBase):
 
         data = self.responses[3]
         if data:
-            self.facts['uptime'] = self.parse_uptime(data)
-            self.facts['hostname'] = self.parse_hostname(data)
+            self.facts['model'] = self.parse_model(data)
+            self.facts['serialnum'] = self.parse_serialnum(data)
 
     def parse_hostname(self, data):
         match = re.search(r'^System Name:\s*(\S+)\s*$', data, re.M)
@@ -249,11 +247,6 @@ class Default(FactsBase):
         if match:
             return match.group(1)
 
-###     def parse_stacked_models(self, data):
-###         match = re.search(r'PID:\s(.*)\s*', data, re.M)
-###         if match:
-###             return match
-
     def parse_uptime(self, data):
         match = re.search(r'System Up Time \(days,hour:min:sec\):\s+(\S+)\s*$', data, re.M)
         if match:
@@ -269,11 +262,6 @@ class Default(FactsBase):
         if match:
             return match.group(1)
 
-###     def parse_stacked_serialnums(self, data):
-###         match = re.search(r'SN:\s(.*)\s*$', data, re.M)
-###         if match:
-###             return match
-
 
 class Hardware(FactsBase):
 
@@ -282,7 +270,7 @@ class Hardware(FactsBase):
     ]
 
     def populate(self):
-        super(Hardware, self).populate()
+        super().populate()
         data = self.responses[0]
         if data:
             self.parse_filesystem_info(data)
@@ -320,7 +308,7 @@ class Config(FactsBase):
     COMMANDS = ['show running-config detailed']
 
     def populate(self):
-        super(Config, self).populate()
+        super().populate()
         data = self.responses[0]
         if data:
             self.facts['config'] = data
@@ -339,7 +327,7 @@ class Interfaces(FactsBase):
     WRAPPED_LINE_RE = re.compile(r'^\s+(?!\d)')
 
     def populate(self):
-        super(Interfaces, self).populate()
+        super().populate()
 
         self.facts['interfaces'] = dict()
         self.facts['all_ipv4_addresses'] = list()
@@ -390,7 +378,8 @@ class Interfaces(FactsBase):
         for line in data.split('\n'):
             if len(line) == 0 or line[:5] == 'Flags':
                 continue
-            elif not re.match(self.WRAPPED_LINE_RE, line):
+
+            if not re.match(self.WRAPPED_LINE_RE, line):
                 preprocessed.append(line)
             else:
                 preprocessed[-1] += line
@@ -430,7 +419,7 @@ class Routing(FactsBase):
     WRAPPED_LINE_RE = re.compile(r'^\s+(?!\d)')
 
     def populate(self):
-        super(Routing, self).populate()
+        super().populate()
         self.facts['bgp_peer'] = dict()
         self.facts['bgp_vpnv4_route'] = dict()
         self.facts['bgp_instance'] = dict()
@@ -467,7 +456,8 @@ class Routing(FactsBase):
         for line in data.split('\n'):
             if len(line) == 0 or line[:5] == 'Flags':
                 continue
-            elif not re.match(self.WRAPPED_LINE_RE, line):
+
+            if not re.match(self.WRAPPED_LINE_RE, line):
                 preprocessed.append(line)
             else:
                 preprocessed[-1] += line
