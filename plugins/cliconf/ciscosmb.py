@@ -65,8 +65,29 @@ class Cliconf(CliconfBase):
 
         return device_info
 
-    def get_config(self, source='running', format='text', flags=None):
-        return
+    @enable_mode
+    def get_config(self, source='running', format=None, flags=None):
+        if source not in ("running", "startup"):
+            raise ValueError(
+                "fetching configuration from %s is not supported" % source
+            )
+
+        if format:
+            raise ValueError(
+                "'format' value %s is not supported for get_config" % format
+            )
+
+        if flags:
+            raise ValueError(
+                "'flags' value %s is not supported for get_config" % flags
+            )
+
+        if source == "running":
+            cmd = "show running-config "
+        else:
+            cmd = "show startup-config "
+
+        return self.send_command(cmd)
 
     def edit_config(self, command):
         return
@@ -75,5 +96,5 @@ class Cliconf(CliconfBase):
         return self.send_command(command=command, prompt=prompt, answer=answer, sendonly=sendonly, newline=newline, check_all=check_all)
 
     def get_capabilities(self):
-        result = super(Cliconf, self).get_capabilities()
+        result = super().get_capabilities()
         return json.dumps(result)
