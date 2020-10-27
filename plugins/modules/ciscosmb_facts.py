@@ -194,8 +194,8 @@ class Default(FactsBase):
 
     COMMANDS = [
         'show version',
-        'show cpu utilization',
         'show system',
+        'show cpu utilization',
         'show inventory',
     ]
 
@@ -206,7 +206,6 @@ class Default(FactsBase):
         if data:
             self.facts['version'] = self.parse_version(data)
             self.facts['boot_version'] = self.parse_boot_version(data)
-            self.facts['hw_version'] = self.parse_hw_version(data)
 
         data = self.responses[1]
         if data:
@@ -221,14 +220,16 @@ class Default(FactsBase):
         if data:
             self.facts['model'] = self.parse_model(data)
             self.facts['serialnum'] = self.parse_serialnum(data)
+            self.facts['hw_version'] = self.parse_hw_version(data)
 
-    def parse_hostname(self, data):
-        match = re.search(r'^System Name:\s*(\S+)\s*$', data, re.M)
+    # show version
+    def parse_version(self, data):
+        # Cisco SMB 300 and 500 - fw 1.x.x.x
+        match = re.search(r'^SW version\s*(\S+)\s*.*$', data, re.M)
         if match:
             return match.group(1)
-
-    def parse_version(self, data):
-        match = re.search(r'SW version\s*(\S+)\s*.*$', data, re.M)
+        # Cisco SMB 350 and 550 - fw 2.x.x.x
+        match = re.search(r'^  Version:\s*(\S+)\s*.*$', data, re.M)
         if match:
             return match.group(1)
 
@@ -237,31 +238,40 @@ class Default(FactsBase):
         if match:
             return match.group(1)
 
-    def parse_hw_version(self, data):
-        match = re.search(r'HW version\s*(\S+)\s*.*$', data, re.M)
-        if match:
-            return match.group(1)
-
-    def parse_model(self, data):
-        match = re.search(r'PID:\s(\S+)\s*', data, re.M)
-        if match:
-            return match.group(1)
-
+    # show system
     def parse_uptime(self, data):
-        match = re.search(r'System Up Time \(days,hour:min:sec\):\s+(\S+)\s*$', data, re.M)
+        match = re.search(r'^System Up Time \S+:\s+(\S+)\s*$', data, re.M)
+        if match:
+            (dayhour, mins, sec) = match.group(1).split(':')
+            dayhour = dayhour.replace(',', 'd')
+            return dayhour + "h" + mins + "m" + sec + "s"
+
+    def parse_hostname(self, data):
+        match = re.search(r'^System Name:\s*(\S+)\s*$', data, re.M)
         if match:
             return match.group(1)
 
+    # show cpu utilization
     def parse_cpu_load(self, data):
         match = re.search(r'one minute:\s+(\d+)%;\s*', data, re.M)
         if match:
             return match.group(1)
 
-    def parse_serialnum(self, data):
-        match = re.search(r'SN:\s(.*)\s*$', data, re.M)
+    # show inventory
+    def parse_model(self, data):
+        match = re.search(r'PID:\s(\S+)\s*', data, re.M)
         if match:
             return match.group(1)
 
+    def parse_serialnum(self, data):
+        match = re.search(r'SN:\s(\S*)\s*$', data, re.M)
+        if match:
+            return match.group(1)
+
+    def parse_hw_version(self, data):
+        match = re.search(r'HW version\s*(\S+)\s*.*$', data, re.M)
+        if match:
+            return match.group(1)
 
 class Hardware(FactsBase):
 
