@@ -1,0 +1,21 @@
+System Description:                       SG350-28 28-Port Gigabit Managed Switch
+System Up Time (days,hour:min:sec):       10,07:27:25
+System Contact:                           
+System Name:                              sw-ab-abcdefg-1
+System Location:                          Abcde Fghijk - Lmnop
+System MAC Address:                       aa:11:bb:22:c3:4d
+System Object ID:                         1.3.6.1.4.1.9.6.1.95.28.1
+
+Unit          Type          
+---- ---------------------- 
+ 1          SG350-28        
+
+
+Unit                Fans Status             
+----   -------------------------------------
+ 1           Fans status is N/A          
+
+Unit Temperature (Celsius)   Status   
+---- --------------------- ---------- 
+ 1            53               OK     
+

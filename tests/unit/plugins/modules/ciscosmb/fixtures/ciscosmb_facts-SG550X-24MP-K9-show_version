@@ -1,0 +1,10 @@
+Active-image: flash://system/images/sx550X_tesla_hybrid_2.4.5.71_release_cisco_signed.bin
+  Version: 2.4.5.71
+  MD5 Digest: 2dff89efdb2a0ec2f9a2c414ff7d401c
+  Date: 04-Nov-2018
+  Time: 19:46:16
+Inactive-image: flash://system/images/image1.bin
+  Version: 2.3.0.130
+  MD5 Digest: 079b10248b0cc997da651d255ac0ed15
+  Date: 10-May-2017
+  Time: 01:08:28

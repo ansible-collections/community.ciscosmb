@@ -1,0 +1,8 @@
+
+NAME: "1"   DESCR: "SG350-28 28-Port Gigabit Managed Switch"   
+PID: SG350-28-K9   VID: V01   SN: ABC1234567A   
+
+
+NAME: "GigabitEthernet28"    DESCR: "SFP-1000Base-SX"    
+PID: SFP-1000-SX    VID: Information Unavailable    SN: A123456             
+

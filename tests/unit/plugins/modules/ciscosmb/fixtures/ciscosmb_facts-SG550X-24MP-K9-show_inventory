@@ -1,0 +1,12 @@
+
+NAME: "1"   DESCR: "SG550X-24MP 24-Port Gigabit PoE Stackable Managed Switch"   
+PID: SG550X-24MP-K9   VID: V02   SN: ABC123456AB   
+
+
+NAME: "TengigabitEthernet1/0/3"    DESCR: "SFP-1000Base-SX"    
+PID: SFP-1000-SX    VID: Information Unavailable    SN: A1234567890         
+
+
+NAME: "TengigabitEthernet1/0/4"    DESCR: "SFP-1000Base-SX"    
+PID: SFP-1000-SX    VID: Information Unavailable    SN: A123456789          
+

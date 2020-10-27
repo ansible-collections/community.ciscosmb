@@ -1,0 +1,11 @@
+Active-image: flash://system/images/image_tesla_hybrid_2.4.5.71_release_cisco_signed.bin
+  Version: 2.4.5.71
+  MD5 Digest: 2dff89efdb2a0ec2f9a2c414ff7d401c
+  Date: 04-Nov-2018
+  Time: 19:46:16
+Inactive-image: flash://system/images/image1.bin
+  Version: 2.2.8.4
+  MD5 Digest: d75d9f2e1a06e99ba793af2418470df1
+  Date: 21-Dec-2016
+  Time: 22:03:09
+
