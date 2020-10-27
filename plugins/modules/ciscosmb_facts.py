@@ -218,9 +218,16 @@ class Default(FactsBase):
 
         data = self.responses[3]
         if data:
-            self.facts['model'] = self.parse_model(data)
-            self.facts['serialnum'] = self.parse_serialnum(data)
-            self.facts['hw_version'] = self.parse_hw_version(data)
+            modules = self.parse_inventory(data)
+            stacked_models = self.parse_stacked_models(modules)
+            if len(stacked_models) >= 2:
+                stacked_serialnums = self.parse_stacked_serialnums(modules)
+                self.facts['stacked_models'] = stacked_models
+                self.facts['stacked_serialnums'] = stacked_serialnums
+            self.facts['model'] = self.parse_model(modules)
+            self.facts['serialnum'] = self.parse_serialnum(modules)
+            self.facts['hw_version'] = self.parse_hw_version(modules)
+            self.facts['hw_modules'] = modules
 
     # show version
     def parse_version(self, data):
@@ -258,20 +265,66 @@ class Default(FactsBase):
             return match.group(1)
 
     # show inventory
+    def parse_inventory(self, data):
+        # make 1 module 1 line
+        data = re.sub(r'\nPID', '  PID', data, re.M)
+        # delete empty lines
+        data = re.sub(r'^\n', '', data, re.M)
+        data = re.sub(r'\n\n', '', data, re.M)
+        data = re.sub(r'\n\s*\n', r'\n', data, re.M)
+        lines = data.splitlines()
+
+        modules = {}
+        for line in lines:
+            match = re.search(r"""
+                ^
+                NAME:\s"(?P<name>\S+)"\s*
+                DESCR:\s"(?P<descr>[^"]+)"\s*
+                PID:\s(?P<pid>\S+)\s*
+                VID:\s(?P<vid>.+\S)\s*
+                SN:\s(?P<sn>\S+)\s*
+                """, line, re.X)
+            modul = match.groupdict()
+            modules[modul['name']] = modul 
+
+        if modules:
+            return modules
+    
+    def parse_stacked_models(self, data):
+        # every inventory has module with NAME: "1"
+        # stacks have modules 2 3 ... 8
+        models = []
+        for n in range(1,9):
+            if f'{n}' in data:
+                models.append(data[f'{n}']['pid'])
+        return models
+        
+    def parse_stacked_serialnums(self, data):
+        # every inventory has module with NAME: "1"
+        # stacks have modules 2 3 ... 8
+        sn = []
+        for n in range(1,9):
+            if f'{n}' in data:
+                sn.append(data[f'{n}']['sn'])
+        return sn
+        
     def parse_model(self, data):
-        match = re.search(r'PID:\s(\S+)\s*', data, re.M)
-        if match:
-            return match.group(1)
+        # every inventory has module with NAME: "1"
+        model = data['1']['pid']
+        if 'stacked_models' in self.facts:
+            model = re.sub(r'-.*$', '', model)
+            model = 'Stack ' + model
+        return model
 
     def parse_serialnum(self, data):
-        match = re.search(r'SN:\s(\S*)\s*$', data, re.M)
-        if match:
-            return match.group(1)
+        # every inventory has module with NAME: "1"
+        sn = data['1']['sn']
+        return sn
 
     def parse_hw_version(self, data):
-        match = re.search(r'HW version\s*(\S+)\s*.*$', data, re.M)
-        if match:
-            return match.group(1)
+        # every inventory has module with NAME: "1"
+        sn = data['1']['vid']
+        return sn
 
 class Hardware(FactsBase):
 

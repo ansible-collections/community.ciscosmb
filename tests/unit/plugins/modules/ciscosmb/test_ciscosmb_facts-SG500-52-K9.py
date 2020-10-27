@@ -65,7 +65,7 @@ class TestCiscoSMBFactsModuleOnSG50052K9(TestCiscoSMBModule):
             result['ansible_facts']['ansible_net_uptime'], '483d01h39m47s'
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_hostname'], 'sw-cb-vt-1'
+            result['ansible_facts']['ansible_net_hostname'], 'sw-abcdefg-1'
         )
         self.assertEqual(
             result['ansible_facts']['ansible_net_cpu_load'], '7'
@@ -75,7 +75,7 @@ class TestCiscoSMBFactsModuleOnSG50052K9(TestCiscoSMBModule):
             result['ansible_facts']['ansible_net_model'], 'SG500-52-K9'
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_serialnum'], 'DNI18020071'
+            result['ansible_facts']['ansible_net_serialnum'], 'ABC12345678'
         )
 
 #     def test_ciscosmb_facts_hardware(self):

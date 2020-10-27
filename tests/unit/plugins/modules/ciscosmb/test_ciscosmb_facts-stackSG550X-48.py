@@ -53,26 +53,35 @@ class TestCiscoSMBFactsModuleOnSG550X24MPK9(TestCiscoSMBModule):
         set_module_args(dict(gather_subset='default'))
         result = self.execute_module()
         self.assertEqual(
-            result['ansible_facts']['ansible_net_version'], '2.4.5.71'
+            result['ansible_facts']['ansible_net_version'], '2.5.0.83'
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_hw_version'], 'V02'
+            result['ansible_facts']['ansible_net_uptime'], '64d02h08m19s'
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_uptime'], '105d15h23m35s'
+            result['ansible_facts']['ansible_net_hostname'], 'sw-abcdefgh-1'
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_hostname'], 'sw-pe-tmrozvodna-1'
+            result['ansible_facts']['ansible_net_cpu_load'], '10'
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_cpu_load'], '8'
+            result['ansible_facts']['ansible_net_stacked_models'], ['SG550X-48P-K9', 'SG550X-48-K9']
         )
+        self.assertEqual(
+            result['ansible_facts']['ansible_net_stacked_serialnums'], ['ABC1234567A', 'ABC123456AB']
+        )
+        self.assertEqual(
+            result['ansible_facts']['ansible_net_model'], 'Stack SG550X'
+        )
+        self.assertEqual(
+            result['ansible_facts']['ansible_net_serialnum'], 'ABC1234567A'
+        )
+        self.assertEqual(
+            result['ansible_facts']['ansible_net_hw_version'], 'V04'
+        )
+        self.assertEqual(
+            result['ansible_facts']['ansible_net_hw_modules'], {'1': {'name': '1', 'descr': 'SG550X-48P 48-Port Gigabit PoE Stackable Managed Switch', 'pid': 'SG550X-48P-K9', 'vid': 'V04', 'sn': 'ABC1234567A'}, 'TenGigabitEthernet1/0/1': {'name': 'TenGigabitEthernet1/0/1', 'descr': 'SFP-10G-LR', 'pid': 'SFP-10G-LR', 'vid': 'V03', 'sn': 'AB12345678'}, 'TenGigabitEthernet1/0/2': {'name': 'TenGigabitEthernet1/0/2', 'descr': 'SFP-1000Base-LX', 'pid': 'GLC-LH-SMD', 'vid': 'Information Unavailable', 'sn': 'AB12345678'}, '2': {'name': '2', 'descr': 'SG550X-48 48-Port Gigabit Stackable Managed Switch', 'pid': 'SG550X-48-K9', 'vid': 'V02', 'sn': 'ABC123456AB'}, 'TenGigabitEthernet2/0/1': {'name': 'TenGigabitEthernet2/0/1', 'descr': 'SFP-10G-LR', 'pid': 'SFP-10G-LR', 'vid': 'V03', 'sn': 'AB12345678'}, 'TenGigabitEthernet2/0/2': {'name': 'TenGigabitEthernet2/0/2', 'descr': 'SFP-1000Base-LX', 'pid': 'GLC-LH-SMD', 'vid': 'Information Unavailable', 'sn': 'AB12345678'}}
 
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_model'], 'SG550X-24MP-K9'
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_serialnum'], 'DNI214309SZ'
         )
 
 #     def test_ciscosmb_facts_hardware(self):

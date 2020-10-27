@@ -65,18 +65,28 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
             result['ansible_facts']['ansible_net_uptime'], '10d07h27m25s'
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_hostname'], 'sw-cb-akademie-1'
+            result['ansible_facts']['ansible_net_hostname'], 'sw-ab-abcdefg-1'
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_cpu_load'], '7'
+            result['ansible_facts']['ansible_net_cpu_load'], '10'
         )
 
+        self.assertEqual(
+                result['ansible_facts']['ansible_net_hw_modules'], {'1': {'name': '1', 'descr': 'SG350-28 28-Port Gigabit Managed Switch', 'pid': 'SG350-28-K9', 'vid': 'V01', 'sn': 'ABC1234567A'}, 'GigabitEthernet28': {
+'name': 'GigabitEthernet28', 'descr': 'SFP-1000Base-SX', 'pid': 'SFP-1000-SX', 'vid': 'Information Unavailable', 'sn': 'A123456'}}
+        )
         self.assertEqual(
             result['ansible_facts']['ansible_net_model'], 'SG350-28-K9'
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_serialnum'], 'DNI2122032G'
+            result['ansible_facts']['ansible_net_serialnum'], 'ABC1234567A'
         )
+
+        with self.assertRaises(KeyError) as cm:
+            len(result['ansible_facts']['ansible_net_stacked_models'])
+        the_exception = cm.exception
+        print(the_exception)
+        self.assertIsInstance(the_exception, KeyError)
 
 #     def test_ciscosmb_facts_hardware(self):
 #         set_module_args(dict(gather_subset='hardware'))
