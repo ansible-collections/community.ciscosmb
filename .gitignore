@@ -1,6 +1,9 @@
 #builded package
 qaxi-ciscosmb-*.tar.gz
 
+# unit test output
+tests/output/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
