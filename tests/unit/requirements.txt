@@ -1,3 +1,0 @@
-unittest2 ; python_version <= '3.6'
-
-ciscosmb ; python_version >= '3.6'
