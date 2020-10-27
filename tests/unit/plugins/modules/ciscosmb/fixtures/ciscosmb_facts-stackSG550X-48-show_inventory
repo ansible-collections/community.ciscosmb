@@ -1,0 +1,24 @@
+
+NAME: "1"   DESCR: "SG550X-48P 48-Port Gigabit PoE Stackable Managed Switch"   
+PID: SG550X-48P-K9   VID: V04   SN: DNI2403045Y   
+
+
+NAME: "TenGigabitEthernet1/0/1"    DESCR: "SFP-10G-LR"    
+PID: SFP-10G-LR    VID: V03     SN: CB20605024          
+
+
+NAME: "TenGigabitEthernet1/0/2"    DESCR: "SFP-1000Base-LX"    
+PID: GLC-LH-SMD    VID: Information Unavailable    SN: CB80110325          
+
+
+NAME: "2"   DESCR: "SG550X-48 48-Port Gigabit Stackable Managed Switch"   
+PID: SG550X-48-K9   VID: V02   SN: DNI235000NC   
+
+
+NAME: "TenGigabitEthernet2/0/1"    DESCR: "SFP-10G-LR"    
+PID: SFP-10G-LR    VID: V03     SN: CB20418262          
+
+
+NAME: "TenGigabitEthernet2/0/2"    DESCR: "SFP-1000Base-LX"    
+PID: GLC-LH-SMD    VID: Information Unavailable    SN: CB71020387          
+
