@@ -44,7 +44,7 @@ class TestCiscoSMBFactsModuleOnSG550X24MPK9(TestCiscoSMBModule):
 
             for command in commands:
                 filename = str(command).split(' | ')[0].replace(' ', '_')
-                output.append(load_fixture('ciscosmb_facts-%s-SG550X-24MP-K9' % filename))
+                output.append(load_fixture('ciscosmb_facts-SG550X-24MP-K9-%s' % filename))
             return output
 
         self.run_commands.side_effect = load_from_file

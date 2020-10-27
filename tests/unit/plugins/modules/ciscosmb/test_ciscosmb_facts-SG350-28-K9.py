@@ -44,7 +44,7 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
 
             for command in commands:
                 filename = str(command).split(' | ')[0].replace(' ', '_')
-                output.append(load_fixture('ciscosmb_facts-%s-SG350-28-K9' % filename))
+                output.append(load_fixture('ciscosmb_facts-SG350-28-K9-%s' % filename))
             return output
 
         self.run_commands.side_effect = load_from_file
@@ -59,7 +59,7 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
             result['ansible_facts']['ansible_net_boot_version'], None
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_hw_version'], 'V02'
+            result['ansible_facts']['ansible_net_hw_version'], 'V01'
         )
         self.assertEqual(
             result['ansible_facts']['ansible_net_uptime'], '10d07h27m25s'
@@ -72,10 +72,10 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
         )
 
         self.assertEqual(
-            result['ansible_facts']['ansible_net_model'], 'SG500-52-K9'
+            result['ansible_facts']['ansible_net_model'], 'SG350-28-K9'
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_serialnum'], 'DNI18020071'
+            result['ansible_facts']['ansible_net_serialnum'], 'DNI2122032G'
         )
 
 #     def test_ciscosmb_facts_hardware(self):
