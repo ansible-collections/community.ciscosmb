@@ -80,7 +80,51 @@ class TestCiscoSMBFactsModuleOnSG550X24MPK9(TestCiscoSMBModule):
             result['ansible_facts']['ansible_net_hw_version'], 'V04'
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_hw_modules'], {'1': {'name': '1', 'descr': 'SG550X-48P 48-Port Gigabit PoE Stackable Managed Switch', 'pid': 'SG550X-48P-K9', 'vid': 'V04', 'sn': 'ABC1234567A'}, 'TenGigabitEthernet1/0/1': {'name': 'TenGigabitEthernet1/0/1', 'descr': 'SFP-10G-LR', 'pid': 'SFP-10G-LR', 'vid': 'V03', 'sn': 'AB12345678'}, 'TenGigabitEthernet1/0/2': {'name': 'TenGigabitEthernet1/0/2', 'descr': 'SFP-1000Base-LX', 'pid': 'GLC-LH-SMD', 'vid': 'Information Unavailable', 'sn': 'AB12345678'}, '2': {'name': '2', 'descr': 'SG550X-48 48-Port Gigabit Stackable Managed Switch', 'pid': 'SG550X-48-K9', 'vid': 'V02', 'sn': 'ABC123456AB'}, 'TenGigabitEthernet2/0/1': {'name': 'TenGigabitEthernet2/0/1', 'descr': 'SFP-10G-LR', 'pid': 'SFP-10G-LR', 'vid': 'V03', 'sn': 'AB12345678'}, 'TenGigabitEthernet2/0/2': {'name': 'TenGigabitEthernet2/0/2', 'descr': 'SFP-1000Base-LX', 'pid': 'GLC-LH-SMD', 'vid': 'Information Unavailable', 'sn': 'AB12345678'}}
+            result['ansible_facts']['ansible_net_hw_modules'],
+            {
+                "1": {
+                    "descr": "SG550X-48P 48-Port Gigabit PoE Stackable Managed Switch",
+                    "name": "1",
+                    "pid": "SG550X-48P-K9",
+                    "sn": "ABC1234567A",
+                    "vid": "V04"
+                },
+                "2": {
+                    "descr": "SG550X-48 48-Port Gigabit Stackable Managed Switch",
+                    "name": "2",
+                    "pid": "SG550X-48-K9",
+                    "sn": "ABC123456AB",
+                    "vid": "V02"
+                },
+                "TenGigabitEthernet1/0/1": {
+                    "descr": "SFP-10G-LR",
+                    "name": "TenGigabitEthernet1/0/1",
+                    "pid": "SFP-10G-LR",
+                    "sn": "AB12345678",
+                    "vid": "V03"
+                },
+                "TenGigabitEthernet1/0/2": {
+                    "descr": "SFP-1000Base-LX",
+                    "name": "TenGigabitEthernet1/0/2",
+                    "pid": "GLC-LH-SMD",
+                    "sn": "AB12345678",
+                    "vid": "Information Unavailable"
+                },
+                "TenGigabitEthernet2/0/1": {
+                    "descr": "SFP-10G-LR",
+                    "name": "TenGigabitEthernet2/0/1",
+                    "pid": "SFP-10G-LR",
+                    "sn": "AB12345678",
+                    "vid": "V03"
+                },
+                "TenGigabitEthernet2/0/2": {
+                    "descr": "SFP-1000Base-LX",
+                    "name": "TenGigabitEthernet2/0/2",
+                    "pid": "GLC-LH-SMD",
+                    "sn": "AB12345678",
+                    "vid": "Information Unavailable"
+                }
+            }
 
         )
 
