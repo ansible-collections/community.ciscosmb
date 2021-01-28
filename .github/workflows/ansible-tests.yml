@@ -29,6 +29,8 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install ansible pycodestyle pylint pytest coverage voluptuous pytest-xdist yamllint
         # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        
+        ansible-galaxy collection install ansible.netcommon
         mkdir -p ~/.ansible/collections/ansible_collections/qaxi/ciscosmb
         cp -r * ~/.ansible/collections/ansible_collections/qaxi/ciscosmb/
     - name: Lint
