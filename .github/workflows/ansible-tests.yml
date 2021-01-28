@@ -16,7 +16,8 @@ jobs:
     strategy:
       matrix:
         #python-version: [ 2.7, 3.5, 3.6, 3.7, 3.8, 3.9]
-        python-version: [ 3.8]
+        #python-version: [ 3.8]
+        python-version: [ 3.7, 3.8, 3.9]
 
     steps:
     - uses: actions/checkout@v2
@@ -40,4 +41,4 @@ jobs:
     - name: Test with pytest
       run: |
         cd ~/.ansible/collections/ansible_collections/qaxi/ciscosmb
-        ansible-test unit --python ${{ matrix.python-version }}
+        ansible-test units --python ${{ matrix.python-version }}
