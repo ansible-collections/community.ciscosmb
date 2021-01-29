@@ -56,7 +56,7 @@ class TestCiscoSMBFactsModuleOnSG550X24MPK9(TestCiscoSMBModule):
             result['ansible_facts']['ansible_net_version'], '2.5.0.83'
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_uptime'], '64d02h08m19s'
+            result['ansible_facts']['ansible_net_uptime'], 5537299
         )
         self.assertEqual(
             result['ansible_facts']['ansible_net_hostname'], 'sw-abcdefgh-1'

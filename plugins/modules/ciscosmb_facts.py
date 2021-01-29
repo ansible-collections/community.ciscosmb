@@ -253,8 +253,9 @@ class Default(FactsBase):
         match = re.search(r'^System Up Time \S+:\s+(\S+)\s*$', data, re.M)
         if match:
             (dayhour, mins, sec) = match.group(1).split(':')
-            dayhour = dayhour.replace(',', 'd')
-            return dayhour + "h" + mins + "m" + sec + "s"
+            (day, hour) = dayhour.split(',')
+            # output in seconds
+            return (int(day) * 86400) + (int(hour) * 3600) + (int(mins) * 60) + int(sec)
 
     def parse_hostname(self, data):
         match = re.search(r'^System Name:\s*(\S+)\s*$', data, re.M)
