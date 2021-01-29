@@ -39,8 +39,8 @@ jobs:
         ansible-test units --python 3.8
     - name: Deploy to Galaxy
       run: |
-        rm ./qaxi-ciscosmb-*.tar.gz 
+        rm -f ./qaxi-ciscosmb-*.tar.gz 
         ansible-galaxy collection build -vvv --force \
         && ansible-galaxy collection publish -vvv \
             ./qaxi-ciscosmb-*.tar.gz --token "xx${{ secrets.GALAXY_TOKEN }}xx"
-        rm ./qaxi-ciscosmb-*.tar.gz 
+        rm -f ./qaxi-ciscosmb-*.tar.gz 
