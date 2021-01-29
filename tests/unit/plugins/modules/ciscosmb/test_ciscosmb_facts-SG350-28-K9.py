@@ -62,7 +62,7 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
             result['ansible_facts']['ansible_net_hw_version'], 'V01'
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_uptime'], '10d07h27m25s'
+            result['ansible_facts']['ansible_net_uptime'], 890845
         )
         self.assertEqual(
             result['ansible_facts']['ansible_net_hostname'], 'sw-ab-abcdefg-1'
@@ -72,8 +72,25 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
         )
 
         self.assertEqual(
-                result['ansible_facts']['ansible_net_hw_modules'], {'1': {'name': '1', 'descr': 'SG350-28 28-Port Gigabit Managed Switch', 'pid': 'SG350-28-K9', 'vid': 'V01', 'sn': 'ABC1234567A'}, 'GigabitEthernet28': {
-'name': 'GigabitEthernet28', 'descr': 'SFP-1000Base-SX', 'pid': 'SFP-1000-SX', 'vid': 'Information Unavailable', 'sn': 'A123456'}}
+            result['ansible_facts']['ansible_net_hw_modules'],
+            {
+                "1":
+                {
+                    "descr": "SG350-28 28-Port Gigabit Managed Switch",
+                    "name": "1",
+                    "pid": "SG350-28-K9",
+                    "sn": "ABC1234567A",
+                    "vid": "V01"
+                },
+                "GigabitEthernet28":
+                {
+                    "descr": "SFP-1000Base-SX",
+                    "name": "GigabitEthernet28",
+                    "pid": "SFP-1000-SX",
+                    "sn": "A123456",
+                    "vid": "Information Unavailable"
+                }
+            }
         )
         self.assertEqual(
             result['ansible_facts']['ansible_net_model'], 'SG350-28-K9'

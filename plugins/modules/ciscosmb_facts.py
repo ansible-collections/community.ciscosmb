@@ -26,6 +26,9 @@ options:
         with an initial C(!) to specify that a specific subset should
         not be collected.
     required: false
+    type: list
+    elements: str
+    choices: [ 'default', 'all', 'hardware', 'config', 'interfaces', '!hardware', '!config', '!interfaces' ]
     default: '!config'
 '''
 
@@ -250,8 +253,9 @@ class Default(FactsBase):
         match = re.search(r'^System Up Time \S+:\s+(\S+)\s*$', data, re.M)
         if match:
             (dayhour, mins, sec) = match.group(1).split(':')
-            dayhour = dayhour.replace(',', 'd')
-            return dayhour + "h" + mins + "m" + sec + "s"
+            (day, hour) = dayhour.split(',')
+            # output in seconds
+            return (int(day) * 86400) + (int(hour) * 3600) + (int(mins) * 60) + int(sec)
 
     def parse_hostname(self, data):
         match = re.search(r'^System Name:\s*(\S+)\s*$', data, re.M)
@@ -285,29 +289,29 @@ class Default(FactsBase):
                 SN:\s(?P<sn>\S+)\s*
                 """, line, re.X)
             modul = match.groupdict()
-            modules[modul['name']] = modul 
+            modules[modul['name']] = modul
 
         if modules:
             return modules
-    
+
     def parse_stacked_models(self, data):
         # every inventory has module with NAME: "1"
         # stacks have modules 2 3 ... 8
         models = []
-        for n in range(1,9):
+        for n in range(1, 9):
             if f'{n}' in data:
                 models.append(data[f'{n}']['pid'])
         return models
-        
+
     def parse_stacked_serialnums(self, data):
         # every inventory has module with NAME: "1"
         # stacks have modules 2 3 ... 8
         sn = []
-        for n in range(1,9):
+        for n in range(1, 9):
             if f'{n}' in data:
                 sn.append(data[f'{n}']['sn'])
         return sn
-        
+
     def parse_model(self, data):
         # every inventory has module with NAME: "1"
         model = data['1']['pid']
@@ -325,6 +329,7 @@ class Default(FactsBase):
         # every inventory has module with NAME: "1"
         sn = data['1']['vid']
         return sn
+
 
 class Hardware(FactsBase):
 
@@ -467,179 +472,178 @@ class Interfaces(FactsBase):
             yield parsed
 
 
-class Routing(FactsBase):
-
-    COMMANDS = [
-        '/routing bgp peer print detail without-paging',
-        '/routing bgp vpnv4-route print detail without-paging',
-        '/routing bgp instance print detail without-paging',
-        '/ip route print detail without-paging',
-        '/routing ospf instance print detail without-paging',
-        '/routing ospf neighbor print detail without-paging'
-    ]
-
-    DETAIL_RE = re.compile(r'([\w\d\-]+)=\"?(\w{3}/\d{2}/\d{4}\s\d{2}:\d{2}:\d{2}|[\w\d\-\.:/]+)')
-    WRAPPED_LINE_RE = re.compile(r'^\s+(?!\d)')
-
-    def populate(self):
-        super().populate()
-        self.facts['bgp_peer'] = dict()
-        self.facts['bgp_vpnv4_route'] = dict()
-        self.facts['bgp_instance'] = dict()
-        self.facts['route'] = dict()
-        self.facts['ospf_instance'] = dict()
-        self.facts['ospf_neighbor'] = dict()
-        data = self.responses[0]
-        if data:
-            peer = self.parse_bgp_peer(data)
-            self.populate_bgp_peer(peer)
-        data = self.responses[1]
-        if data:
-            vpnv4 = self.parse_vpnv4_route(data)
-            self.populate_vpnv4_route(vpnv4)
-        data = self.responses[2]
-        if data:
-            instance = self.parse_instance(data)
-            self.populate_bgp_instance(instance)
-        data = self.responses[3]
-        if data:
-            route = self.parse_route(data)
-            self.populate_route(route)
-        data = self.responses[4]
-        if data:
-            instance = self.parse_instance(data)
-            self.populate_ospf_instance(instance)
-        data = self.responses[5]
-        if data:
-            instance = self.parse_ospf_neighbor(data)
-            self.populate_ospf_neighbor(instance)
-
-    def preprocess(self, data):
-        preprocessed = list()
-        for line in data.split('\n'):
-            if len(line) == 0 or line[:5] == 'Flags':
-                continue
-
-            if not re.match(self.WRAPPED_LINE_RE, line):
-                preprocessed.append(line)
-            else:
-                preprocessed[-1] += line
-        return preprocessed
-
-    def parse_name(self, data):
-        match = re.search(r'name=.(\S+\b)', data, re.M)
-        if match:
-            return match.group(1)
-
-    def parse_interface(self, data):
-        match = re.search(r'interface=([\w\d\-]+)', data, re.M)
-        if match:
-            return match.group(1)
-
-    def parse_instance_name(self, data):
-        match = re.search(r'instance=([\w\d\-]+)', data, re.M)
-        if match:
-            return match.group(1)
-
-    def parse_routing_mark(self, data):
-        match = re.search(r'routing-mark=([\w\d\-]+)', data, re.M)
-        if match:
-            return match.group(1)
-        else:
-            match = 'main'
-            return match
-
-    def parse_bgp_peer(self, data):
-        facts = dict()
-        data = self.preprocess(data)
-        for line in data:
-            name = self.parse_name(line)
-            facts[name] = dict()
-            for (key, value) in re.findall(self.DETAIL_RE, line):
-                facts[name][key] = value
-        return facts
-
-    def parse_instance(self, data):
-        facts = dict()
-        data = self.preprocess(data)
-        for line in data:
-            name = self.parse_name(line)
-            facts[name] = dict()
-            for (key, value) in re.findall(self.DETAIL_RE, line):
-                facts[name][key] = value
-        return facts
-
-    def parse_vpnv4_route(self, data):
-        facts = dict()
-        data = self.preprocess(data)
-        for line in data:
-            name = self.parse_interface(line)
-            facts[name] = dict()
-            for (key, value) in re.findall(self.DETAIL_RE, line):
-                facts[name][key] = value
-        return facts
-
-    def parse_route(self, data):
-        facts = dict()
-        data = self.preprocess(data)
-        for line in data:
-            name = self.parse_routing_mark(line)
-            facts[name] = dict()
-            for (key, value) in re.findall(self.DETAIL_RE, line):
-                facts[name][key] = value
-        return facts
-
-    def parse_ospf_instance(self, data):
-        facts = dict()
-        data = self.preprocess(data)
-        for line in data:
-            name = self.parse_name(line)
-            facts[name] = dict()
-            for (key, value) in re.findall(self.DETAIL_RE, line):
-                facts[name][key] = value
-        return facts
-
-    def parse_ospf_neighbor(self, data):
-        facts = dict()
-        data = self.preprocess(data)
-        for line in data:
-            name = self.parse_instance_name(line)
-            facts[name] = dict()
-            for (key, value) in re.findall(self.DETAIL_RE, line):
-                facts[name][key] = value
-        return facts
-
-    def populate_bgp_peer(self, data):
-        for key, value in iteritems(data):
-            self.facts['bgp_peer'][key] = value
-
-    def populate_vpnv4_route(self, data):
-        for key, value in iteritems(data):
-            self.facts['bgp_vpnv4_route'][key] = value
-
-    def populate_bgp_instance(self, data):
-        for key, value in iteritems(data):
-            self.facts['bgp_instance'][key] = value
-
-    def populate_route(self, data):
-        for key, value in iteritems(data):
-            self.facts['route'][key] = value
-
-    def populate_ospf_instance(self, data):
-        for key, value in iteritems(data):
-            self.facts['ospf_instance'][key] = value
-
-    def populate_ospf_neighbor(self, data):
-        for key, value in iteritems(data):
-            self.facts['ospf_neighbor'][key] = value
-
+# class Routing(FactsBase):
+#
+#     COMMANDS = [
+#         '/routing bgp peer print detail without-paging',
+#         '/routing bgp vpnv4-route print detail without-paging',
+#         '/routing bgp instance print detail without-paging',
+#         '/ip route print detail without-paging',
+#         '/routing ospf instance print detail without-paging',
+#         '/routing ospf neighbor print detail without-paging'
+#     ]
+#
+#     DETAIL_RE = re.compile(r'([\w\d\-]+)=\"?(\w{3}/\d{2}/\d{4}\s\d{2}:\d{2}:\d{2}|[\w\d\-\.:/]+)')
+#     WRAPPED_LINE_RE = re.compile(r'^\s+(?!\d)')
+#
+#     def populate(self):
+#         super().populate()
+#         self.facts['bgp_peer'] = dict()
+#         self.facts['bgp_vpnv4_route'] = dict()
+#         self.facts['bgp_instance'] = dict()
+#         self.facts['route'] = dict()
+#         self.facts['ospf_instance'] = dict()
+#         self.facts['ospf_neighbor'] = dict()
+#         data = self.responses[0]
+#         if data:
+#             peer = self.parse_bgp_peer(data)
+#             self.populate_bgp_peer(peer)
+#         data = self.responses[1]
+#         if data:
+#             vpnv4 = self.parse_vpnv4_route(data)
+#             self.populate_vpnv4_route(vpnv4)
+#         data = self.responses[2]
+#         if data:
+#             instance = self.parse_instance(data)
+#             self.populate_bgp_instance(instance)
+#         data = self.responses[3]
+#         if data:
+#             route = self.parse_route(data)
+#             self.populate_route(route)
+#         data = self.responses[4]
+#         if data:
+#             instance = self.parse_instance(data)
+#             self.populate_ospf_instance(instance)
+#         data = self.responses[5]
+#         if data:
+#             instance = self.parse_ospf_neighbor(data)
+#             self.populate_ospf_neighbor(instance)
+#
+#     def preprocess(self, data):
+#         preprocessed = list()
+#         for line in data.split('\n'):
+#             if len(line) == 0 or line[:5] == 'Flags':
+#                 continue
+#
+#             if not re.match(self.WRAPPED_LINE_RE, line):
+#                 preprocessed.append(line)
+#             else:
+#                 preprocessed[-1] += line
+#         return preprocessed
+#
+#     def parse_name(self, data):
+#         match = re.search(r'name=.(\S+\b)', data, re.M)
+#         if match:
+#             return match.group(1)
+#
+#     def parse_interface(self, data):
+#         match = re.search(r'interface=([\w\d\-]+)', data, re.M)
+#         if match:
+#             return match.group(1)
+#
+#     def parse_instance_name(self, data):
+#         match = re.search(r'instance=([\w\d\-]+)', data, re.M)
+#         if match:
+#             return match.group(1)
+#
+#     def parse_routing_mark(self, data):
+#         match = re.search(r'routing-mark=([\w\d\-]+)', data, re.M)
+#         if match:
+#             return match.group(1)
+#         else:
+#             match = 'main'
+#             return match
+#
+#     def parse_bgp_peer(self, data):
+#         facts = dict()
+#         data = self.preprocess(data)
+#         for line in data:
+#             name = self.parse_name(line)
+#             facts[name] = dict()
+#             for (key, value) in re.findall(self.DETAIL_RE, line):
+#                 facts[name][key] = value
+#         return facts
+#
+#     def parse_instance(self, data):
+#         facts = dict()
+#         data = self.preprocess(data)
+#         for line in data:
+#             name = self.parse_name(line)
+#             facts[name] = dict()
+#             for (key, value) in re.findall(self.DETAIL_RE, line):
+#                 facts[name][key] = value
+#         return facts
+#
+#     def parse_vpnv4_route(self, data):
+#         facts = dict()
+#         data = self.preprocess(data)
+#         for line in data:
+#             name = self.parse_interface(line)
+#             facts[name] = dict()
+#             for (key, value) in re.findall(self.DETAIL_RE, line):
+#                 facts[name][key] = value
+#         return facts
+#
+#     def parse_route(self, data):
+#         facts = dict()
+#         data = self.preprocess(data)
+#         for line in data:
+#             name = self.parse_routing_mark(line)
+#             facts[name] = dict()
+#             for (key, value) in re.findall(self.DETAIL_RE, line):
+#                 facts[name][key] = value
+#         return facts
+#
+#     def parse_ospf_instance(self, data):
+#         facts = dict()
+#         data = self.preprocess(data)
+#         for line in data:
+#             name = self.parse_name(line)
+#             facts[name] = dict()
+#             for (key, value) in re.findall(self.DETAIL_RE, line):
+#                 facts[name][key] = value
+#         return facts
+#
+#     def parse_ospf_neighbor(self, data):
+#         facts = dict()
+#         data = self.preprocess(data)
+#         for line in data:
+#             name = self.parse_instance_name(line)
+#             facts[name] = dict()
+#             for (key, value) in re.findall(self.DETAIL_RE, line):
+#                 facts[name][key] = value
+#         return facts
+#
+#     def populate_bgp_peer(self, data):
+#         for key, value in iteritems(data):
+#             self.facts['bgp_peer'][key] = value
+#
+#     def populate_vpnv4_route(self, data):
+#         for key, value in iteritems(data):
+#             self.facts['bgp_vpnv4_route'][key] = value
+#
+#     def populate_bgp_instance(self, data):
+#         for key, value in iteritems(data):
+#             self.facts['bgp_instance'][key] = value
+#
+#     def populate_route(self, data):
+#         for key, value in iteritems(data):
+#             self.facts['route'][key] = value
+#
+#     def populate_ospf_instance(self, data):
+#         for key, value in iteritems(data):
+#             self.facts['ospf_instance'][key] = value
+#
+#     def populate_ospf_neighbor(self, data):
+#         for key, value in iteritems(data):
+#             self.facts['ospf_neighbor'][key] = value
 
 FACT_SUBSETS = dict(
     default=Default,
     hardware=Hardware,
     interfaces=Interfaces,
     config=Config,
-    routing=Routing,
+    #    routing=Routing,
 )
 
 VALID_SUBSETS = frozenset(FACT_SUBSETS.keys())
@@ -651,7 +655,21 @@ def main():
     """main entry point for module execution
     """
     argument_spec = dict(
-        gather_subset=dict(default=['!config'], type='list')
+        gather_subset=dict(
+            default=['!config'],
+            type='list',
+            elements='str',
+            choices=[
+                'default',
+                'all',
+                'hardware',
+                'config',
+                'interfaces',
+                '!hardware',
+                '!config',
+                '!interfaces'
+            ]
+        )
     )
 
     argument_spec.update(ciscosmb_argument_spec)
