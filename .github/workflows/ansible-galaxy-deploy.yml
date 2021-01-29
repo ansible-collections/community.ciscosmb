@@ -4,15 +4,13 @@
 name: ansible-galaxy-deploy
 
 on:
-  push:                                                                      
-    branches: [ autodeploy ] 
-  # release:
-  # types: [ created ]
+  release:
+    types: [ created ]
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v2
@@ -42,5 +40,5 @@ jobs:
         rm -f ./qaxi-ciscosmb-*.tar.gz 
         ansible-galaxy collection build -vvv --force \
         && ansible-galaxy collection publish -vvv \
-            ./qaxi-ciscosmb-*.tar.gz --token "xx${{ secrets.GALAXY_TOKEN }}xx"
+            ./qaxi-ciscosmb-*.tar.gz --token ${{ secrets.GALAXY_TOKEN }}
         rm -f ./qaxi-ciscosmb-*.tar.gz 
