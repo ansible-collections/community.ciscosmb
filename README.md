@@ -20,17 +20,32 @@ qaxi.ciscosmb.ciscosmb_facts
     gather_subset - config, interfaces, hardware
 ```
 
-## Install
+### Install
 
 ```
 ansible-galaxy collection install qaxi.ciscosmb
 ```
 
-## Testing
+## Developement
+
+### Needs installed
+```
+git
+pip install -r requires-dev.txt
+ansible-galaxy collection install ansible.netcommon
+```
+
+### Testing
+
 
 ```
 ansible-test sanity --local # or --docker
 ansible-test units  --local # or --docker
+rm -f ./qaxi-ciscosmb-*.tar.gz
+ansible-galaxy collection build -v --force
+export GALAXY_IMPORTER_CONFIG=./galaxy-importer.cfg
+python3 -m galaxy_importer.main ./qaxi-ciscosmb-*.tar.gz
+rm -f ./qaxi-ciscosmb-*.tar.gz
 ```
 
 ## Publish
