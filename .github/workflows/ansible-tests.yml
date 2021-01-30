@@ -47,4 +47,4 @@ jobs:
         ansible-galaxy collection build -vvv --force
         export GALAXY_IMPORTER_CONFIG=./galaxy-importer.cfg
         python3 -m galaxy_importer.main qaxi-ciscosmb-*.tar.gz
-        rm -f ./qaxi-ciscosmb-*.tar.gz         
+        rm -f ./qaxi-ciscosmb-*.tar.gz
