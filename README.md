@@ -31,7 +31,7 @@ ansible-galaxy collection install qaxi.ciscosmb
 ### Needs installed
 ```
 git
-pip install -r requires-dev.txt
+pip install -r requirements-dev.txt
 ansible-galaxy collection install ansible.netcommon
 ```
 
