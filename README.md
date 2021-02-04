@@ -2,28 +2,77 @@
 
 Ansible Galaxy module for Cisco SMB switches - SG300, SG500, SG350, SG550
 
-
-Tested on SG350-28-K9, SG500-52-K9, SG550X-24MP-K9 and SG550X-48 stack
-```
-qaxi.ciscosmb.ciscosmb_facts
-    gather_subset: default
-```
-
-Work in progress (in order)
-```
-qaxi.ciscosmb.ciscosmb_facts
-    gather_subset - config
-
-qaxi.ciscosmb.ciscosmb_command
-initial Ansible Galaxy publication
-qaxi.ciscosmb.ciscosmb_facts
-    gather_subset - config, interfaces, hardware
-```
-
-### Install
+## Install
 
 ```
 ansible-galaxy collection install qaxi.ciscosmb
+```
+
+## Use
+Tested on SG350-28-K9, SG500-52-K9, SG550X-24MP-K9 and SG550X-48 stack
+
+Limited capabilities - Work in progress
+
+file `cismosmb_inventory.yml`
+```
+all:
+  vars:
+    # no automatic facts
+    gather_facts: no  
+    
+    ansible_connection: network_cli
+    ### change what you need
+    # ansible_ssh_private_key_file: /dir/private.key
+    # ansible_ssh_user: user
+    # ansible_ssh_pass: password
+
+  hosts:
+    switch1:
+      ansible_host: AAA.BBB.CCC.DDD
+      ansible_network_os: qaxi.ciscosmb.ciscosmb
+    switch2:
+      ansible_host: WWW.XXX.YYY.ZZZ
+      ansible_network_os: qaxi.ciscosmb.ciscosmb
+
+```
+
+playbook `ciscosmb_gather_facts.yml`
+```
+- name: Gather Facts
+  gather_facts: no
+  hosts: all
+  vars:
+    - configs_dir: configs
+
+  tasks:
+    ###
+    # Collect data
+    #
+    - name: CiscoSMB - Gather Facts - subset default
+      qaxi.ciscosmb.ciscosmb_facts:
+        gather_subset:
+          - default
+      # when: ansible_network_os == 'qaxi.ciscosmb.ciscosmb'
+
+    - name: CiscoSMB - Gather Facts - subset config
+      qaxi.ciscosmb.ciscosmb_facts:
+        gather_subset:
+          - config
+      # when: ansible_network_os == 'qaxi.ciscosmb.ciscosmb'
+
+    - name: Create configuration directory
+      local_action: file path={{ configs_dir }} state=directory
+      run_once: true
+      check_mode: no
+      changed_when: no
+
+    - name: Save running config
+      local_action: copy content={{ ansible_net_config }} dest={{ configs_dir }}/{{ inventory_hostname }}_net_config
+```
+
+Run
+```
+ansible-playbook -i ciscosmb_inventory.yml ciscosmb_gather_facts.yml
 ```
 
 ## Developement
