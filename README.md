@@ -86,15 +86,15 @@ ansible-galaxy collection install ansible.netcommon
 
 ### Testing
 
-
 ```
-ansible-test sanity --local # or --docker
-ansible-test units  --local # or --docker
-rm -f ./qaxi-ciscosmb-*.tar.gz
-ansible-galaxy collection build -v --force
-export GALAXY_IMPORTER_CONFIG=./galaxy-importer.cfg
-python3 -m galaxy_importer.main ./qaxi-ciscosmb-*.tar.gz
-rm -f ./qaxi-ciscosmb-*.tar.gz
+export PY="--python 3.8" # set your version or unset
+   ansible-test sanity --local ${PY}  \
+&& ansible-test units  --local ${PY} \
+&& rm -f ./qaxi-ciscosmb-*.tar.gz  \
+&& ansible-galaxy collection build -v --force  \
+&& export GALAXY_IMPORTER_CONFIG=./galaxy-importer.cfg  \
+&& python3 -m galaxy_importer.main ./qaxi-ciscosmb-*.tar.gz  \
+&& rm -f ./qaxi-ciscosmb-*.tar.gz
 ```
 
 ## Publish
@@ -103,6 +103,5 @@ ansible-galaxy collection build -v --force \
 && ansible-galaxy collection publish ./qaxi-ciscosmb-X.X.X.tar.gz --token <TOKEN> 
 
 ```
-
 
 Heavy influence by Egor Zaitsev (@heuels) RouterOS dirver
