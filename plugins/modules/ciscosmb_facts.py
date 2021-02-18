@@ -334,7 +334,8 @@ class Default(FactsBase):
 class Hardware(FactsBase):
 
     COMMANDS = [
-        '/system resource print without-paging'
+        "dir",
+        "show memory statistics",
     ]
 
     def populate(self):

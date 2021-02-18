@@ -1,0 +1,372 @@
+config-file-header
+switch-c
+v192.168.0.71 / RTESLA2.4.5_930_181_144
+CLI v1.0
+file SSD indicator encrypted
+@
+ssd-control-start
+ssd config
+ssd file passphrase control unrestricted
+no ssd file integrity control
+ssd-control-end cb0a3fdb1f3a1af4e4430033719968c0
+!
+!
+unit-type-control-start
+unit-type unit 1 network gi uplink te
+unit-type unit 2 network gi uplink te
+unit-type unit 3 network gi uplink te
+unit-type unit 4 network gi uplink te
+unit-type unit 5 network gi uplink te
+unit-type unit 6 network gi uplink te
+unit-type unit 7 network gi uplink te
+unit-type unit 8 network gi uplink te
+unit-type-control-end
+!
+cdp device-id format hostname
+spanning-tree mode mst
+port jumbo-frame
+vlan database
+vlan 7-8,30-31,100,910,920,999
+exit
+voice vlan oui-table add 0001e3 Siemens_AG_phone________
+voice vlan oui-table add 00036b Cisco_phone_____________
+voice vlan oui-table add 00096e Avaya___________________
+voice vlan oui-table add 000fe2 H3C_Aolynk______________
+voice vlan oui-table add 0060b9 Philips_and_NEC_AG_phone
+voice vlan oui-table add 00d01e Pingtel_phone___________
+voice vlan oui-table add 00e075 Polycom/Veritel_phone___
+voice vlan oui-table add 00e0bb 3Com_phone______________
+lldp chassis-id host-name
+errdisable recovery cause loopback-detection
+errdisable recovery cause port-security
+errdisable recovery cause stp-bpdu-guard
+errdisable recovery cause stp-loopback-guard
+link-flap prevention disable
+bonjour interface range vlan 1
+ip access-list extended VTY-IN
+permit ip 192.168.0.0 192.168.0.255 any ace-priority 20
+exit
+hostname switch-c
+line console
+exec-timeout 60
+exit
+line ssh
+exec-timeout 60
+exit
+line telnet
+exec-timeout 60
+exit
+logging host 192.168.0.2
+logging host 192.168.0.3
+logging host 192.168.0.4
+enable password level 15 encrypted <remove>
+no passwords complexity enable
+passwords aging 0
+username adm1 password encrypted <remove> 15
+username adm2 password encrypted <remove> 7
+ip ssh server
+ip ssh password-auth
+ip ssh pubkey-auth
+crypto key pubkey-chain ssh
+user-key adm2 rsa
+key-string row 2222B1Nz2C1yc1E2222BIw222QE2rgMdfpc1NU1L
+key-string row 1gO1hqlcOK2KNviXk1D11Z1dmG+jDwIK1g1BQGlB
+key-string row 2jfbRWpZEyUBX+ckWb2wgBBBs211bfRQDtU1sg2v
+key-string row VefEkyDGNlWj+qEIiCm/DSZurzWPgtdS
+key-string row Og11q1uH/1nKPR12gfJyN11o11nYZjclVSXW+VS1
+key-string row 1b1cRHP1L+n1lqkKHs1u+T11zwEHWO1yWQ/dirg1
+key-string row 11kUSOgv11lj1UwqeSxBDGWVb1Qd211+oTfMZRDF
+key-string row 1NxezpW/yE1CVMNQ/rFu11mcooyXLH1OnMyls1Cv
+key-string row huhqDjqUgeoGhRKerVkCh1OHrQc11YxIINJVB1mV
+key-string row SWtO1EiL1pTczbwxGw==
+exit
+exit
+snmp-server server
+snmp-server location some place
+snmp-server community example rw view Default
+snmp-server host 192.168.0.3 traps version 1 example
+snmp-server host 192.168.0.2 traps version 1 example
+ip https certificate 2
+clock timezone CET +1
+clock summer-time CEST recurring last sun mar 02:00 last sun oct 03:00
+sntp server ntpserver.example.net
+sntp server ntpserver.example.net
+no sntp server ntpserver.example.net
+ip name-server dnsserver.example.net
+ip host tftp 192.168.0.2
+ip telnet server
+!
+interface vlan 1
+ ip address 192.168.0.27 192.168.0.0
+ no ip address dhcp
+!
+interface vlan 7
+ name vlan_example1
+!
+interface vlan 8
+ name vlan_example2
+!
+interface vlan 30
+ name vlan_example3
+!
+interface vlan 31
+ name vlan_example4
+!
+interface vlan 100
+ name vlan_example5
+!
+interface vlan 910
+ name vlan_example6
+!
+interface vlan 920
+ name vlan_example7
+!
+interface vlan 999
+ name vlan_example8
+!
+interface GigabitEthernet1/0/1
+ description "some description"
+ spanning-tree link-type point-to-point
+ switchport mode trunk
+ macro description ap
+ !next command is internal.
+ macro auto smartport dynamic_type ap
+!
+interface GigabitEthernet1/0/2
+ description "some description"
+ spanning-tree link-type point-to-point
+ switchport mode trunk
+ macro description ap
+ !next command is internal.
+ macro auto smartport dynamic_type ap
+!
+interface GigabitEthernet1/0/3
+ description "some description"
+ spanning-tree link-type point-to-point
+ switchport mode trunk
+ macro description ap
+ !next command is internal.
+ macro auto smartport dynamic_type ap
+!
+interface GigabitEthernet1/0/4
+ spanning-tree link-type point-to-point
+ switchport mode trunk
+ macro description ap
+ !next command is internal.
+ macro auto smartport dynamic_type ap
+!
+interface GigabitEthernet1/0/6
+ speed 100
+!
+interface GigabitEthernet1/0/24
+ spanning-tree link-type point-to-point
+ switchport mode trunk
+ macro description switch
+ !next command is internal.
+ macro auto smartport dynamic_type switch
+!
+interface TengigabitEthernet1/0/1
+ description "some description"
+ spanning-tree link-type point-to-point
+ switchport mode trunk
+ macro description switch
+ !next command is internal.
+ macro auto smartport dynamic_type switch
+!
+interface TengigabitEthernet1/0/4
+ description "some description"
+ spanning-tree link-type point-to-point
+ switchport mode trunk
+ macro description switch
+ !next command is internal.
+ macro auto smartport dynamic_type switch
+!
+exit
+ip default-gateway 192.168.0.1
+encrypted ip ssh-client key rsa key-pair
+---- BEGIN SSH2 ENCRYPTED PRIVATE KEY ----
+Comment: RSA Private Key
+1aaa1aaaa1aaaa/a1aaaaa1aaaa1aaaaa+aaaaaaa1aaaaaaaaaaa1aaaaaaaaaaa1aaa1
+aaaaaaaaaaa1aaaaa11a1aa1+aaaaaaaaa/aa1aaaaaaaaa1aaaaaaa11aaa/aaaaaaaa1
+aaaa1aaaaaaaa/aaaaaa1aaa1aaaaaaaaaaa11aaaaaaa/aaa1a1aa1aaaaaaaaaaaa11a
+aaaa/a1aaaaaaaaa/aaaaa1aa1aaaaaaaa1111a1a1aaaaa11aa/aaaa1aaaaaaaaaaaaa
+aaaaaaaa1a1aaaaaaaaaaaa1a+a1a1aaa/a/aaaaaaaa1a1a1aaaaa1aaaaaaaaaa1aaa+
+aaaaaaaaa1aaaaa+aaaaaaa1aaaaaaaaaaaa1a+aa1aaa1aaaaaaaaaaa1a1aaaaaaaa1a
+1aaaaaa1/aa1/aaaaaaaaaaaaaaaaa1aaaaaaaaaaa1aaaa1/1a1a1aa1aaaa1aaa1aaaa
+11aaaaaa1aaa1aaaaa1a1aaaaa11aaa1aaaaaaaaaaaa1aaa1a1aaaaaaaaaaaaaaaa1aa
+11aaaaaa/aa1aaaaaaa1a1aaaaaaaaa11aaaaaaaaa1aa11aaaaaaaa1aaaa11aaaa1aaa
+aaaa1aaa11aaaaaaaaaa1aaa1+aaaaaaaaa11aa1aa11aaaaaaaaaa1aaaaaaaaaaaa1a1
+aaaa1aaa11aaa1aaaa+aaaaaaa1a11aaa1aaaa1aaaaaaaaaaaa1a1aaaaaaaaaaa1a1aa
+aaaaa1aaa1aaaaaaaaa1aaaaaaaa1aaaaaaaaaa1/aa1a1aaa1aaaaaaaa/111aaaaaaaa
+aaaaaaaaaaaa1aaaa/aa1aa1aaaaaaaaaaaaaaa/a//aaaaa1aaaa11aa11aa1aaa11aaa
+aaaaaaaa11aaaaaaaa1aaaa+aa1aaaaaaaa1aaaaaaaaaaa11aaaaaaaaa1aa1aaaaa1aa
+aa1aaaaaa+aaa1aa/a1aaaaaaaaaaaaaaaaa1aaaaaaaaaaaa1aaaa1aaaaa1/aaa1aaaa
+aaaaaaaaaaaaaaaaaaaaaaa1aaaaaaaaa/a1aaa1aaaaaa1a1aaaaaaaaaa1==
+---- END SSH2 PRIVATE KEY ----
+---- BEGIN SSH2 PUBLIC KEY ----
+Comment: RSA Public Key
+aaaaa1aaaa1aa1aaaaaaaaaaaaaaaaaaaa/a1aaaaaa+aaaaaaaaaaa/aaaaaa1aaaaaaa
+aa1a1aaaa1aaaaaaaaaaaaaaa1a1/aaaaaaa1a+1aa1aaaaaaa1a1aa1aaaaa1aaaa1aaa
+aaaaaaaaaa1aaaaaaaa/a1+1aaaa11aa1aaaaaaaaaaaa1aaa1aaaaaaaaaaaa==
+---- END SSH2 PUBLIC KEY ----
+.
+encrypted ip ssh-client key dsa key-pair
+---- BEGIN SSH2 ENCRYPTED PRIVATE KEY ----
+Comment: DSA Private Key
+a+aaaaaaaa1aaaaaaaaaaaaaaa1aaaa1aaa1a1aaa1aaaaaaa1a1aaaaaaaa1aa1aaaaaa
+aaaa1aaaaa11aaaa1aaaaaaaa+aaaa1aaa11aa1aa1aaaaa1aaaaa/a1aaaa1aaaaaaaaa
+aaaaa1aaaaa1aaaaaaa1aaaa+aaaaaaaaaaaaa11aaaaaaaaa1aaa1a11aaaa1aaaaa1/a
+aaaaaaaa111111aa/aaaaaa1aaa11aaaa+aaa
+aaaa1a1aaa1aaaaaaaaaaaaaaa1a1aaaaaa11aaaaaaaaaa/aaa1a111aaaaaaaaaaaaaa
+aa+aaaaaaa1aaaaa1a/aa1aaa1aaaaaaaa1+aaa+aaaaaa1a+11a1aa1aaaa/aaaaaaaaa
+aaaaaaaaaaaaaa1aaaaaaaaaaa1aaaa1aaaaa1aaa1aaaaaaa1aaaaaa+aaaa+a1aaa1aa
+aa1aaa1aaaaaaaaaaaa1aaaaaaaaaaaa1aaaaaaaaaa1aaa1aaaaaaaa1a111aaa1aaaaa
+aa+1a1aaaaa1aa/aaaaaa+aaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaaaa1+aaaa1aa
+aaaaaaaaaaaa_aaaaaaa11aaaaaaaaaaaaaaaaa1a11aaaaaaaaaa11aaaa11aa1aaa1a/a1aaa1111a
+aaaaaaaaaa1aaaaaaaaaaa1aaaaa1aaaaaaaa+aaa1aaaaa111aaa1a+aaa111a1aaaaaa
+a1aaaaaa1aaa/aaaaa1aaaaa+aaaaaa1a1aaa11aaaaa11aaa+aaaaa1aaaaaa
+---- END SSH2 PRIVATE KEY ----
+---- BEGIN SSH2 PUBLIC KEY ----
+Comment: DSA Public Key
+aaaaa1aaaa1aa1aaaaaaaaaaaa1aa1aaaa1aaaaaaaaaaaaa1aa1aaaaa1aaa1aaaaaaa1
+aa11aa/aaaaaaa/aa1aaaaaaaa1aaaa1aaa+1aaaaaaaa1aaa1a1aaaa1aaaaaa1aaaa1a
+aaaaaaa1aaaaaa+aaaaaaa1aaa1aaaaaaaaaa1aaaaaa1aaaaaaaaaaaaaa1/11a1aaaaa
+aaaaa1aa1aaa1a1aaaaaaaaaaaaaaaaaaaaa1/aaaaaaaaaaaaaaaaa+aaaaa1aaaaaaaa
+aaaaaaaaa+aaaaaaaaaa11aaaaaaa1aaaaaaaa1aaa1aaaaa1a1aa+aaa11aaaa1a1aaaa
+1aaa1aaa/aaaaa1aa1aaaaaaaaa/aaaaaaaaa1aa1a1aa11/1aaaaaaaaaaaaaaa11aa1a
+aaaaaaa1aaaaaaaaaaaaa1aaaaaa1aaaa11aaaa1aaa1aaaaaaa1aaa1aaaaaa1aaaaaaa
+1a/aaa1aaaaaa1aaaa1aa1aaaaaaaaaaaa111aaaaaaaaaaaa11+a1aaaaaaa1aaaaaa1a
+aa1aaaaa1a111a/aaa==
+---- END SSH2 PUBLIC KEY ----
+.
+encrypted crypto key import rsa
+---- BEGIN SSH2 ENCRYPTED PRIVATE KEY ----
+Comment: RSA Private Key
+aaaaaa+aaaaaa1aaa1aaa1aaaaaaaaa+a1aaaa+aaa1+1aaaaaaaaaaa1aaaaaaa1a11aa
+aaaaaaa/aaa1aaaaaaaaaaaaaaaaa1aaaaaaaaa1aaaaaaa+1aaaaaaaaaaaaaaa/aaaaa
+1aaa1aaaa1aa1aaaaaa1aaaa1aaaa/aa1aa1aaa1aaaaaa1aaaaaaa11a1aaaaaa1aaa1a
+a1aaaaaaaaaaaaaaaaaaaaaaaaa+aaaaaaaaaaaaaaa1aaaa1a1a1aaaa111aaaaa1aaa1
+a+a1a11aaaaaa11/11aaa1a1aaaaaaaaaaaaaaa1aaaaa+a1aaaaaaa/a111aaaaaaaaaa
+a/aa1aaaaaaaaaaaaaaaa1a1aaaaaaaaaaaaaaaaa1aaaaaaaaaaaaa1aaaa/aa1aaaa1a
+aa1aa+aaaaa11aaa11a11aaa/aaaaaaaaaaaaa1aaaa1a1aaaaaaaaa+a1aaaa1aa1aaaa
+aa1aa1aaaaaaaaaa1aaaa+aaaaaaaaaaa1a1aaaaaaaaa1aaa1aaaaaaaaa1aaa1aaaaaa
+aa1aa1aaa1aaaaaaaaaaaaa1a1aaaaaaa1aa1a1a1aaaaaa1aaaaaaaaaaaa+aaaa1aaaa
+aa11a1aa/aaaaaaaaaaaaaaaaaaaaaaaaaa11a11aaaaa+aaaa1a1aa+11aaa1aaaa1aaa
+1aaa1+aaaa/aaaaaa1aaaaaaaaaaa/a111a1aaaaa/aaaaa1a1aaaaa1a11aaa1aaa1aaa
+a1aaaaaaaaaa1aaaaa1aa/aaaa+aaaa1aaa1aaa1a1a1aa1aaa+aaaaaaaaaaa1aaaaaa1
+1aaa1aa1aaaaaa1aaaaa1aaaa1+aaaaa1aaaa1aaaaaaaa1aaaaaaa1aaaa//a1aaaaaaa
+1aaaaaaa1aaa111aa1aaaa1aaaaaaaaaaaaaaaaaa1aaa1aa11aaaa1a/a1aaaa1aaa+aa
+1+aaa/a/aa+aaaaaaaa1aaaaaaaaaaaaa1aaaaaaaaa+1aaa1aaaaaaaaaa1aaaaaaaaaa
+aaaaaaaaaaa1aaaaaaaaaaaaa11aaaaaaa1aaaa/aaa1aa1aaaaaaa1a/a1a==
+---- END SSH2 PRIVATE KEY ----
+---- BEGIN SSH2 PUBLIC KEY ----
+Comment: RSA Public Key
+aaaaa1aaaa1aa1aaaaaaaaaaaaaaaaaaaaaaa1a1aaaaaaaaa111aaaaaaaaaaaaaaaaaa
+aaaaa1aaaaa/aaaaaaaa1aa1aaa11a/aaaaa1aaaa1aaa1aaaaaa1aa1aaaaaaa1aa+a1a
+aaa1aaaaaaaaaaa1a1aaaa1a1aaa+aaaaaaa11a1111a1aaa11aaaaa1aa1/aa==
+---- END SSH2 PUBLIC KEY ----
+.
+encrypted crypto key import dsa
+---- BEGIN SSH2 ENCRYPTED PRIVATE KEY ----
+Comment: DSA Private Key
+aaa1aaaa/aaaaaaaaaaaa+111aaaaaaaaaa1aaaaaaaa1aa+aaaaaaaaaaaaaaaaaa1aaa
+aaaaaaaaa1aaaaaaa1aaaaaaa1aaaa1aaaaa1a/aaaaaaaaaaaa1aaaaaaaaaaa+a1aaaa
+aaaaaaaa1a1+a/aaaaaaaaaaaa1a1aaaaaaaaaaaaa1a+a1aaa1aaa111aa1aaaaaa/aaa
+aa1aaa1aa1aaaaaaaaaa1a1aaa11a/aaaa1+a1aaa+aa1aaa1a1aaaa1aaaa+aaaaaaaaa
+a1a1aaa1aa1aaa/aaaaa1aaaaaaaaaaa1aaaaaaaa1a1aaaaa1aaaaa1aaa1aa1aaa11aa
+aaaaaa1+aaaaaaaaa/a1aaaa1a1aaaaaa1aaa1aaaaaa1aaaaaa1aaaaaaaaa1aa11aaa1
+1aaaa1aaaaaa1aa11/aaaaa/aaaaa1a1aaaaaaaaaaaaaaaa1aaaaaaa1aaa1aa1aaaaaa
+aa1a1aaa1aaaa11aa1a+aaaaaaa1aaaaaaaaaa1aaa+aaaaaaaaaaaaa1aaaa1aaaaaaaa
+aaaaa/+aa111a1aaaaaa11a1aaaa1aa1a1aaaaaaa+aaa/aa1aaaaaaaaaaaaaaaaaaaaa
+1aaaaaaa1aaa+/aaaaaa11aaaaaaaaa+aaaa1aaaaa1aaaaaaaaaaaaaaaa/a1aa1aaaaa
+a1a1/aa+aaaaaaaaaaaaaaaaa1aaaaaaa11aa1aaaaaaa1aa111aaaaaaaaaa1aaaaaaaa
+/a1aaaaaaaaaaaa1aaaaaaaaa1aaa11aaaaaaaaaa+aa1aaaaaa1a1+aaaa+1a
+---- END SSH2 PRIVATE KEY ----
+---- BEGIN SSH2 PUBLIC KEY ----
+Comment: DSA Public Key
+aaaaa1aaaa1aa1aaaaaaaaa/a1aaaaaaaa1aaaaa1aa1aa1aaaa1a1aaa1a11a1aaaaaa1
+aaaaaaaaaaaa11aaa1aaaaaaaaaaa1aa1aaaaaaaaaaaa1+a1aaaaaaaaaaaaaaaaaa1/1
+aaaaaaa1aa1a1aaaa1aaaaaaaa/a+aaa1a1a1aaaaaaa1aaaaa1aaaaaaaaaaaa1aa1aaa
+a11aaaaaaaaa1aaaaaaaaaaaaaaaaaaa1aa11a11aaaaaaaaaaaaa1+aaaaaaaaa111aaa
+a11aaaaa/1aaa1aaa/aa1aaa1aaaaaaa/aaaa+aaaaaaaaaaaa1aaaaaa1aa1aaaaaa1aa
+aaa1a1aaaaa1aaaaaaaaaa1aaaaaaaaaaaaa111111aa
+1aaaaaaaaaaa1a1aaaa1aaa1aaaaaa+aaaaaaaaa1a1aaaaa1aaa1aaaaaaaaaa/1a1aaa
+aaaaaaaaa1aaaaa1aaa1a1aaaaaaaa1aaaaaaaa1aa11aaaaaaaaaaa1aa+11aaaa1aaaa
+aaaaa1aaaaaaaa11a1a=
+---- END SSH2 PUBLIC KEY ----
+.
+encrypted crypto certificate 2 import
+-----BEGIN RSA ENCRYPTED PRIVATE KEY-----
+aaaaaaaaaaa111aaaaaa1aaa1aaaaaaaaa1aaaa1aaaaa1aa11a11aaa1aaaaaa1aaaaaa
+1aaaaaaaaaaaa11aaaaa1aaaaaa1aaaaaaaaaaa1aa11aaaaaaaaaaaaaaaaa1aaaaaaa1
+/aaaaa1aa+a11aaa1aaa/aaaaa1aaaaaaaaaaa1a1aaaaaaaa+a1a1a1a1aaaaaaaaaaaa
+aaaaaaaaa1aaa1aaaaaa11aaaaaaaa1aaaaaaaaaaaa1+aaa1a1aaaaaaaaaaa1aaa1aaa
+aa1+aaaaaa1aaa1aaaaaaaaaaa1aaaaa1aaaaaa11aaaaaaaaa1aaaaaaaaaaaaaaaaaaa
+aaaa1a1aaaaaaaaaaaaaa1aaaaaaaaa1aaaaaaaaaa1aaaaaaaa1+aaaaaa1aa1aaaaaaa
++a1a+1aaaaaaaa1aaa1a1a11aaa1aaa1a11aa/a1aaaaaaaaa/1aaaaaaa1111aaaa+aa1
+aaaaa11aaaaa1aaaa1aaaaaaaaaaaaaaaaaa111aaaaaaaa1a1aaaa1a11aaaa1aaa+a/a
+aaa1aaaa1a11aaaaaaaaaaaaa11aa1a11aaaaa1aa+aaaaaa1aaaaaaaaa1aaaaaaaaaa1
+1a11aaaaaaaaaaa1aaa1aaaaaaaa1a111a/aaaaa1aaa1aaaaaaa1/aaaaa11aaaaa+aaa
+a1111aaaaaaaaa1aaaaaaaaaaaaaa11a1a1aaaaaaaaaa11aaaaa1aaaaaaa1aaa1aaaaa
+a1aa1aaaaaa+aa+aaaaaaaaa/1aa/aaaaaaaaa1aaaa1aaa1aa1aaaa/aa11aaaaaaa/aa
+aaaaaaaaa11aaaaaaaaaaaaaaaaaaaaaaaaaaa+aaaa1aaaaaaaaaaaaaaaa111aaa1a1a
+a1aaaaaaaaaaaaa1aa11aa1aaaaaa1aaa1a1a1aaaaaaa11a1a1aaaaaa+aaaaa1aaaaa1
+aaaa1aaaaaaaaaaaaa1aaa1aaaa1aaaaaaa11aaaaaaa1a1aaaaaaaaaaaaaaaa/aaaaa1
+a1aaaa1aaaaaa1/aaaa/aaaaaaaa1+aaa1a1aaa1a1aa1aaaaa1aaaaaaaaaaaa1aa1aa1
+aa111aaaaaa/1aaaa1aa1aa11a1aaaaa+aaa11aaaa1aaaaaaaaaaa11aaaaaaaaa1aaa1
+aaaaaaaa1aaa1aaaa1+aa1aaaaaaaa1aaaaaa+1aaaaa1aaa1aaaaaa1a1aaaaaa1aaaa+
+1aaaaa1aa11a1aaaaaaaaaaaaa+aaaaaaaaaa+aaa1aaa1aaaa1aaaaaaaaaaaa1aaaaaa
+aaaaaaa+a1a1aaaa1aaaaaaa1aa11aa11aaaa1+aaaaaa1aaa11aaaa1aaaaaaaa1aaaaa
+a1a1aaaaaa1aa1aa1a11aaaaaaaaaa1aaaaaaaaa1aaaaaaaaaaaaaaaa1a1a111aaaaaa
+1aaa1aa11a1aaaaaaaaaaaaa/aaaaaaaa1aaaa1a1aaaaaaaaaa1a1aaaaaaaaaaaaaaa1
+aaa1aaaa/+aaaa/aaaaaaa11a11a/a+aaaaaaaaa1aaaaaaaaaa1aaaaaaa1aaaaaaaaaa
+aaaaaaa1aaa/aaa/aaa1aaaaaaa/11aaaaa1aaaaaaa1aaaaaaaaaaaa1aaaaaaaaaaaa1
+aa11aaa1aaa11aaaaa1a1aaaaaaaa1aaaaaa1aa1a111aaaaaaaaaa1aa1aaaaaaaaaaaa
+a111aa1aaaa11a1aaaaaaaaaaaa1aaaa1aaaaaaa1a1aaaaaaaa1aa1aaaaaaaaaaa1aaa
++a1aaaaaaaa1a11aa1aaa1/aaaaaaaaaa1aaa1aaaa1aaaaaaaaaa+aaa+aaaaaaaa+aaa
+aaaaaaaaa1aaa1a1aa1a1/aaaaaaa11aaaaaaaaaaa1a1aaaaaaaaaaaaaaaaa1a/aaaaa
+aaaaaaaaaaaaaa+aa1aaaaaaaa1aa1a11aaaaaa1a1aaa1aaaaaa1aa1a11aaaaaaaaa1a
+aa+aaaaaaaa1aaaaaaaaaaaa1aaaaa1aaaaaaaaa1aaaaaaa1a1aa1aaaaaaaaa11aaaaa
+aaaaaaa1a11a1aaa1aaaaaaaaaa1aaa1aaa11aaaa1aaaa11aaaaaaa=
+-----END RSA PRIVATE KEY-----
+-----BEGIN RSA PUBLIC KEY-----
+aaaaaaaaaaaaaaa1a1aa11aaa1aaaaaa11a1a1aaaaaaaaaaa1aaa11aaaaaaaaaaa1aaa
+aaaaaaaaaaa1aa11aaaaaaa1aaaaaaaaaaaaaaaaaa+aaaaa1aaaaaaaaaaaaaaa11a11a
+a1a1aaaaaaa1a1aaaaaaaaaaaa1aaaaaaaaa111111aa/aaaaaaaaaaaaaaaaaa
+aaa1aaaa1aa/a1aaa1aaaaaaaaaaaa1aa1aa1a11aaaaaaaaaaaaa1aa1aaa1aaaaaa1aa
+a1aaa1aaaa/aaaaa1aaaaaaa11aaaaaaaaaaaa1a+aaaaaaaaaa1a1aaaaaaaaaaaaaaaa
+aaaaaaaaaa
+-----END RSA PUBLIC KEY-----
+-----BEGIN CERTIFICATE-----
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1a1aaaaaaaaaaaaaaaaaa1aaaaaaa1aa
+aaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa11
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1aaaaaaaaaa1aaaaaaaaaaaaaaaaaaaaaa
+aa1aaaaaaaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaaaaaa1aa1aaaa1aaaa
+aaa1aaaaa1aaaaaaaaaaaaa1aaaaa1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aa1aaaaaaaaaaaa1aaaaaaaaaaaaa1aaaaaaa1aaa1aaaaaaaaaaaaaaaaaaaaaa
+a1aaaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1aaaaaaa1a
+aaa1aa1aaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaa
+1a1aaaaaaaaaaa1aaaaaaaaaaaaaaaa1a1aa11aaa1aaaaaa11a1a1aaaaaaaaaa
+a1aaa11aaaaaaaaaaa1aaaaaaaaaaaaaa1aa11aaaaaaa1aaaaaaaaaaaaaaaaaa
++aaaaa1aaaaaaaaaaaaaaa11a11aa1a1aaaaaaa1a1aaaaaaaaaaaa1aaaaaaaaa111111aa
+aaaaaaa1aaaaaa1/aaaaaaaaaaaaaaaaaaaaa1aaaa1aa/a1aaa1aaaaaaaaaaaa
+1aa1aa1a11aaaaaaaaaaaaa1aa1aaa1aaaaaa1aaa1aaa1aaaa/aaaaa1aaaaaaa
+11aaaaaaaaaaaa1a+aaaaaaaaaa1a1aaaaaaaaaaaaaaaaaaaaaaaaaaa1aaaaaa
+aa1aaaaaaaaaaaaaaaaaaaaaaaaaaa1aaaaaaaaaa1aaaaaaaaaaaaaaaaaaaaa1
+aa1aaaaaaa1aaaa1aa1aaaaaaa1aaa1aaaaaaaaaa1aaaaaaaaaaaaaaaaaaaaa1
+aa1aaaaaaa1aaaa1aa1aaaaaaa1aaa1aaaaaaaaaa1aaaaaaaaaaaaaaaaaaaaa1
+aa1aaaaaaa1aaaa1aa1aaaaaaa1aaa1aaaaaaaaaa1aaaa1aaaa1aa1aaaaaaaaa
+aaaaaaaaaaa1aaaaaa1aaaaaaaaaa1aaaaaaaa1aaaa1aa1aaaaaaaaaaaaaaaaa
+aaa1aaaaaa1aaaaaaaaaa1aaaaaaaa1aaaa1aa1aaaaaaaaaaaaaaaaaaaa1aaaa
+aa1aaaaaaaaaa1aaaaaaaa1aaaa1aa1aaaaaaaaaaaaaaaaaaaaaaaaaaaaa+aaa
+aaaaaaaaaaaaa1aaaaaaaaaaa1aaaaaaaaaaaaaaaaaaaaa1aaaaa1a1aaaaaaaa
+aa1aaaa1aaa1aaaaa1aa11aaa1aaaa11aaa1aa111aaaa1aaaaaaaaaaaaaaa1aa
+aaaaa1aaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaa11aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1aaaaaaaaaa1aaaaaaaaaaaaaa
+aaaaaaaaaa1aaaaaaaaaaaaaaaaaaaaaaaa1aaaaaaaaaaaaaaaaaaaaaaa1aaaa
+aa1aaaaaaaa1aaaaaaaaa1aaaaaaaaaaaaaaa1aaaaaa1aaa1aaaaa1aaaa1aaaa
+1a1a11aaaaaaaa11aaa11aaa1a1aaaaa1a1a1aaaaa111aaaaaa1aaaa11aaaaaa
+aaa1aa1aaa1aaaaaaaaaaaaaaaaaaaaaaaa1aaaaa1aaaaaa1a/aaaa1a/aaa11a
+aaaa
+-----END CERTIFICATE-----
+.
