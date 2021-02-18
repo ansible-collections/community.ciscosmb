@@ -104,4 +104,4 @@ ansible-galaxy collection build -v --force \
 
 ```
 
-Heavy influence by Egor Zaitsev (@heuels) RouterOS dirver
+Heavy influenced by Egor Zaitsev (@heuels) RouterOS driver
