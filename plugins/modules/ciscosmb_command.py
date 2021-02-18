@@ -108,10 +108,8 @@ failed_conditions:
   sample: ['...', '...']
 """
 
-import re
 import time
 
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import ComplexList
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.parsing import Conditional
 from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.ciscosmb import run_commands
 from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.ciscosmb import ciscosmb_argument_spec
