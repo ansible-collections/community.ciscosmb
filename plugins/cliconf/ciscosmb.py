@@ -48,15 +48,15 @@ class Cliconf(CliconfBase):
         if match:
             device_info['network_os_version'] = match.group(1)
 
-        routerboard = self.get('show inventory')
-        data = to_text(routerboard, errors='surrogate_or_strict').strip()
+        model = self.get('show inventory')
+        data = to_text(model, errors='surrogate_or_strict').strip()
         match = re.search(r'PID: (.+)$', data, re.M)
         if match:
             device_info['network_os_model'] = match.group(1)
 
-        identity = self.get('/system identity print')
+        identity = self.get('show system')
         data = to_text(identity, errors='surrogate_or_strict').strip()
-        match = re.search(r'name: (.+)$', data, re.M)
+        match = re.search(r'System Name: +(\S+)', data, re.M)
         if match:
             device_info['network_os_hostname'] = match.group(1)
 
