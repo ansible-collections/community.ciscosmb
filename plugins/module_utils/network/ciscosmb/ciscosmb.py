@@ -159,4 +159,3 @@ def run_commands(module, commands, check_rc=True):
 
 def load_config(module, commands):
     connection = get_connection(module)
-

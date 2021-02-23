@@ -346,18 +346,16 @@ class Hardware(FactsBase):
     def parse_filesystem_info(self, data):
         match = re.search(r'Total size of (\S+): (\d+) bytes', data, re.M)
 
-        if match: # fw 1.x 
+        if match:  # fw 1.x
             self.facts['spacetotal_mb'] = round(int(match[2]) / 1024 / 1024, 1)
             match = re.search(r'Free size of (\S+): (\d+) bytes', data, re.M)
-            self.facts['spacefree_mb'] = round(int(match[2]) / 1024 / 1024, 1) 
+            self.facts['spacefree_mb'] = round(int(match[2]) / 1024 / 1024, 1)
 
         else:
             match = re.search(r'(\d+)K of (\d+)K are free', data, re.M)
-            if match: # fw 2.x, 3.x
+            if match:  # fw 2.x, 3.x
                 self.facts['spacetotal_mb'] = round(int(match[2]) / 1024, 1)
-                self.facts['spacefree_mb'] = round(int(match[1]) / 1024, 1 )
-            else:
-                raise AnsibleParserError("Can not parse total or free disk space")
+                self.facts['spacefree_mb'] = round(int(match[1]) / 1024, 1)
 
 
 class Config(FactsBase):
