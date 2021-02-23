@@ -335,7 +335,6 @@ class Hardware(FactsBase):
 
     COMMANDS = [
         "dir",
-        "show memory statistics",
     ]
 
     def populate(self):
@@ -343,33 +342,22 @@ class Hardware(FactsBase):
         data = self.responses[0]
         if data:
             self.parse_filesystem_info(data)
-            self.parse_memory_info(data)
 
     def parse_filesystem_info(self, data):
-        match = re.search(r'free-hdd-space:\s(.*)([KMG]iB)', data, re.M)
-        if match:
-            self.facts['spacefree_mb'] = self.to_megabytes(match)
-        match = re.search(r'total-hdd-space:\s(.*)([KMG]iB)', data, re.M)
-        if match:
-            self.facts['spacetotal_mb'] = self.to_megabytes(match)
+        match = re.search(r'Total size of (\S+): (\d+) bytes', data, re.M)
 
-    def parse_memory_info(self, data):
-        match = re.search(r'free-memory:\s(\d+\.?\d*)([KMG]iB)', data, re.M)
-        if match:
-            self.facts['memfree_mb'] = self.to_megabytes(match)
-        match = re.search(r'total-memory:\s(\d+\.?\d*)([KMG]iB)', data, re.M)
-        if match:
-            self.facts['memtotal_mb'] = self.to_megabytes(match)
+        if match: # fw 1.x 
+            self.facts['spacetotal_mb'] = round(int(match[2]) / 1024 / 1024, 1)
+            match = re.search(r'Free size of (\S+): (\d+) bytes', data, re.M)
+            self.facts['spacefree_mb'] = round(int(match[2]) / 1024 / 1024, 1) 
 
-    def to_megabytes(self, data):
-        if data.group(2) == 'KiB':
-            return float(data.group(1)) / 1024
-        elif data.group(2) == 'MiB':
-            return float(data.group(1))
-        elif data.group(2) == 'GiB':
-            return float(data.group(1)) * 1024
         else:
-            return None
+            match = re.search(r'(\d+)K of (\d+)K are free', data, re.M)
+            if match: # fw 2.x, 3.x
+                self.facts['spacetotal_mb'] = round(int(match[2]) / 1024, 1)
+                self.facts['spacefree_mb'] = round(int(match[1]) / 1024, 1 )
+            else:
+                raise AnsibleParserError("Can not parse total or free disk space")
 
 
 class Config(FactsBase):
