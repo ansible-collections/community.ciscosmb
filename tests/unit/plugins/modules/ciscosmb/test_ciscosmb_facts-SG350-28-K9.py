@@ -105,21 +105,16 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
         print(the_exception)
         self.assertIsInstance(the_exception, KeyError)
 
-#     def test_ciscosmb_facts_hardware(self):
-#         set_module_args(dict(gather_subset='hardware'))
-#         result = self.execute_module()
-#         self.assertEqual(
-#             result['ansible_facts']['ansible_net_spacefree_mb'], 64921.6
-#         )
-#         self.assertEqual(
-#             result['ansible_facts']['ansible_net_spacetotal_mb'], 65024.0
-#         )
-#         self.assertEqual(
-#             result['ansible_facts']['ansible_net_memfree_mb'], 988.3
-#         )
-#         self.assertEqual(
-#             result['ansible_facts']['ansible_net_memtotal_mb'], 1010.8
-#         )
+#    def test_ciscosmb_facts_hardware(self):
+#        set_module_args(dict(gather_subset='hardware'))
+#        result = self.execute_module()
+#        self.assertEqual(
+#            result['ansible_facts']['ansible_net_spacefree_mb'], 122.5
+#        )
+#        self.assertEqual(
+#            result['ansible_facts']['ansible_net_spacetotal_mb'], 65024.0
+#        )
+
 #
 #     def test_ciscosmb_facts_config(self):
 #         set_module_args(dict(gather_subset='config'))

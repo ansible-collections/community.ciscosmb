@@ -79,16 +79,10 @@ class TestCiscoSMBFactsModuleOnSG550X24MPK9(TestCiscoSMBModule):
         set_module_args(dict(gather_subset='hardware'))
         result = self.execute_module()
         self.assertEqual(
-            result['ansible_facts']['ansible_net_spacefree_mb'], 64921.6
+            result['ansible_facts']['ansible_net_spacefree_mb'], 122.5
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_spacetotal_mb'], 65024.0
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_memfree_mb'], 988.3
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_memtotal_mb'], 1010.8
+            result['ansible_facts']['ansible_net_spacetotal_mb'], 219.3
         )
 
     def test_ciscosmb_facts_config(self):

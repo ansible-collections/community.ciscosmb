@@ -1,0 +1,18 @@
+Directory of flash:
+
+     File Name      Permission Flash Size Data Size        Modified         
+------------------- ---------- ---------- --------- ----------------------- 
+backuplo                rw       655200      26      12-Jan-2014 18:08:41   
+debug                   rw       65520      65520    03-Jun-2018 23:53:59   
+dhcpdb.sys              r-       65520       --      12-Jan-2014 18:08:23   
+dhcpsn.prv              --       65520       --      12-Jan-2014 18:08:23   
+directry.prv            --       65520       --      12-Jan-2014 18:08:23   
+image-1                 rw      10009546  10009546   02-May-2013 14:56:48   
+image-2                 rw      10558664  10558664   12-Jan-2014 18:16:50   
+mirror-config           rw      1048320     6551     01-Jul-2018 05:26:13   
+startup-config          rw      1048320     19079    30-Jun-2018 05:26:18   
+syslog1.sys             r-       131040      --      02-May-2013 14:56:48   
+syslog2.sys             r-       131040      --      02-May-2013 14:56:48   
+
+Total size of flash: 32899072 bytes
+Free size of flash: 7154750 bytes
