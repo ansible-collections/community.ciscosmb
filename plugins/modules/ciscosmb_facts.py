@@ -276,18 +276,24 @@ class Default(FactsBase):
         data = re.sub(r'^\n', '', data, re.M)
         data = re.sub(r'\n\n', '', data, re.M)
         data = re.sub(r'\n\s*\n', r'\n', data, re.M)
+
         lines = data.splitlines()
 
         modules = {}
         for line in lines:
-            match = re.search(r"""
-                ^
-                NAME:\s"(?P<name>\S+)"\s*
-                DESCR:\s"(?P<descr>[^"]+)"\s*
-                PID:\s(?P<pid>\S+)\s*
-                VID:\s(?P<vid>.+\S)\s*
-                SN:\s(?P<sn>\S+)\s*
-                """, line, re.X)
+            # remove extra chars
+            line = re.sub(r'"', r'', line, re.M)
+            line = re.sub(r'\s+', r' ', line, re.M)
+            # normalize lines
+            line = re.sub(r':\s', r'"', line, re.M)
+            line = re.sub(r'\s+DESCR"', r'"DESCR"', line, re.M)
+            line = re.sub(r'\s+PID"', r'"PID"', line, re.M)
+            line = re.sub(r'\s+VID"', r'"VID"', line, re.M)
+            line = re.sub(r'\s+SN"', r'"SN"', line, re.M)
+            line = re.sub(r'\s*$', r'', line, re.M)
+
+            match = re.search(r'^NAME"(?P<name>[^"]+)"DESCR"(?P<descr>[^"]+)"PID"(?P<pid>[^"]+)"VID"(?P<vid>[^"]+)"SN"(?P<sn>\S+)\s*', line)
+
             modul = match.groupdict()
             modules[modul['name']] = modul
 
