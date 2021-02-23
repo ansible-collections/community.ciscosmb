@@ -276,18 +276,24 @@ class Default(FactsBase):
         data = re.sub(r'^\n', '', data, re.M)
         data = re.sub(r'\n\n', '', data, re.M)
         data = re.sub(r'\n\s*\n', r'\n', data, re.M)
+
         lines = data.splitlines()
 
         modules = {}
         for line in lines:
-            match = re.search(r"""
-                ^
-                NAME:\s"(?P<name>\S+)"\s*
-                DESCR:\s"(?P<descr>[^"]+)"\s*
-                PID:\s(?P<pid>\S+)\s*
-                VID:\s(?P<vid>.+\S)\s*
-                SN:\s(?P<sn>\S+)\s*
-                """, line, re.X)
+            # remove extra chars
+            line = re.sub(r'"', r'', line, re.M)
+            line = re.sub(r'\s+', r' ', line, re.M)
+            # normalize lines
+            line = re.sub(r':\s', r'"', line, re.M)
+            line = re.sub(r'\s+DESCR"', r'"DESCR"', line, re.M)
+            line = re.sub(r'\s+PID"', r'"PID"', line, re.M)
+            line = re.sub(r'\s+VID"', r'"VID"', line, re.M)
+            line = re.sub(r'\s+SN"', r'"SN"', line, re.M)
+            line = re.sub(r'\s*$', r'', line, re.M)
+
+            match = re.search(r'^NAME"(?P<name>[^"]+)"DESCR"(?P<descr>[^"]+)"PID"(?P<pid>[^"]+)"VID"(?P<vid>[^"]+)"SN"(?P<sn>\S+)\s*', line)
+
             modul = match.groupdict()
             modules[modul['name']] = modul
 
@@ -334,7 +340,7 @@ class Default(FactsBase):
 class Hardware(FactsBase):
 
     COMMANDS = [
-        '/system resource print without-paging'
+        "dir",
     ]
 
     def populate(self):
@@ -342,33 +348,20 @@ class Hardware(FactsBase):
         data = self.responses[0]
         if data:
             self.parse_filesystem_info(data)
-            self.parse_memory_info(data)
 
     def parse_filesystem_info(self, data):
-        match = re.search(r'free-hdd-space:\s(.*)([KMG]iB)', data, re.M)
-        if match:
-            self.facts['spacefree_mb'] = self.to_megabytes(match)
-        match = re.search(r'total-hdd-space:\s(.*)([KMG]iB)', data, re.M)
-        if match:
-            self.facts['spacetotal_mb'] = self.to_megabytes(match)
+        match = re.search(r'Total size of (\S+): (\d+) bytes', data, re.M)
 
-    def parse_memory_info(self, data):
-        match = re.search(r'free-memory:\s(\d+\.?\d*)([KMG]iB)', data, re.M)
-        if match:
-            self.facts['memfree_mb'] = self.to_megabytes(match)
-        match = re.search(r'total-memory:\s(\d+\.?\d*)([KMG]iB)', data, re.M)
-        if match:
-            self.facts['memtotal_mb'] = self.to_megabytes(match)
+        if match:  # fw 1.x
+            self.facts['spacetotal_mb'] = round(int(match[2]) / 1024 / 1024, 1)
+            match = re.search(r'Free size of (\S+): (\d+) bytes', data, re.M)
+            self.facts['spacefree_mb'] = round(int(match[2]) / 1024 / 1024, 1)
 
-    def to_megabytes(self, data):
-        if data.group(2) == 'KiB':
-            return float(data.group(1)) / 1024
-        elif data.group(2) == 'MiB':
-            return float(data.group(1))
-        elif data.group(2) == 'GiB':
-            return float(data.group(1)) * 1024
         else:
-            return None
+            match = re.search(r'(\d+)K of (\d+)K are free', data, re.M)
+            if match:  # fw 2.x, 3.x
+                self.facts['spacetotal_mb'] = round(int(match[2]) / 1024, 1)
+                self.facts['spacefree_mb'] = round(int(match[1]) / 1024, 1)
 
 
 class Config(FactsBase):

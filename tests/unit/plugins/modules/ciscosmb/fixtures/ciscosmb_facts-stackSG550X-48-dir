@@ -1,0 +1,13 @@
+Permissions
+    d-directory
+    r-readable
+    w-writable
+    x-executable
+109064K of 224324K are free
+Directory of flash://
+
+Permission File Size    Last Modified                   File Name                
+---------- --------- -------------------- -------------------------------------- 
+   -rw-      1960    27-Jul-2020 07:40:50 sw-pl-s5hlavni-1.conf                  
+   dr--      1376    21-Feb-2021 05:32:07 system                                 
+   -rw-      18055   18-Jun-2019 05:17:35 zaloha.conf

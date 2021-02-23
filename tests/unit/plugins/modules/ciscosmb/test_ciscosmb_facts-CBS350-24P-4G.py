@@ -23,7 +23,7 @@ from ansible_collections.community.network.tests.unit.plugins.modules.utils impo
 from .ciscosmb_module import TestCiscoSMBModule, load_fixture
 
 
-class TestCiscoSMBFactsModule(TestCiscoSMBModule):
+class TestCiscoSMBFactsModuleOnSG550X24MPK9(TestCiscoSMBModule):
 
     module = ciscosmb_facts
 
@@ -44,85 +44,62 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
 
             for command in commands:
                 filename = str(command).split(' | ')[0].replace(' ', '_')
-                output.append(load_fixture('ciscosmb_facts-SG350-28-K9-%s' % filename))
+                output.append(load_fixture('ciscosmb_facts-CBS350-24P-4G-%s' % filename))
             return output
 
         self.run_commands.side_effect = load_from_file
 
-    def test_ciscosmb_facts_default(self):
+    def test_ciscosmb_facts_default_version(self):
         set_module_args(dict(gather_subset='default'))
         result = self.execute_module()
         self.assertEqual(
-            result['ansible_facts']['ansible_net_version'], '2.4.5.71'
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_boot_version'], None
+            result['ansible_facts']['ansible_net_version'], '3.0.0.61'
         )
         self.assertEqual(
             result['ansible_facts']['ansible_net_hw_version'], 'V01'
         )
+
+    def test_ciscosmb_facts_default_system_info(self):
+        set_module_args(dict(gather_subset='default'))
+        result = self.execute_module()
         self.assertEqual(
-            result['ansible_facts']['ansible_net_uptime'], 890845
+            result['ansible_facts']['ansible_net_uptime'], 1833986
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_hostname'], 'sw-ab-abcdefg-1'
+            result['ansible_facts']['ansible_net_hostname'], 'sw-example'
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_cpu_load'], '10'
+            result['ansible_facts']['ansible_net_cpu_load'], '8'
         )
 
+    def test_ciscosmb_facts_default_inventory(self):
+        set_module_args(dict(gather_subset='default'))
+        result = self.execute_module()
+
         self.assertEqual(
-            result['ansible_facts']['ansible_net_hw_modules'],
-            {
-                "1":
-                {
-                    "descr": "SG350-28 28-Port Gigabit Managed Switch",
-                    "name": "1",
-                    "pid": "SG350-28-K9",
-                    "sn": "ABC1234567A",
-                    "vid": "V01"
-                },
-                "GigabitEthernet28":
-                {
-                    "descr": "SFP-1000Base-SX",
-                    "name": "GigabitEthernet28",
-                    "pid": "SFP-1000-SX",
-                    "sn": "A123456",
-                    "vid": "Information Unavailable"
-                }
-            }
+            result['ansible_facts']['ansible_net_model'], 'CBS350-24P-4G'
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_model'], 'SG350-28-K9'
+            result['ansible_facts']['ansible_net_serialnum'], 'FOC2222291D'
+        )
+
+    def test_ciscosmb_facts_hardware(self):
+        set_module_args(dict(gather_subset='hardware'))
+        result = self.execute_module()
+        self.assertEqual(
+            result['ansible_facts']['ansible_net_spacefree_mb'], 122.9
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_serialnum'], 'ABC1234567A'
+            result['ansible_facts']['ansible_net_spacetotal_mb'], 218.4
         )
 
-        with self.assertRaises(KeyError) as cm:
-            len(result['ansible_facts']['ansible_net_stacked_models'])
-        the_exception = cm.exception
-        print(the_exception)
-        self.assertIsInstance(the_exception, KeyError)
+    def test_ciscosmb_facts_config(self):
+        set_module_args(dict(gather_subset='config'))
+        result = self.execute_module()
+        self.assertIsInstance(
+            result['ansible_facts']['ansible_net_config'], str
+        )
 
-#    def test_ciscosmb_facts_hardware(self):
-#        set_module_args(dict(gather_subset='hardware'))
-#        result = self.execute_module()
-#        self.assertEqual(
-#            result['ansible_facts']['ansible_net_spacefree_mb'], 122.5
-#        )
-#        self.assertEqual(
-#            result['ansible_facts']['ansible_net_spacetotal_mb'], 65024.0
-#        )
-
-#
-#     def test_ciscosmb_facts_config(self):
-#         set_module_args(dict(gather_subset='config'))
-#         result = self.execute_module()
-#         self.assertIsInstance(
-#             result['ansible_facts']['ansible_net_config'], str
-#         )
-#
 #     def test_ciscosmb_facts_interfaces(self):
 #         set_module_args(dict(gather_subset='interfaces'))
 #         result = self.execute_module()

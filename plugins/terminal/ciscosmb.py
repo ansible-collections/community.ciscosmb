@@ -68,6 +68,13 @@ class TerminalModule(TerminalBase):
                 "WARNING: Unable to set terminal width, command responses may be truncated"
             )
 
+        try:
+            self._exec_cli_command(b"terminal no prompt")
+        except AnsibleConnectionFailure:
+            display.display(
+                "WARNING: Unable disable prompt, command responses may fail"
+            )
+
     def on_become(self, passwd=None):
         if self._get_prompt().endswith(b"#"):
             return
