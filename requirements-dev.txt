@@ -5,5 +5,7 @@ voluptuous
 yamllint
 pytest
 pytest-xdist
+pytest-mock
 galaxy-importer
+mock
 # vim: tabstop=4 softtabstop=4 shiftwidth=4 expandtab:

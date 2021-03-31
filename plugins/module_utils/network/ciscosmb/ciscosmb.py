@@ -155,7 +155,3 @@ def run_commands(module, commands, check_rc=True):
         responses.append(out)
 
     return responses
-
-
-def load_config(module, commands):
-    connection = get_connection(module)
