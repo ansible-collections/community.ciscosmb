@@ -378,10 +378,11 @@ class Config(FactsBase):
 class Interfaces(FactsBase):
 
     COMMANDS = [
-        '/interface print detail without-paging',
-        '/ip address print detail without-paging',
-        '/ipv6 address print detail without-paging',
-        '/ip neighbor print detail without-paging'
+        'show interfaces status',
+        'show interfaces configuration',
+        'show interfaces description',
+        'show ip interface',
+        'show ipv6 interface brief',
     ]
 
     DETAIL_RE = re.compile(r'([\w\d\-]+)=\"?(\w{3}/\d{2}/\d{4}\s\d{2}:\d{2}:\d{2}|[\w\d\-\.:/]+)')
@@ -397,73 +398,311 @@ class Interfaces(FactsBase):
 
         data = self.responses[0]
         if data:
-            interfaces = self.parse_interfaces(data)
-            self.populate_interfaces(interfaces)
+            self.populate_interfaces_status(data)
 
         data = self.responses[1]
         if data:
-            data = self.parse_detail(data)
-            self.populate_addresses(data, 'ipv4')
+            self.populate_interfaces_configuration(data)
 
         data = self.responses[2]
         if data:
-            data = self.parse_detail(data)
-            self.populate_addresses(data, 'ipv6')
+            self.populate_interfaces_description(data)
 
         data = self.responses[3]
         if data:
-            self.facts['neighbors'] = list(self.parse_detail(data))
+            self.populate_addresses_ipv4(data)
 
-    def populate_interfaces(self, data):
-        for key, value in iteritems(data):
-            self.facts['interfaces'][key] = value
+        data = self.responses[4]
+        if data:
+            self.populate_addresses_ipv6(data)
 
-    def populate_addresses(self, data, family):
-        for value in data:
-            key = value['interface']
-            if family not in self.facts['interfaces'][key]:
-                self.facts['interfaces'][key][family] = list()
-            addr, subnet = value['address'].split("/")
-            ip = dict(address=addr.strip(), subnet=subnet.strip())
-            self.add_ip_address(addr.strip(), family)
-            self.facts['interfaces'][key][family].append(ip)
+###        data = self.responses[3]
+###        if data:
+###            self.facts['neighbors'] = list(self.parse_detail(data))
 
-    def add_ip_address(self, address, family):
-        if family == 'ipv4':
-            self.facts['all_ipv4_addresses'].append(address)
-        else:
-            self.facts['all_ipv6_addresses'].append(address)
+    def _split_to_tables(self, data):
+        TABLE_HEADER = re.compile(r"^---+ +-+.*$")
+        EMPTY_LINE = re.compile(r"^ *$")
 
-    def preprocess(self, data):
-        preprocessed = list()
-        for line in data.split('\n'):
-            if len(line) == 0 or line[:5] == 'Flags':
+        tables = dict()
+        tableno = -1
+        lineno = 0
+        tabledataget = False
+
+        for line in data.splitlines():
+            if re.match(EMPTY_LINE, line):
+                tabledataget = False
                 continue
 
-            if not re.match(self.WRAPPED_LINE_RE, line):
-                preprocessed.append(line)
+            if re.match(TABLE_HEADER, line):
+                tableno += 1
+                tabledataget = True
+                lineno = 0
+                tables[tableno] = dict()
+                tables[tableno]["header"] = line
+                tables[tableno]["data"] = dict()
+                continue
+
+            if tabledataget:
+                tables[tableno]["data"][lineno] = line
+                lineno += 1
+                continue
+            
+        return tables
+
+    def _parse_table(self, table, allow_overflow=True):
+        
+        fields_end = self.__get_table_columns_end(table["header"])
+        data = self.__get_table_data(table["data"], fields_end, allow_overflow)
+
+        return data
+
+    def __get_table_columns_end(self, headerline):
+        """ fields length are diferent device to device, detect them on horizontal lin """
+        fields_end = [m.start() for m in re.finditer("  *", headerline.strip())]
+        # fields_position.insert(0,0)
+        #fields_end.append(len(headerline))
+        fields_end.append(10000)  # allow "long" last field
+
+
+        return fields_end
+
+    def __line_to_fields(self, line, fields_end):
+        """ dynamic fields lenghts """
+        line_elems = {}
+        index = 0
+        f_start = 0
+        for f_end in fields_end:
+            line_elems[index] = line[f_start:f_end].strip()
+            index += 1
+            f_start = f_end
+
+        return line_elems
+
+    def __get_table_data(self, tabledata, fields_end, allow_overflow=True):
+        data = dict()
+        
+        lasttablefullline = 0
+        dataindex = 0
+        for lineno in tabledata:
+            owerflownfields = list()
+            owerflow = False
+
+            line = tabledata[lineno]
+            line_elems = self.__line_to_fields(line, fields_end)
+ 
+            if allow_overflow:
+                # search for overflown fields
+                for elemno in line_elems:
+                    if line_elems[elemno] == "":
+                        owerflow = True
+                        owerflownfields.append(elemno)
+                
+                # concat owerflown elements to previous data
+                if owerflow:
+                    for fieldno in owerflownfields:
+                        data[dataindex][fieldno] += line_elems[fieldno] 
+
+                else:
+                    lastfullline = lineno
+                    data[dataindex] = line_elems
+                    dataindex +=1
             else:
-                preprocessed[-1] += line
-        return preprocessed
+                    lastfullline = lineno
+                    data[dataindex] = line_elems
+                    dataindex +=1
 
-    def parse_interfaces(self, data):
-        facts = dict()
-        data = self.preprocess(data)
-        for line in data:
-            parsed = dict(re.findall(self.DETAIL_RE, line))
-            if "name" not in parsed:
-                continue
-            facts[parsed["name"]] = dict(re.findall(self.DETAIL_RE, line))
-        return facts
+        return data
 
-    def parse_detail(self, data):
-        data = self.preprocess(data)
-        for line in data:
-            parsed = dict(re.findall(self.DETAIL_RE, line))
-            if "interface" not in parsed:
-                continue
-            yield parsed
+    def _merge_dicts(self, a, b, path=None):
+        "merges b into a"
+        if path is None: path = []
+       
+        # is b empty?
+        if not bool(b):
+            return a
 
+        for key in b:
+            if key in a:
+                if isinstance(a[key], dict) and isinstance(b[key], dict):
+                    self._merge_dicts(a[key], b[key], path + [str(key)])
+                elif a[key] == b[key]:
+                    pass # same leaf value
+                else:
+                    raise Exception('Conflict at %s' % '.'.join(path + [str(key)]))
+            else:
+                a[key] = b[key]
+        return a
+
+    def _populate_interfaces_status_interface(self, interface_table):
+        interfaces = dict()
+
+        for key in interface_table:
+            
+            i = interface_table[key]
+            interface = dict()
+            interface["state"] = i[6]
+            interface["type"] = i[1]
+            
+            if i[6] == "Up":
+                interface["bandwith"] = int(i[3]) * 1000  # to get speed in kb
+                interface["duplex"] = i[2]
+                interface["negotiation"] = i[4]
+                interface["control"] = i[5]
+                interface["presure"] = i[7]
+                interface["mode"] = i[8]
+            #else:
+                #interface["type"] = interface["duplex"] = interface["negotiation"] = interface["control"] = interface["presure"] = interface["mode"] = 
+
+            #ToDo canonicalize iname
+            interfaces[i[0]] = interface
+        return interfaces
+
+    def _populate_interfaces_status_portchanel(self, interface_table):
+        interfaces = dict()
+
+        for key in interface_table:
+            
+            interface = dict()
+            i = interface_table[key]
+            
+            #if i[6] == "Up":
+            interface["state"] = i[6]
+            interface["type"] = i[1]
+            interface["duplex"] = i[2]
+            interface["negotiation"] = i[4]
+            interface["control"] = i[5]
+
+            if i[3] != '--':
+                interface["bandwith"] = int(i[3]) * 1000  # to get speed in kb
+                
+            #ToDo canonicalize iname
+            interfaces[i[0]] = interface
+
+        return interfaces
+
+    def populate_interfaces_status(self, data):
+        tables = self._split_to_tables(data)
+
+        interface_table = self._parse_table(tables[0])
+        portchanel_table = self._parse_table(tables[1])
+
+        interfaces = self._populate_interfaces_status_interface(interface_table)
+        self.facts['interfaces'] = self._merge_dicts(self.facts["interfaces"],interfaces)
+        interfaces = self._populate_interfaces_status_portchanel(portchanel_table)
+        self.facts['interfaces'] = self._merge_dicts(self.facts["interfaces"],interfaces)
+    
+    def _populate_interfaces_configuration_interface(self, interface_table):
+        interfaces = dict()
+
+        for key in interface_table:
+            
+            i = interface_table[key]
+            interface = dict()
+            interface["admin_state"] = i[6]
+            interface["mdix"] = i[8]
+
+            #ToDo canonicalize iname
+            interfaces[i[0]] = interface
+        return interfaces
+
+    def _populate_interfaces_configuration_portchanel(self, interface_table):
+        interfaces = dict()
+
+        for key in interface_table:
+            
+            interface = dict()
+            i = interface_table[key]
+            
+            interface["admin_state"] = i[5]
+                
+            #ToDo canonicalize iname
+            interfaces[i[0]] = interface
+
+        return interfaces
+
+    def populate_interfaces_configuration(self, data):
+        tables = self._split_to_tables(data)
+
+        interface_table = self._parse_table(tables[0])
+        portchanel_table = self._parse_table(tables[1])
+
+        interfaces = self._populate_interfaces_configuration_interface(interface_table)
+        self.facts['interfaces'] = self._merge_dicts(self.facts["interfaces"],interfaces)
+        interfaces = self._populate_interfaces_configuration_portchanel(portchanel_table)
+        self.facts['interfaces'] = self._merge_dicts(self.facts["interfaces"],interfaces)
+
+    def _populate_interfaces_description_interface(self, interface_table):
+        interfaces = dict()
+
+        for key in interface_table:
+            
+            i = interface_table[key]
+            interface = dict()
+            interface["description"] = i[1]
+
+            #ToDo canonicalize iname
+            interfaces[i[0]] = interface
+        return interfaces
+
+    def _populate_interfaces_description_portchanel(self, interface_table):
+        interfaces = dict()
+
+        for key in interface_table:
+            
+            interface = dict()
+            i = interface_table[key]
+            
+            interface["description"] = i[1]
+                
+            #ToDo canonicalize iname
+            interfaces[i[0]] = interface
+
+        return interfaces
+
+    def populate_interfaces_description(self, data):
+        tables = self._split_to_tables(data)
+        
+        interface_table = self._parse_table(tables[0], False)
+        portchanel_table = self._parse_table(tables[1], False)
+
+        interfaces = self._populate_interfaces_description_interface(interface_table)
+        self.facts['interfaces'] = self._merge_dicts(self.facts["interfaces"],interfaces)
+        interfaces = self._populate_interfaces_description_portchanel(portchanel_table)
+        self.facts['interfaces'] = self._merge_dicts(self.facts["interfaces"],interfaces)
+
+    def _populate_address_ipv4(self, ip_table):
+        ips = list()
+
+        for key in ip_table:
+            i = ip_table[key][0]
+            ip,mask = i.split("/")
+            ips.append(ip)
+
+        return ips
+
+    def populate_addresses_ipv4(self, data):
+        tables = self._split_to_tables(data)
+        ip_table = self._parse_table(tables[0])
+
+        ips = self._populate_address_ipv4(ip_table)
+        self.facts['all_ipv4_addresses'] = ips
+
+    def _populate_address_ipv6(self, ip_table):
+        ips = list()
+
+        for key in ip_table:
+            ip = ip_table[key][3]
+            ips.append(ip)
+
+        return ips
+
+    def populate_addresses_ipv6(self, data):
+        tables = self._split_to_tables(data)
+        
+        ip_table = self._parse_table(tables[0])
+        ips = self._populate_address_ipv6(ip_table)
+        self.facts['all_ipv6_addresses'] = ips
 
 # class Routing(FactsBase):
 #
