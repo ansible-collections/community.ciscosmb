@@ -1,0 +1,91 @@
+                                             Flow Link          Back   Mdix
+Port     Type         Duplex  Speed Neg      ctrl State       Pressure Mode
+-------- ------------ ------  ----- -------- ---- ----------- -------- -------
+gi1/1    1G-Copper    Full    1000  Enabled  Off  Up          Disabled Off    
+gi1/2    1G-Copper      --      --     --     --  Down           --     --    
+gi1/3    1G-Copper      --      --     --     --  Down           --     --    
+gi1/4    1G-Copper    Full    1000  Enabled  Off  Up          Disabled On     
+gi1/5    1G-Copper    Full    1000  Enabled  Off  Up          Disabled Off    
+gi1/6    1G-Copper    Full    100   Enabled  Off  Up          Disabled On     
+gi1/7    1G-Copper      --      --     --     --  Down           --     --    
+gi1/8    1G-Copper      --      --     --     --  Down           --     --    
+gi1/9    1G-Copper      --      --     --     --  Down           --     --    
+gi1/10   1G-Copper      --      --     --     --  Down           --     --    
+gi1/11   1G-Copper      --      --     --     --  Down           --     --    
+gi1/12   1G-Copper      --      --     --     --  Down           --     --    
+gi1/13   1G-Copper      --      --     --     --  Down           --     --    
+gi1/14   1G-Copper      --      --     --     --  Down           --     --    
+gi1/15   1G-Copper      --      --     --     --  Down           --     --    
+gi1/16   1G-Copper    Full    100   Enabled  Off  Up          Disabled On     
+gi1/17   1G-Copper      --      --     --     --  Down           --     --    
+gi1/18   1G-Copper    Full    1000  Enabled  Off  Up          Disabled On     
+gi1/19   1G-Copper      --      --     --     --  Down           --     --    
+gi1/20   1G-Copper    Full    1000  Enabled  Off  Up          Disabled On     
+gi1/21   1G-Copper      --      --     --     --  Down           --     --    
+gi1/22   1G-Copper    Full    100   Enabled  Off  Up          Disabled On     
+gi1/23   1G-Copper    Full    1000  Enabled  Off  Up          Disabled On     
+gi1/24   1G-Copper      --      --     --     --  Down           --     --    
+gi1/25   1G-Copper    Full    1000  Enabled  Off  Up          Disabled Off    
+gi1/26   1G-Copper    Full    10    Enabled  Off  Up          Disabled Off    
+gi1/27   1G-Copper      --      --     --     --  Down           --     --    
+gi1/28   1G-Copper    Full    100   Enabled  Off  Up          Disabled Off    
+gi1/29   1G-Copper      --      --     --     --  Down           --     --    
+gi1/30   1G-Copper      --      --     --     --  Down           --     --    
+gi1/31   1G-Copper      --      --     --     --  Down           --     --    
+gi1/32   1G-Copper      --      --     --     --  Down           --     --    
+gi1/33   1G-Copper      --      --     --     --  Down           --     --    
+gi1/34   1G-Copper      --      --     --     --  Down           --     --    
+gi1/35   1G-Copper      --      --     --     --  Down           --     --    
+gi1/36   1G-Copper      --      --     --     --  Down           --     --    
+gi1/37   1G-Copper      --      --     --     --  Down           --     --    
+gi1/38   1G-Copper      --      --     --     --  Down           --     --    
+gi1/39   1G-Copper    Full    1000  Enabled  Off  Up          Disabled Off    
+gi1/40   1G-Copper      --      --     --     --  Down           --     --    
+gi1/41   1G-Copper      --      --     --     --  Down           --     --    
+gi1/42   1G-Copper    Full    1000  Enabled  Off  Up          Disabled On     
+gi1/43   1G-Copper      --      --     --     --  Down           --     --    
+gi1/44   1G-Copper      --      --     --     --  Down           --     --    
+gi1/45   1G-Copper      --      --     --     --  Down           --     --    
+gi1/46   1G-Copper      --      --     --     --  Down           --     --    
+gi1/47   1G-Copper    Full    100   Enabled  Off  Up          Disabled On     
+gi1/48   1G-Copper      --      --     --     --  Down           --     --    
+gi1/49   1G-Combo-C   Full    1000  Enabled  Off  Up          Disabled Off    
+gi1/50   1G-Combo-C   Full    1000  Enabled  Off  Up          Disabled On     
+gi1/51   1G-Fiber       --      --     --     --  Down           --     --    
+gi1/52   1G-Fiber       --      --     --     --  Down           --     --    
+
+                                          Flow    Link        
+Ch       Type    Duplex  Speed  Neg      control  State       
+-------- ------- ------  -----  -------- -------  ----------- 
+Po1      1G      Full    1000   Enabled  Off      Up          
+Po2         --     --      --      --       --    Not Present 
+Po3         --     --      --      --       --    Not Present 
+Po4         --     --      --      --       --    Not Present 
+Po5         --     --      --      --       --    Not Present 
+Po6         --     --      --      --       --    Not Present 
+Po7         --     --      --      --       --    Not Present 
+Po8         --     --      --      --       --    Not Present 
+Po9         --     --      --      --       --    Not Present 
+Po10        --     --      --      --       --    Not Present 
+Po11        --     --      --      --       --    Not Present 
+Po12        --     --      --      --       --    Not Present 
+Po13        --     --      --      --       --    Not Present 
+Po14        --     --      --      --       --    Not Present 
+Po15        --     --      --      --       --    Not Present 
+Po16        --     --      --      --       --    Not Present 
+Po17        --     --      --      --       --    Not Present 
+Po18        --     --      --      --       --    Not Present 
+Po19        --     --      --      --       --    Not Present 
+Po20        --     --      --      --       --    Not Present 
+Po21        --     --      --      --       --    Not Present 
+Po22        --     --      --      --       --    Not Present 
+Po23        --     --      --      --       --    Not Present 
+Po24        --     --      --      --       --    Not Present 
+Po25        --     --      --      --       --    Not Present 
+Po26        --     --      --      --       --    Not Present 
+Po27        --     --      --      --       --    Not Present 
+Po28        --     --      --      --       --    Not Present 
+Po29        --     --      --      --       --    Not Present 
+Po30        --     --      --      --       --    Not Present 
+Po31        --     --      --      --       --    Not Present 
+Po32        --     --      --      --       --    Not Present 

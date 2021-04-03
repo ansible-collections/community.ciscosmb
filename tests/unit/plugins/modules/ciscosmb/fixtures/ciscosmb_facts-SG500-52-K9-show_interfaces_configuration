@@ -1,0 +1,91 @@
+                                               Flow    Admin     Back   Mdix
+Port     Type         Duplex  Speed  Neg      control  State   Pressure Mode
+-------- ------------ ------  -----  -------- -------  -----   -------- ----
+gi1/1    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/2    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/3    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/4    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/5    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/6    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/7    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/8    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/9    1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/10   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/11   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/12   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/13   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/14   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/15   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/16   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/17   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/18   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/19   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/20   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/21   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/22   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/23   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/24   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/25   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/26   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/27   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/28   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/29   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/30   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/31   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/32   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/33   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/34   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/35   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/36   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/37   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/38   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/39   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/40   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/41   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/42   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/43   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/44   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/45   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/46   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/47   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/48   1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/49   1G-Combo-C   Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/50   1G-Combo-C   Full    1000   Enabled  Off      Up      Disabled Auto
+gi1/51   1G-Fiber     Full    1000   Disabled Off      Up      Disabled Auto
+gi1/52   1G-Fiber     Full    1000   Disabled Off      Up      Disabled Auto
+
+                                  Flow    Admin 
+Ch       Type    Speed  Neg      control  State 
+-------- ------- -----  -------- -------  ----- 
+Po1      1G      1000   Enabled  Off      Up      
+Po2         --     --   Enabled  Off      Up      
+Po3         --     --   Enabled  Off      Up      
+Po4         --     --   Enabled  Off      Up      
+Po5         --     --   Enabled  Off      Up      
+Po6         --     --   Enabled  Off      Up      
+Po7         --     --   Enabled  Off      Up      
+Po8         --     --   Enabled  Off      Up          
+Po9         --     --   Enabled  Off      Up      
+Po10        --     --   Enabled  Off      Up      
+Po11        --     --   Enabled  Off      Up      
+Po12        --     --   Enabled  Off      Up      
+Po13        --     --   Enabled  Off      Up      
+Po14        --     --   Enabled  Off      Up      
+Po15        --     --   Enabled  Off      Up      
+Po16        --     --   Enabled  Off      Up      
+Po17        --     --   Enabled  Off      Up      
+Po18        --     --   Enabled  Off      Up      
+Po19        --     --   Enabled  Off      Up      
+Po20        --     --   Enabled  Off      Up      
+Po21        --     --   Enabled  Off      Up      
+Po22        --     --   Enabled  Off      Up      
+Po23        --     --   Enabled  Off      Up      
+Po24        --     --   Enabled  Off      Up      
+Po25        --     --   Enabled  Off      Up      
+Po26        --     --   Enabled  Off      Up      
+Po27        --     --   Enabled  Off      Up      
+Po28        --     --   Enabled  Off      Up      
+Po29        --     --   Enabled  Off      Up      
+Po30        --     --   Enabled  Off      Up          
+Po31        --     --   Enabled  Off      Up      
+Po32        --     --   Enabled  Off      Up      

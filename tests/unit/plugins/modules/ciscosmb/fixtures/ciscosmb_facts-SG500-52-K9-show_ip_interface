@@ -1,0 +1,13 @@
+
+
+    IP Address        I/F    I/F Status  Type   Redirect Status 
+                             admin/oper                         
+------------------ --------- ---------- ------- -------- ------ 
+11.30.5.12/18      vlan 1    UP/UP      Static  enable   Valid  
+
+
+  Gateway IP Address      Type   
+----------------------- -------- 
+11.30.5.11              static   
+
+

@@ -1,0 +1,89 @@
+Port      Description
+-------   -----------
+gi1/1     Wifi Controller
+gi1/2     WiFi AP
+gi1/3     WiFi AP
+gi1/4     WiFi AP
+gi1/5     Access port
+gi1/6     Access port
+gi1/7     Access port
+gi1/8     Access port
+gi1/9     Access port
+gi1/10    Access port
+gi1/11    Plain VoIP
+gi1/12    Access port
+gi1/13    Access port
+gi1/14    Access port
+gi1/15    Access port
+gi1/16    Access port
+gi1/17    Access port
+gi1/18    Plug 7B - sw tests
+gi1/19    Access port
+gi1/20
+gi1/21    Access port                                 
+gi1/22    Access port
+gi1/23    Access port
+gi1/24    Access port
+gi1/25    Access port
+gi1/26    Access port
+gi1/27    Access port
+gi1/28    Access port
+gi1/29    Access port
+gi1/30    Access port
+gi1/31    Access port
+gi1/32    Access port
+gi1/33    Access port
+gi1/34    Access port
+gi1/35    Access port
+gi1/36    Access port
+gi1/37    Access port
+gi1/38    Access port
+gi1/39    Access port
+gi1/40    Plug 7A dock
+gi1/41    Access port
+gi1/42    Access port
+gi1/43    Access port                                 
+gi1/44    Access port
+gi1/45    Access port
+gi1/46    Access port
+gi1/47    Access port
+gi1/48    Access port
+gi1/49    Po1 to sw-ab-cdef-1
+gi1/50    Po1 to sw-ab-cdef-1
+gi1/51    Access port
+gi1/52    Access port
+
+Ch        Description
+-------   -----------
+Po1       Trunk sw-ab-cdef-1
+Po2       
+Po3       
+Po4       
+Po5       
+Po6       
+Po7       
+Po8       
+Po9       
+Po10                                                  
+Po11      
+Po12      
+Po13      
+Po14      
+Po15      
+Po16      
+Po17      
+Po18      
+Po19      
+Po20      
+Po21      
+Po22      
+Po23      
+Po24      
+Po25      
+Po26      
+Po27      
+Po28      
+Po29      
+Po30      
+Po31      
+Po32

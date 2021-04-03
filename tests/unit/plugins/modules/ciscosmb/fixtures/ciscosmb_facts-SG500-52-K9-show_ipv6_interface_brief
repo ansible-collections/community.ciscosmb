@@ -1,0 +1,7 @@
+
+Interface    Interface IPv6          Link Local            MLD      Number of
+             State     State         IPv6 Address        Version Global Addresses 
+---------- --------- --------- ------------------------- ------- ---------------- 
+  vlan 1     up/up    enabled  fe80::36db:fdff:fe64:5bce    2           0         
+
+
