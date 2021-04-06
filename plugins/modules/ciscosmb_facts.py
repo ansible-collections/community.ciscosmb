@@ -509,7 +509,6 @@ class Interfaces(FactsBase):
             allow_empty_fields = list()
         data = dict()
 
-        lasttablefullline = 0
         dataindex = 0
         for lineno in tabledata:
             owerflownfields = list()
@@ -532,11 +531,9 @@ class Interfaces(FactsBase):
                         data[dataindex - 1][fieldno] += line_elems[fieldno]
 
                 else:
-                    lastfullline = lineno
                     data[dataindex] = line_elems
                     dataindex += 1
             else:
-                lastfullline = lineno
                 data[dataindex] = line_elems
                 dataindex += 1
 
@@ -732,7 +729,6 @@ class Interfaces(FactsBase):
 
     def _populate_address_ipv4(self, ip_table):
         ips = list()
-        interfaces = dict()
 
         for key in ip_table:
             cidr = ip_table[key][0]
