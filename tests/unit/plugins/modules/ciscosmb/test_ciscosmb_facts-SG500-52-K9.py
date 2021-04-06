@@ -88,7 +88,6 @@ class TestCiscoSMBFactsModuleOnSG50052K9(TestCiscoSMBModule):
             result['ansible_facts']['ansible_net_spacetotal_mb'], 31.4
         )
 
-
     def test_ciscosmb_facts_config(self):
         set_module_args(dict(gather_subset='config'))
         result = self.execute_module()
@@ -99,7 +98,7 @@ class TestCiscoSMBFactsModuleOnSG50052K9(TestCiscoSMBModule):
     def test_ciscosmb_facts_interfaces(self):
         set_module_args(dict(gather_subset='interfaces'))
         result = self.execute_module()
-        
+
         self.assertIn(
             result['ansible_facts']['ansible_net_all_ipv4_addresses'][0], ['11.30.5.12']
         )
@@ -108,13 +107,13 @@ class TestCiscoSMBFactsModuleOnSG50052K9(TestCiscoSMBModule):
         )
         self.assertEqual(
             result['ansible_facts']['ansible_net_all_ipv6_addresses'][0],
-            result['ansible_facts']['ansible_net_interfaces']['ether1']['ipv6'][0]['address']
+            result['ansible_facts']['ansible_net_interfaces']['vlan 1']['ipv6'][0]['address']
         )
         self.assertEqual(
-            len(result['ansible_facts']['ansible_net_interfaces'].keys()), 11
+            len(result['ansible_facts']['ansible_net_interfaces'].keys()), 85
         )
         self.assertEqual(
-            len(result['ansible_facts']['ansible_net_neighbors']), 4
+            len(result['ansible_facts']['ansible_net_neighbors']), 9
         )
 
 #     def test_ciscosmb_facts_routing(self):
