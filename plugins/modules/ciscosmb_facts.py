@@ -2,10 +2,11 @@
 
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-DOCUMENTATION = '''
+DOCUMENTATION = """
 ---
 module: ciscosmb_facts
 author: "Petr Klima (@qaxi)"
@@ -30,7 +31,7 @@ options:
     elements: str
     choices: [ 'default', 'all', 'hardware', 'config', 'interfaces', '!hardware', '!config', '!interfaces' ]
     default: '!config'
-'''
+"""
 
 EXAMPLES = """
 - name: Collect all facts from the device
@@ -171,8 +172,12 @@ ansible_net_ospf_neighbor:
 """
 import re
 
-from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.ciscosmb import run_commands
-from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.ciscosmb import ciscosmb_argument_spec
+from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.ciscosmb import (
+    run_commands,
+)
+from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.ciscosmb import (
+    ciscosmb_argument_spec,
+)
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.six import iteritems
 
@@ -187,7 +192,9 @@ class FactsBase(object):
         self.responses = None
 
     def populate(self):
-        self.responses = run_commands(self.module, commands=self.COMMANDS, check_rc=False)
+        self.responses = run_commands(
+            self.module, commands=self.COMMANDS, check_rc=False
+        )
 
     def run(self, cmd):
         return run_commands(self.module, commands=cmd, check_rc=False)
@@ -196,10 +203,10 @@ class FactsBase(object):
 class Default(FactsBase):
 
     COMMANDS = [
-        'show version',
-        'show system',
-        'show cpu utilization',
-        'show inventory',
+        "show version",
+        "show system",
+        "show cpu utilization",
+        "show inventory",
     ]
 
     def populate(self):
@@ -207,17 +214,17 @@ class Default(FactsBase):
 
         data = self.responses[0]
         if data:
-            self.facts['version'] = self.parse_version(data)
-            self.facts['boot_version'] = self.parse_boot_version(data)
+            self.facts["version"] = self.parse_version(data)
+            self.facts["boot_version"] = self.parse_boot_version(data)
 
         data = self.responses[1]
         if data:
-            self.facts['uptime'] = self.parse_uptime(data)
-            self.facts['hostname'] = self.parse_hostname(data)
+            self.facts["uptime"] = self.parse_uptime(data)
+            self.facts["hostname"] = self.parse_hostname(data)
 
         data = self.responses[2]
         if data:
-            self.facts['cpu_load'] = self.parse_cpu_load(data)
+            self.facts["cpu_load"] = self.parse_cpu_load(data)
 
         data = self.responses[3]
         if data:
@@ -225,77 +232,80 @@ class Default(FactsBase):
             stacked_models = self.parse_stacked_models(modules)
             if len(stacked_models) >= 2:
                 stacked_serialnums = self.parse_stacked_serialnums(modules)
-                self.facts['stacked_models'] = stacked_models
-                self.facts['stacked_serialnums'] = stacked_serialnums
-            self.facts['model'] = self.parse_model(modules)
-            self.facts['serialnum'] = self.parse_serialnum(modules)
-            self.facts['hw_version'] = self.parse_hw_version(modules)
-            self.facts['hw_modules'] = modules
+                self.facts["stacked_models"] = stacked_models
+                self.facts["stacked_serialnums"] = stacked_serialnums
+            self.facts["model"] = self.parse_model(modules)
+            self.facts["serialnum"] = self.parse_serialnum(modules)
+            self.facts["hw_version"] = self.parse_hw_version(modules)
+            self.facts["hw_modules"] = modules
 
     # show version
     def parse_version(self, data):
         # Cisco SMB 300 and 500 - fw 1.x.x.x
-        match = re.search(r'^SW version\s*(\S+)\s*.*$', data, re.M)
+        match = re.search(r"^SW version\s*(\S+)\s*.*$", data, re.M)
         if match:
             return match.group(1)
         # Cisco SMB 350 and 550 - fw 2.x.x.x
-        match = re.search(r'^  Version:\s*(\S+)\s*.*$', data, re.M)
+        match = re.search(r"^  Version:\s*(\S+)\s*.*$", data, re.M)
         if match:
             return match.group(1)
 
     def parse_boot_version(self, data):
-        match = re.search(r'Boot version\s*(\S+)\s*.*$', data, re.M)
+        match = re.search(r"Boot version\s*(\S+)\s*.*$", data, re.M)
         if match:
             return match.group(1)
 
     # show system
     def parse_uptime(self, data):
-        match = re.search(r'^System Up Time \S+:\s+(\S+)\s*$', data, re.M)
+        match = re.search(r"^System Up Time \S+:\s+(\S+)\s*$", data, re.M)
         if match:
-            (dayhour, mins, sec) = match.group(1).split(':')
-            (day, hour) = dayhour.split(',')
+            (dayhour, mins, sec) = match.group(1).split(":")
+            (day, hour) = dayhour.split(",")
             # output in seconds
             return (int(day) * 86400) + (int(hour) * 3600) + (int(mins) * 60) + int(sec)
 
     def parse_hostname(self, data):
-        match = re.search(r'^System Name:\s*(\S+)\s*$', data, re.M)
+        match = re.search(r"^System Name:\s*(\S+)\s*$", data, re.M)
         if match:
             return match.group(1)
 
     # show cpu utilization
     def parse_cpu_load(self, data):
-        match = re.search(r'one minute:\s+(\d+)%;\s*', data, re.M)
+        match = re.search(r"one minute:\s+(\d+)%;\s*", data, re.M)
         if match:
             return match.group(1)
 
     # show inventory
     def parse_inventory(self, data):
         # make 1 module 1 line
-        data = re.sub(r'\nPID', '  PID', data, re.M)
+        data = re.sub(r"\nPID", "  PID", data, re.M)
         # delete empty lines
-        data = re.sub(r'^\n', '', data, re.M)
-        data = re.sub(r'\n\n', '', data, re.M)
-        data = re.sub(r'\n\s*\n', r'\n', data, re.M)
+        data = re.sub(r"^\n", "", data, re.M)
+        data = re.sub(r"\n\n", "", data, re.M)
+        data = re.sub(r"\n\s*\n", r"\n", data, re.M)
 
         lines = data.splitlines()
 
         modules = {}
         for line in lines:
             # remove extra chars
-            line = re.sub(r'"', r'', line, re.M)
-            line = re.sub(r'\s+', r' ', line, re.M)
+            line = re.sub(r'"', r"", line, re.M)
+            line = re.sub(r"\s+", r" ", line, re.M)
             # normalize lines
-            line = re.sub(r':\s', r'"', line, re.M)
+            line = re.sub(r":\s", r'"', line, re.M)
             line = re.sub(r'\s+DESCR"', r'"DESCR"', line, re.M)
             line = re.sub(r'\s+PID"', r'"PID"', line, re.M)
             line = re.sub(r'\s+VID"', r'"VID"', line, re.M)
             line = re.sub(r'\s+SN"', r'"SN"', line, re.M)
-            line = re.sub(r'\s*$', r'', line, re.M)
+            line = re.sub(r"\s*$", r"", line, re.M)
 
-            match = re.search(r'^NAME"(?P<name>[^"]+)"DESCR"(?P<descr>[^"]+)"PID"(?P<pid>[^"]+)"VID"(?P<vid>[^"]+)"SN"(?P<sn>\S+)\s*', line)
+            match = re.search(
+                r'^NAME"(?P<name>[^"]+)"DESCR"(?P<descr>[^"]+)"PID"(?P<pid>[^"]+)"VID"(?P<vid>[^"]+)"SN"(?P<sn>\S+)\s*',
+                line,
+            )
 
             modul = match.groupdict()
-            modules[modul['name']] = modul
+            modules[modul["name"]] = modul
 
         if modules:
             return modules
@@ -305,8 +315,8 @@ class Default(FactsBase):
         # stacks have modules 2 3 ... 8
         models = []
         for n in range(1, 9):
-            if f'{n}' in data:
-                models.append(data[f'{n}']['pid'])
+            if f"{n}" in data:
+                models.append(data[f"{n}"]["pid"])
         return models
 
     def parse_stacked_serialnums(self, data):
@@ -314,26 +324,26 @@ class Default(FactsBase):
         # stacks have modules 2 3 ... 8
         sn = []
         for n in range(1, 9):
-            if f'{n}' in data:
-                sn.append(data[f'{n}']['sn'])
+            if f"{n}" in data:
+                sn.append(data[f"{n}"]["sn"])
         return sn
 
     def parse_model(self, data):
         # every inventory has module with NAME: "1"
-        model = data['1']['pid']
-        if 'stacked_models' in self.facts:
-            model = re.sub(r'-.*$', '', model)
-            model = 'Stack ' + model
+        model = data["1"]["pid"]
+        if "stacked_models" in self.facts:
+            model = re.sub(r"-.*$", "", model)
+            model = "Stack " + model
         return model
 
     def parse_serialnum(self, data):
         # every inventory has module with NAME: "1"
-        sn = data['1']['sn']
+        sn = data["1"]["sn"]
         return sn
 
     def parse_hw_version(self, data):
         # every inventory has module with NAME: "1"
-        sn = data['1']['vid']
+        sn = data["1"]["vid"]
         return sn
 
 
@@ -350,75 +360,83 @@ class Hardware(FactsBase):
             self.parse_filesystem_info(data)
 
     def parse_filesystem_info(self, data):
-        match = re.search(r'Total size of (\S+): (\d+) bytes', data, re.M)
+        match = re.search(r"Total size of (\S+): (\d+) bytes", data, re.M)
 
         if match:  # fw 1.x
-            self.facts['spacetotal_mb'] = round(int(match[2]) / 1024 / 1024, 1)
-            match = re.search(r'Free size of (\S+): (\d+) bytes', data, re.M)
-            self.facts['spacefree_mb'] = round(int(match[2]) / 1024 / 1024, 1)
+            self.facts["spacetotal_mb"] = round(int(match[2]) / 1024 / 1024, 1)
+            match = re.search(r"Free size of (\S+): (\d+) bytes", data, re.M)
+            self.facts["spacefree_mb"] = round(int(match[2]) / 1024 / 1024, 1)
 
         else:
-            match = re.search(r'(\d+)K of (\d+)K are free', data, re.M)
+            match = re.search(r"(\d+)K of (\d+)K are free", data, re.M)
             if match:  # fw 2.x, 3.x
-                self.facts['spacetotal_mb'] = round(int(match[2]) / 1024, 1)
-                self.facts['spacefree_mb'] = round(int(match[1]) / 1024, 1)
+                self.facts["spacetotal_mb"] = round(int(match[2]) / 1024, 1)
+                self.facts["spacefree_mb"] = round(int(match[1]) / 1024, 1)
 
 
 class Config(FactsBase):
 
-    COMMANDS = ['show running-config detailed']
+    COMMANDS = ["show running-config detailed"]
 
     def populate(self):
         super().populate()
         data = self.responses[0]
         if data:
-            self.facts['config'] = data
+            self.facts["config"] = data
 
 
 class Interfaces(FactsBase):
 
     COMMANDS = [
-        'show interfaces status',
-        'show interfaces configuration',
-        'show interfaces description',
-        'show ip interface',
-        'show ipv6 interface brief',
+        "show ports jumbo-frame",
+        "show ip interface",
+        "show ipv6 interface brief",
+        "show interfaces status",
+        "show interfaces configuration",
+        "show interfaces description",
+        "show lldp neighbors",
     ]
 
-    DETAIL_RE = re.compile(r'([\w\d\-]+)=\"?(\w{3}/\d{2}/\d{4}\s\d{2}:\d{2}:\d{2}|[\w\d\-\.:/]+)')
-    WRAPPED_LINE_RE = re.compile(r'^\s+(?!\d)')
+    DETAIL_RE = re.compile(
+        r"([\w\d\-]+)=\"?(\w{3}/\d{2}/\d{4}\s\d{2}:\d{2}:\d{2}|[\w\d\-\.:/]+)"
+    )
+    WRAPPED_LINE_RE = re.compile(r"^\s+(?!\d)")
 
     def populate(self):
         super().populate()
 
-        self.facts['interfaces'] = dict()
-        self.facts['all_ipv4_addresses'] = list()
-        self.facts['all_ipv6_addresses'] = list()
-        self.facts['neighbors'] = list()
+        self.facts["interfaces"] = dict()
+        self.facts["all_ipv4_addresses"] = list()
+        self.facts["all_ipv6_addresses"] = list()
+        self.facts["neighbors"] = list()
 
         data = self.responses[0]
         if data:
-            self.populate_interfaces_status(data)
+            self.populate_interfaces_mtu(data)
 
         data = self.responses[1]
         if data:
-            self.populate_interfaces_configuration(data)
+            self.populate_addresses_ipv4(data)
 
         data = self.responses[2]
         if data:
-            self.populate_interfaces_description(data)
+            self.populate_addresses_ipv6(data)
 
         data = self.responses[3]
         if data:
-            self.populate_addresses_ipv4(data)
+            self.populate_interfaces_status(data)
 
         data = self.responses[4]
         if data:
-            self.populate_addresses_ipv6(data)
+            self.populate_interfaces_configuration(data)
 
-###        data = self.responses[3]
-###        if data:
-###            self.facts['neighbors'] = list(self.parse_detail(data))
+        data = self.responses[5]
+        if data:
+            self.populate_interfaces_description(data)
+
+        data = self.responses[6]
+        if data:
+            self.populate_neighbors(data)
 
     def _split_to_tables(self, data):
         TABLE_HEADER = re.compile(r"^---+ +-+.*$")
@@ -447,13 +465,18 @@ class Interfaces(FactsBase):
                 tables[tableno]["data"][lineno] = line
                 lineno += 1
                 continue
-            
+
         return tables
 
-    def _parse_table(self, table, allow_overflow=True):
-        
+    def _parse_table(self, table, allow_overflow=True, allow_empty_fields=None):
+
+        if allow_empty_fields is None:
+            allow_empty_fields = list()
+
         fields_end = self.__get_table_columns_end(table["header"])
-        data = self.__get_table_data(table["data"], fields_end, allow_overflow)
+        data = self.__get_table_data(
+            table["data"], fields_end, allow_overflow, allow_empty_fields
+        )
 
         return data
 
@@ -461,9 +484,8 @@ class Interfaces(FactsBase):
         """ fields length are diferent device to device, detect them on horizontal lin """
         fields_end = [m.start() for m in re.finditer("  *", headerline.strip())]
         # fields_position.insert(0,0)
-        #fields_end.append(len(headerline))
+        # fields_end.append(len(headerline))
         fields_end.append(10000)  # allow "long" last field
-
 
         return fields_end
 
@@ -479,9 +501,14 @@ class Interfaces(FactsBase):
 
         return line_elems
 
-    def __get_table_data(self, tabledata, fields_end, allow_overflow=True):
+    def __get_table_data(
+        self, tabledata, fields_end, allow_overflow=True, allow_empty_fields=None
+    ):
+
+        if allow_empty_fields is None:
+            allow_empty_fields = list()
         data = dict()
-        
+
         lasttablefullline = 0
         dataindex = 0
         for lineno in tabledata:
@@ -490,34 +517,36 @@ class Interfaces(FactsBase):
 
             line = tabledata[lineno]
             line_elems = self.__line_to_fields(line, fields_end)
- 
+
             if allow_overflow:
                 # search for overflown fields
                 for elemno in line_elems:
-                    if line_elems[elemno] == "":
+                    if elemno not in allow_empty_fields and line_elems[elemno] == "":
                         owerflow = True
+                    else:
                         owerflownfields.append(elemno)
-                
-                # concat owerflown elements to previous data
+
                 if owerflow:
+                    # concat owerflown elements to previous data
                     for fieldno in owerflownfields:
-                        data[dataindex][fieldno] += line_elems[fieldno] 
+                        data[dataindex - 1][fieldno] += line_elems[fieldno]
 
                 else:
                     lastfullline = lineno
                     data[dataindex] = line_elems
-                    dataindex +=1
+                    dataindex += 1
             else:
-                    lastfullline = lineno
-                    data[dataindex] = line_elems
-                    dataindex +=1
+                lastfullline = lineno
+                data[dataindex] = line_elems
+                dataindex += 1
 
         return data
 
     def _merge_dicts(self, a, b, path=None):
         "merges b into a"
-        if path is None: path = []
-       
+        if path is None:
+            path = []
+
         # is b empty?
         if not bool(b):
             return a
@@ -527,9 +556,9 @@ class Interfaces(FactsBase):
                 if isinstance(a[key], dict) and isinstance(b[key], dict):
                     self._merge_dicts(a[key], b[key], path + [str(key)])
                 elif a[key] == b[key]:
-                    pass # same leaf value
+                    pass  # same leaf value
                 else:
-                    raise Exception('Conflict at %s' % '.'.join(path + [str(key)]))
+                    raise Exception("Conflict at %s" % ".".join(path + [str(key)]))
             else:
                 a[key] = b[key]
         return a
@@ -538,23 +567,28 @@ class Interfaces(FactsBase):
         interfaces = dict()
 
         for key in interface_table:
-            
+
             i = interface_table[key]
             interface = dict()
-            interface["state"] = i[6]
+            interface["state"] = i[6].lower()
             interface["type"] = i[1]
-            
+            interface["mtu"] = self._mtu
+            interface["duplex"] = i[2].lower()
+            interface["negotiation"] = i[4].lower()
+            interface["control"] = i[5].lower()
+            interface["presure"] = i[7].lower()
+            interface["mode"] = i[8].lower()
+
             if i[6] == "Up":
                 interface["bandwith"] = int(i[3]) * 1000  # to get speed in kb
-                interface["duplex"] = i[2]
-                interface["negotiation"] = i[4]
-                interface["control"] = i[5]
-                interface["presure"] = i[7]
-                interface["mode"] = i[8]
-            #else:
-                #interface["type"] = interface["duplex"] = interface["negotiation"] = interface["control"] = interface["presure"] = interface["mode"] = 
+            else:
+                interface["bandwith"] = None
 
-            #ToDo canonicalize iname
+            for key in interface:
+                if interface[key] == "--":
+                    interface[key] = None
+
+            # ToDo canonicalize iname
             interfaces[i[0]] = interface
         return interfaces
 
@@ -562,21 +596,26 @@ class Interfaces(FactsBase):
         interfaces = dict()
 
         for key in interface_table:
-            
+
             interface = dict()
             i = interface_table[key]
-            
-            #if i[6] == "Up":
-            interface["state"] = i[6]
+            interface["state"] = i[6].lower()
             interface["type"] = i[1]
-            interface["duplex"] = i[2]
-            interface["negotiation"] = i[4]
-            interface["control"] = i[5]
+            interface["mtu"] = self._mtu
+            interface["duplex"] = i[2].lower()
+            interface["negotiation"] = i[4].lower()
+            interface["control"] = i[5].lower()
 
-            if i[3] != '--':
+            if i[6] == "Up":
                 interface["bandwith"] = int(i[3]) * 1000  # to get speed in kb
-                
-            #ToDo canonicalize iname
+            else:
+                interface["bandwith"] = None
+
+            for key in interface:
+                if interface[key] == "--":
+                    interface[key] = None
+
+            # ToDo canonicalize iname
             interfaces[i[0]] = interface
 
         return interfaces
@@ -588,21 +627,25 @@ class Interfaces(FactsBase):
         portchanel_table = self._parse_table(tables[1])
 
         interfaces = self._populate_interfaces_status_interface(interface_table)
-        self.facts['interfaces'] = self._merge_dicts(self.facts["interfaces"],interfaces)
+        self.facts["interfaces"] = self._merge_dicts(
+            self.facts["interfaces"], interfaces
+        )
         interfaces = self._populate_interfaces_status_portchanel(portchanel_table)
-        self.facts['interfaces'] = self._merge_dicts(self.facts["interfaces"],interfaces)
-    
+        self.facts["interfaces"] = self._merge_dicts(
+            self.facts["interfaces"], interfaces
+        )
+
     def _populate_interfaces_configuration_interface(self, interface_table):
         interfaces = dict()
 
         for key in interface_table:
-            
+
             i = interface_table[key]
             interface = dict()
-            interface["admin_state"] = i[6]
-            interface["mdix"] = i[8]
+            interface["admin_state"] = i[6].lower()
+            interface["mdix"] = i[8].lower()
 
-            #ToDo canonicalize iname
+            # ToDo canonicalize iname
             interfaces[i[0]] = interface
         return interfaces
 
@@ -610,13 +653,13 @@ class Interfaces(FactsBase):
         interfaces = dict()
 
         for key in interface_table:
-            
+
             interface = dict()
             i = interface_table[key]
-            
-            interface["admin_state"] = i[5]
-                
-            #ToDo canonicalize iname
+
+            interface["admin_state"] = i[5].lower()
+
+            # ToDo canonicalize iname
             interfaces[i[0]] = interface
 
         return interfaces
@@ -628,20 +671,29 @@ class Interfaces(FactsBase):
         portchanel_table = self._parse_table(tables[1])
 
         interfaces = self._populate_interfaces_configuration_interface(interface_table)
-        self.facts['interfaces'] = self._merge_dicts(self.facts["interfaces"],interfaces)
-        interfaces = self._populate_interfaces_configuration_portchanel(portchanel_table)
-        self.facts['interfaces'] = self._merge_dicts(self.facts["interfaces"],interfaces)
+        self.facts["interfaces"] = self._merge_dicts(
+            self.facts["interfaces"], interfaces
+        )
+        interfaces = self._populate_interfaces_configuration_portchanel(
+            portchanel_table
+        )
+        self.facts["interfaces"] = self._merge_dicts(
+            self.facts["interfaces"], interfaces
+        )
 
     def _populate_interfaces_description_interface(self, interface_table):
         interfaces = dict()
 
         for key in interface_table:
-            
+
             i = interface_table[key]
             interface = dict()
             interface["description"] = i[1]
 
-            #ToDo canonicalize iname
+            if interface["description"] == "":
+                interface["description"] = None
+
+            # ToDo canonicalize iname
             interfaces[i[0]] = interface
         return interfaces
 
@@ -649,35 +701,56 @@ class Interfaces(FactsBase):
         interfaces = dict()
 
         for key in interface_table:
-            
+
             interface = dict()
             i = interface_table[key]
-            
+
             interface["description"] = i[1]
-                
-            #ToDo canonicalize iname
+
+            if interface["description"] == "":
+                interface["description"] = None
+
+            # ToDo canonicalize iname
             interfaces[i[0]] = interface
 
         return interfaces
 
     def populate_interfaces_description(self, data):
         tables = self._split_to_tables(data)
-        
+
         interface_table = self._parse_table(tables[0], False)
         portchanel_table = self._parse_table(tables[1], False)
 
         interfaces = self._populate_interfaces_description_interface(interface_table)
-        self.facts['interfaces'] = self._merge_dicts(self.facts["interfaces"],interfaces)
+        self.facts["interfaces"] = self._merge_dicts(
+            self.facts["interfaces"], interfaces
+        )
         interfaces = self._populate_interfaces_description_portchanel(portchanel_table)
-        self.facts['interfaces'] = self._merge_dicts(self.facts["interfaces"],interfaces)
+        self.facts["interfaces"] = self._merge_dicts(
+            self.facts["interfaces"], interfaces
+        )
 
     def _populate_address_ipv4(self, ip_table):
         ips = list()
+        interfaces = dict()
 
         for key in ip_table:
-            i = ip_table[key][0]
-            ip,mask = i.split("/")
+            cidr = ip_table[key][0]
+
+            # TODO interface canonicalization
+            interface = ip_table[key][1]
+            ip, mask = cidr.split("/")
+
             ips.append(ip)
+
+            # add ips to interface
+            self._new_interface(interface)
+            if "ipv4" not in self.facts["interfaces"][interface]:
+                self.facts["interfaces"][interface]["ipv4"] = list()
+
+            self.facts["interfaces"][interface]["ipv4"].append(
+                dict(address=ip, subnet=mask)
+            )
 
         return ips
 
@@ -686,23 +759,83 @@ class Interfaces(FactsBase):
         ip_table = self._parse_table(tables[0])
 
         ips = self._populate_address_ipv4(ip_table)
-        self.facts['all_ipv4_addresses'] = ips
+        self.facts["all_ipv4_addresses"] = ips
 
     def _populate_address_ipv6(self, ip_table):
         ips = list()
 
         for key in ip_table:
             ip = ip_table[key][3]
+            interface = ip_table[key][0]
+
             ips.append(ip)
+
+            # add ips to interface
+            self._new_interface(interface)
+            if "ipv6" not in self.facts["interfaces"][interface]:
+                self.facts["interfaces"][interface]["ipv6"] = list()
+
+            self.facts["interfaces"][interface]["ipv6"].append(dict(address=ip))
 
         return ips
 
+    def _new_interface(self, interface):
+
+        if interface in self.facts["interfaces"]:
+            return
+        else:
+            self.facts["interfaces"][interface] = dict()
+            self.facts["interfaces"][interface]["mtu"] = self._mtu
+            self.facts["interfaces"][interface]["admin_state"] = "up"
+            self.facts["interfaces"][interface]["description"] = None
+            self.facts["interfaces"][interface]["state"] = "up"
+            self.facts["interfaces"][interface]["bandwith"] = None
+            self.facts["interfaces"][interface]["duplex"] = None
+            self.facts["interfaces"][interface]["negotiation"] = None
+            self.facts["interfaces"][interface]["control"] = None
+            return
+
     def populate_addresses_ipv6(self, data):
         tables = self._split_to_tables(data)
-        
+
         ip_table = self._parse_table(tables[0])
         ips = self._populate_address_ipv6(ip_table)
-        self.facts['all_ipv6_addresses'] = ips
+        self.facts["all_ipv6_addresses"] = ips
+
+    def populate_interfaces_mtu(self, data):
+        # by documentation SG350
+        match = re.search(r"Jumbo frames are enabled", data, re.M)
+        if match:
+            mtu = 9000
+        else:
+            mtu = 1518
+
+        self._mtu = mtu
+
+    def populate_neighbors(self, data):
+        tables = self._split_to_tables(data)
+
+        neighbor_table = self._parse_table(tables[0], allow_empty_fields=[3])
+
+        neighbors = dict()
+        for key in neighbor_table:
+            neighbor = neighbor_table[key]
+
+            # TODO: canonicalize interfaces
+            ifcname = neighbor[0]
+
+            host = neighbor[3]
+            port = neighbor[2]
+
+            hostport = {"host": host, "port": port}
+
+            if ifcname not in neighbors:
+                neighbors[ifcname] = list()
+
+            neighbors[ifcname].append(hostport)
+
+        self.facts["neighbors"] = neighbors
+
 
 # class Routing(FactsBase):
 #
@@ -884,44 +1017,42 @@ warnings = list()
 
 
 def main():
-    """main entry point for module execution
-    """
+    """main entry point for module execution"""
     argument_spec = dict(
         gather_subset=dict(
-            default=['!config'],
-            type='list',
-            elements='str',
+            default=["!config"],
+            type="list",
+            elements="str",
             choices=[
-                'default',
-                'all',
-                'hardware',
-                'config',
-                'interfaces',
-                '!hardware',
-                '!config',
-                '!interfaces'
-            ]
+                "default",
+                "all",
+                "hardware",
+                "config",
+                "interfaces",
+                "!hardware",
+                "!config",
+                "!interfaces",
+            ],
         )
     )
 
     argument_spec.update(ciscosmb_argument_spec)
 
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    gather_subset = module.params['gather_subset']
+    gather_subset = module.params["gather_subset"]
 
     runable_subsets = set()
     exclude_subsets = set()
 
     for subset in gather_subset:
-        if subset == 'all':
+        if subset == "all":
             runable_subsets.update(VALID_SUBSETS)
             continue
 
-        if subset.startswith('!'):
+        if subset.startswith("!"):
             subset = subset[1:]
-            if subset == 'all':
+            if subset == "all":
                 exclude_subsets.update(VALID_SUBSETS)
                 continue
             exclude = True
@@ -929,7 +1060,7 @@ def main():
             exclude = False
 
         if subset not in VALID_SUBSETS:
-            module.fail_json(msg='Bad subset: %s' % subset)
+            module.fail_json(msg="Bad subset: %s" % subset)
 
         if exclude:
             exclude_subsets.add(subset)
@@ -940,10 +1071,10 @@ def main():
         runable_subsets.update(VALID_SUBSETS)
 
     runable_subsets.difference_update(exclude_subsets)
-    runable_subsets.add('default')
+    runable_subsets.add("default")
 
     facts = dict()
-    facts['gather_subset'] = list(runable_subsets)
+    facts["gather_subset"] = list(runable_subsets)
 
     instances = list()
     for key in runable_subsets:
@@ -955,11 +1086,11 @@ def main():
 
     ansible_facts = dict()
     for key, value in iteritems(facts):
-        key = 'ansible_net_%s' % key
+        key = "ansible_net_%s" % key
         ansible_facts[key] = value
 
     module.exit_json(ansible_facts=ansible_facts, warnings=warnings)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
