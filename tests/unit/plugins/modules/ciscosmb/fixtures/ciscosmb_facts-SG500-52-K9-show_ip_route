@@ -1,0 +1,8 @@
+Maximum Parallel Paths: 1 (1 after reset)
+IP Forwarding: disabled
+Codes: > - best, C - connected, S - static
+
+
+S   0.0.0.0/0 [1/1] via 11.13.1.1, 26:03:44, vlan 1                        
+C   11.13.1.0/18 is directly connected, vlan 1                             
+
