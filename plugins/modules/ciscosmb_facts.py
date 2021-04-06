@@ -278,7 +278,7 @@ class Default(FactsBase):
         models = []
         for n in range(1, 9):
             if n in data:
-                models.append(data[f"{n}"]["pid"])
+                models.append(data["n"]["pid"])
         return models
 
     def parse_stacked_serialnums(self, data):
@@ -287,7 +287,7 @@ class Default(FactsBase):
         sn = []
         for n in range(1, 9):
             if n in data:
-                sn.append(data[f"{n}"]["sn"])
+                sn.append(data["n"]["sn"])
         return sn
 
     def parse_model(self, data):

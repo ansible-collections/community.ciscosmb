@@ -103,7 +103,7 @@ class TerminalModule(TerminalBase):
             raise AnsibleConnectionFailure(
                 "unable to elevate privilege to enable mode, at prompt [%s] with error: %s"
                 % (prompt, e.message)
-            ) from e
+            )
 
     def on_unbecome(self):
         prompt = self._get_prompt()
