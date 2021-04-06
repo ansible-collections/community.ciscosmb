@@ -5,9 +5,9 @@ name: ansible-tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [ move2community, main ]
   pull_request:
-    branches: [ main ]
+    branches: [ move2community, main ]
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        python-version: [ 3.6, 3.7, 3.8, 3.9 ]
+        python-version: [ 2.6, 2.7, 3.5, 3.6, 3.7, 3.8, 3.9 ]
 
     steps:
     - uses: actions/checkout@v2
@@ -45,6 +45,6 @@ jobs:
         rm -f ./qaxi-ciscosmb-*.tar.gz 
         ansible-galaxy collection build -vvv --force
         export GALAXY_IMPORTER_CONFIG=./galaxy-importer.cfg
-        python3 -m galaxy_importer.main qaxi-ciscosmb-*.tar.gz
+        python -m galaxy_importer.main qaxi-ciscosmb-*.tar.gz
 
         rm -f ./qaxi-ciscosmb-*.tar.gz
