@@ -5,10 +5,10 @@ name: ansible-tests-fast
 
 on:
   push:
-    branches-ignore: [ main ]
+    branches-ignore: [ move2community, main ]
 
   pull_request:
-    branches-ignore: [ main ]
+    branches-ignore: [ move2community, main ]
 
 jobs:
   build:
