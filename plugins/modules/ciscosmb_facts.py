@@ -277,7 +277,7 @@ class Default(FactsBase):
         # stacks have modules 2 3 ... 8
         models = []
         for n in range(1, 9):
-            if f"{n}" in data:
+            if n in data:
                 models.append(data[f"{n}"]["pid"])
         return models
 
@@ -286,7 +286,7 @@ class Default(FactsBase):
         # stacks have modules 2 3 ... 8
         sn = []
         for n in range(1, 9):
-            if f"{n}" in data:
+            if n in data:
                 sn.append(data[f"{n}"]["sn"])
         return sn
 
