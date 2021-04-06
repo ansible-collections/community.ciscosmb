@@ -8,4 +8,5 @@ pytest-xdist
 pytest-mock
 galaxy-importer
 mock
+antsibull-changelog
 # vim: tabstop=4 softtabstop=4 shiftwidth=4 expandtab:

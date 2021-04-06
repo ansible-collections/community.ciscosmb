@@ -1,0 +1,47 @@
+ancestor: null
+releases:
+  0.0.2:
+    changes:
+      major_changes:
+      - ciscosmb_facts with default subset and unit tests
+  0.0.4:
+    changes:
+      minor_changes:
+      - uptime in seconds
+    release_date: '2021-01-29'
+  0.0.5:
+    changes:
+      major_changes:
+      - add ciscosmb_command
+    release_date: '2021-02-18'
+  0.0.6:
+    changes:
+      major_changes:
+      - add CBS350 support
+      - unit tests for CBS350
+      minor_changes:
+      - doc update
+    release_date: '2021-02-23'
+  0.1.0:
+    changes:
+      major_changes:
+      - added facts subset "interfaces"
+      minor_changes:
+      - remove mock warning
+    release_date: '2021-04-06'
+  0.1.1:
+    changes:
+      major_changes:
+      - Python 2.6, 2.7, 3.5 is required
+      - add antsibull-changelog support
+      minor_changes:
+      - add Code of conduct
+      - add Contribution
+      - add required files for community inclusion
+      - check tags and add tag switch
+      - cluter removed
+      - code cleaning
+    fragments:
+    - 0.1.1-code_cleaning.yml
+    - 0.1.1-prepare_for_community.yml
+    release_date: '2021-04-06'
