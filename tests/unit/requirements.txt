@@ -1,15 +1,16 @@
 unittest2 ; python_version < '2.7'
 
 ### ansible
-### pycodestyle
-### pylint
-### voluptuous
-### yamllint
-### pytest
-### pytest-xdist
-### pytest-mock
-### galaxy-importer
-### antsibull-changelog
+pycodestyle
+pylint
+voluptuous
+yamllint
+pytest
+pytest-xdist
+pytest-mock
+mock
+galaxy-importer
+antsibull-changelog
 
 # unittest2 ; python_version < '2.7'
 # importlib ; python_version < '2.7'
