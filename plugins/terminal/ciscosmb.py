@@ -61,7 +61,7 @@ class TerminalModule(TerminalBase):
     def on_open_shell(self):
         try:
             self._exec_cli_command(b"terminal datadump")
-        except AnsibleConnectionFailure as e :
+        except AnsibleConnectionFailure as e:
             raise_from(AnsibleConnectionFailure("unable to set terminal parameters"), e)
 
         try:
@@ -103,7 +103,7 @@ class TerminalModule(TerminalBase):
                 )
         except AnsibleConnectionFailure as e:
             prompt = self._get_prompt()
-            raise_from( AnsibleConnectionFailure(
+            raise_from(AnsibleConnectionFailure(
                 "unable to elevate privilege to enable mode, at prompt [%s] with error: %s"
                 % (prompt, e.message)
             ), e)
