@@ -1,6 +1,4 @@
 integration_tests_dependencies:
   - ansible.netcommon
-  - community.network
 unit_tests_dependencies:
   - ansible.netcommon
-  - community.network
