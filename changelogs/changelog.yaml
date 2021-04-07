@@ -45,3 +45,24 @@ releases:
     - 0.1.1-code_cleaning.yml
     - 0.1.1-prepare_for_community.yml
     release_date: '2021-04-06'
+  0.8.0:
+    changes:
+      major_changes:
+      - add antsibull-changelog support
+      minor_changes:
+      - Python 2.6, 2.7, 3.5 compatibility
+      - add Code of conduct
+      - add Contribution
+      - add required files for community inclusion
+      - added ansible dev-guide manual test
+      - better tests requirements
+      - check tags and add tag switch
+      - cluter removed
+      - code cleaning
+      - update my tests
+    fragments:
+    - 0.8.0-code_cleaning.yml
+    - 0.8.0-prepare_for_community.yml
+    - 0.8.0-py27.yml
+    - 0.8.0-tests.yml
+    release_date: '2021-04-07'

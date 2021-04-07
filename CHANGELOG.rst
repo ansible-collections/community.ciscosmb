@@ -5,6 +5,47 @@ CiscoSMB Ansible module Release Notes
 .. contents:: Topics
 
 
+v0.8.0
+======
+
+Major Changes
+-------------
+
+- add antsibull-changelog support
+
+Minor Changes
+-------------
+
+- Python 2.6, 2.7, 3.5 compatibility
+- add Code of conduct
+- add Contribution
+- add required files for community inclusion
+- added ansible dev-guide manual test
+- better tests requirements
+- check tags and add tag switch
+- cluter removed
+- code cleaning
+- update my tests
+
+v0.1.1
+======
+
+Major Changes
+-------------
+
+- Python 2.6, 2.7, 3.5 is required
+- add antsibull-changelog support
+
+Minor Changes
+-------------
+
+- add Code of conduct
+- add Contribution
+- add required files for community inclusion
+- check tags and add tag switch
+- cluter removed
+- code cleaning
+
 v0.1.0
 ======
 
