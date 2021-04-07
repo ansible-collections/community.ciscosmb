@@ -1,7 +1,7 @@
-ansible
+#ansible
 pycodestyle
 pylint
-voluptuous
+#voluptuous
 yamllint
 pytest
 pytest-xdist
