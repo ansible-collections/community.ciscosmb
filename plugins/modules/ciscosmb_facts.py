@@ -192,6 +192,7 @@ class Default(FactsBase):
         if data:
             modules = self.parse_inventory(data)
             stacked_models = self.parse_stacked_models(modules)
+            print(stacked_models)
             if len(stacked_models) >= 2:
                 stacked_serialnums = self.parse_stacked_serialnums(modules)
                 self.facts["stacked_models"] = stacked_models
@@ -277,8 +278,9 @@ class Default(FactsBase):
         # stacks have modules 2 3 ... 8
         models = []
         for n in range(1, 9):
-            if n in data:
-                models.append(data["n"]["pid"])
+            # index is string
+            if str(n) in data:
+                models.append(data[str(n)]["pid"])
         return models
 
     def parse_stacked_serialnums(self, data):
@@ -286,8 +288,9 @@ class Default(FactsBase):
         # stacks have modules 2 3 ... 8
         sn = []
         for n in range(1, 9):
-            if n in data:
-                sn.append(data["n"]["sn"])
+            # index is string
+            if str(n) in data:
+                sn.append(data[str(n)]["sn"])
         return sn
 
     def parse_model(self, data):
