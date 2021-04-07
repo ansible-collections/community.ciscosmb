@@ -22,7 +22,7 @@ __metaclass__ = type
 import os
 import json
 
-from ansible_collections.community.network.tests.unit.plugins.modules.utils import AnsibleExitJson, AnsibleFailJson, ModuleTestCase
+from ansible_collections.qaxi.ciscosmb.tests.unit.plugins.modules.utils import AnsibleExitJson, AnsibleFailJson, ModuleTestCase
 
 
 fixture_path = os.path.join(os.path.dirname(__file__), 'fixtures')
