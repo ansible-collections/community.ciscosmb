@@ -277,8 +277,9 @@ class Default(FactsBase):
         # stacks have modules 2 3 ... 8
         models = []
         for n in range(1, 9):
-            if n in data:
-                models.append(data[f"{n}"]["pid"])
+            # index is string
+            if str(n) in data:
+                models.append(data[str(n)]["pid"])
         return models
 
     def parse_stacked_serialnums(self, data):
@@ -286,8 +287,9 @@ class Default(FactsBase):
         # stacks have modules 2 3 ... 8
         sn = []
         for n in range(1, 9):
-            if n in data:
-                sn.append(data[f"{n}"]["sn"])
+            # index is string
+            if str(n) in data:
+                sn.append(data[str(n)]["sn"])
         return sn
 
     def parse_model(self, data):

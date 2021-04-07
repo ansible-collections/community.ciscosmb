@@ -1,0 +1,62 @@
+name: Manual tests
+on:
+  workflow_dispatch:
+#    inputs:
+#      name:
+#        description: 'Person to greet'
+#        required: true
+#        default: 'Mona the Octocat'
+#      home:
+#        description: 'location'
+#        required: false
+#        default: 'The Octoverse'
+
+jobs:
+# Sanity tests
+#
+# https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
+
+  sanity:
+    name: Sanity (Ⓐ${{ matrix.ansible }})
+    strategy:
+      matrix:
+        ansible:
+          # It's important that Sanity is tested against all stable-X.Y branches
+          # Testing against `devel` may fail as new tests are added.
+          - stable-2.9
+          - stable-2.10
+          - stable-2.11
+          - devel
+    runs-on: ubuntu-latest
+    steps:
+
+      # ansible-test requires the collection to be in a directory in the form
+      # .../ansible_collections/qaxi/ciscosmb/
+
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          path: ansible_collections/qaxi/ciscosmb
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          # it is just required to run that once as "ansible-test sanity" in the docker image
+          # will run on all python versions it supports.
+          python-version: 3.8
+
+      # Install the head of the given branch (devel, stable-2.10)
+      - name: Install ansible-base (${{ matrix.ansible }})
+        run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
+
+      - name: Install collection dependencies
+        run: git clone --depth=1 --single-branch https://github.com/ansible-collections/ansible.netcommon.git ansible_collections/ansible/netcommon
+        # NOTE: we're installing with git to work around Galaxy being a huge PITA (https://github.com/ansible/galaxy/issues/2429)
+        # run: ansible-galaxy collection install ansible.netcommon -p .
+
+      # run ansible-test sanity inside of Docker.
+      # The docker container has all the pinned dependencies that are required
+      # and all python versions ansible supports.
+      - name: Run sanity tests
+        run: ansible-test sanity --docker -v --color
+        working-directory: ./ansible_collections/qaxi/ciscosmb
