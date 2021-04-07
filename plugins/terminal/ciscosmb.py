@@ -21,7 +21,7 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 # Py 2.7 compat.
-from future.utils import raise_from
+from ansible.module_utils.six import raise_from
 
 import json
 import re
