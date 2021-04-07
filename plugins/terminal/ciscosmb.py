@@ -16,12 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
+
 from __future__ import (absolute_import, division, print_function)
-from __future__ import unicode_literals
-from future import standard_library
-standard_library.install_aliases()
-from builtins import *
 __metaclass__ = type
+
+# Py 2.7 compat.
+from future.utils import raise_from
 
 import json
 import re
@@ -30,9 +30,6 @@ from ansible.errors import AnsibleConnectionFailure
 from ansible.module_utils._text import to_text, to_bytes
 from ansible.plugins.terminal import TerminalBase
 from ansible.utils.display import Display
-
-# Py 2.7 compat.
-from future.utils import raise_from
 
 display = Display()
 
