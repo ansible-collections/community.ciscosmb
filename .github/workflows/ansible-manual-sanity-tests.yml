@@ -1,4 +1,4 @@
-name: Manual tests
+name: Manual sanity tests
 on:
   workflow_dispatch:
 #    inputs:
