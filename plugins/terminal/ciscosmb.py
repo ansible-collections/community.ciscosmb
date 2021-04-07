@@ -17,6 +17,10 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 from __future__ import (absolute_import, division, print_function)
+from __future__ import unicode_literals
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
 __metaclass__ = type
 
 import json
