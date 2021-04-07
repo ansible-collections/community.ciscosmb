@@ -192,7 +192,6 @@ class Default(FactsBase):
         if data:
             modules = self.parse_inventory(data)
             stacked_models = self.parse_stacked_models(modules)
-            print(stacked_models)
             if len(stacked_models) >= 2:
                 stacked_serialnums = self.parse_stacked_serialnums(modules)
                 self.facts["stacked_models"] = stacked_models
