@@ -136,9 +136,8 @@ import re
 
 from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.ciscosmb import (
     run_commands,
-)
-from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.ciscosmb import (
     ciscosmb_argument_spec,
+    interface_canonical_name,
 )
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.six import iteritems
@@ -549,8 +548,7 @@ class Interfaces(FactsBase):
                 if interface[key] == "--":
                     interface[key] = None
 
-            # ToDo canonicalize iname
-            interfaces[i[0]] = interface
+            interfaces[interface_canonical_name(i[0])] = interface
         return interfaces
 
     def _populate_interfaces_status_portchanel(self, interface_table):
@@ -576,8 +574,7 @@ class Interfaces(FactsBase):
                 if interface[key] == "--":
                     interface[key] = None
 
-            # ToDo canonicalize iname
-            interfaces[i[0]] = interface
+            interfaces[interface_canonical_name(i[0])] = interface
 
         return interfaces
 
@@ -606,8 +603,7 @@ class Interfaces(FactsBase):
             interface["admin_state"] = i[6].lower()
             interface["mdix"] = i[8].lower()
 
-            # ToDo canonicalize iname
-            interfaces[i[0]] = interface
+            interfaces[interface_canonical_name(i[0])] = interface
         return interfaces
 
     def _populate_interfaces_configuration_portchanel(self, interface_table):
@@ -620,8 +616,7 @@ class Interfaces(FactsBase):
 
             interface["admin_state"] = i[5].lower()
 
-            # ToDo canonicalize iname
-            interfaces[i[0]] = interface
+            interfaces[interface_canonical_name(i[0])] = interface
 
         return interfaces
 
@@ -654,8 +649,7 @@ class Interfaces(FactsBase):
             if interface["description"] == "":
                 interface["description"] = None
 
-            # ToDo canonicalize iname
-            interfaces[i[0]] = interface
+            interfaces[interface_canonical_name(i[0])] = interface
         return interfaces
 
     def _populate_interfaces_description_portchanel(self, interface_table):
@@ -671,8 +665,7 @@ class Interfaces(FactsBase):
             if interface["description"] == "":
                 interface["description"] = None
 
-            # ToDo canonicalize iname
-            interfaces[i[0]] = interface
+            interfaces[interface_canonical_name(i[0])] = interface
 
         return interfaces
 
@@ -697,8 +690,7 @@ class Interfaces(FactsBase):
         for key in ip_table:
             cidr = ip_table[key][0]
 
-            # TODO interface canonicalization
-            interface = ip_table[key][1]
+            interface = interface_canonical_name(ip_table[key][1])
             ip, mask = cidr.split("/")
 
             ips.append(ip)
@@ -726,7 +718,7 @@ class Interfaces(FactsBase):
 
         for key in ip_table:
             ip = ip_table[key][3]
-            interface = ip_table[key][0]
+            interface = interface_canonical_name(ip_table[key][0])
 
             ips.append(ip)
 
@@ -781,8 +773,7 @@ class Interfaces(FactsBase):
         for key in neighbor_table:
             neighbor = neighbor_table[key]
 
-            # TODO: canonicalize interfaces
-            ifcname = neighbor[0]
+            ifcname = interface_canonical_name(neighbor[0])
 
             host = neighbor[3]
             port = neighbor[2]
