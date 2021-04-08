@@ -5,6 +5,14 @@ CiscoSMB Ansible module Release Notes
 .. contents:: Topics
 
 
+v0.9.1
+======
+
+Minor Changes
+-------------
+
+- correct version bumping
+
 v0.9.0
 ======
 

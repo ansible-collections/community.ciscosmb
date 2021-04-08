@@ -73,3 +73,10 @@ releases:
     fragments:
     - interface_canoticalization.yml
     release_date: '2021-04-08'
+  0.9.1:
+    changes:
+      minor_changes:
+      - correct version bumping
+    fragments:
+    - correct_changelog.yml
+    release_date: '2021-04-08'
