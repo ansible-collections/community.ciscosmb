@@ -134,10 +134,13 @@ ansible_net_neighbors:
 """
 import re
 
-from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.ciscosmb import (
+from ansible_collections.qaxi.ciscosmb.plugins.module_utils.ciscosmb import (
     run_commands,
     ciscosmb_argument_spec,
     interface_canonical_name,
+    ciscosmb_split_to_tables,
+    ciscosmb_parse_table,
+    ciscosmb_merge_dicts,
 )
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.six import iteritems
@@ -401,128 +404,6 @@ class Interfaces(FactsBase):
         if data:
             self.populate_neighbors(data)
 
-    def _split_to_tables(self, data):
-        TABLE_HEADER = re.compile(r"^---+ +-+.*$")
-        EMPTY_LINE = re.compile(r"^ *$")
-
-        tables = dict()
-        tableno = -1
-        lineno = 0
-        tabledataget = False
-
-        for line in data.splitlines():
-            if re.match(EMPTY_LINE, line):
-                tabledataget = False
-                continue
-
-            if re.match(TABLE_HEADER, line):
-                tableno += 1
-                tabledataget = True
-                lineno = 0
-                tables[tableno] = dict()
-                tables[tableno]["header"] = line
-                tables[tableno]["data"] = dict()
-                continue
-
-            if tabledataget:
-                tables[tableno]["data"][lineno] = line
-                lineno += 1
-                continue
-
-        return tables
-
-    def _parse_table(self, table, allow_overflow=True, allow_empty_fields=None):
-
-        if allow_empty_fields is None:
-            allow_empty_fields = list()
-
-        fields_end = self.__get_table_columns_end(table["header"])
-        data = self.__get_table_data(
-            table["data"], fields_end, allow_overflow, allow_empty_fields
-        )
-
-        return data
-
-    def __get_table_columns_end(self, headerline):
-        """ fields length are diferent device to device, detect them on horizontal lin """
-        fields_end = [m.start() for m in re.finditer("  *", headerline.strip())]
-        # fields_position.insert(0,0)
-        # fields_end.append(len(headerline))
-        fields_end.append(10000)  # allow "long" last field
-
-        return fields_end
-
-    def __line_to_fields(self, line, fields_end):
-        """ dynamic fields lenghts """
-        line_elems = {}
-        index = 0
-        f_start = 0
-        for f_end in fields_end:
-            line_elems[index] = line[f_start:f_end].strip()
-            index += 1
-            f_start = f_end
-
-        return line_elems
-
-    def __get_table_data(
-        self, tabledata, fields_end, allow_overflow=True, allow_empty_fields=None
-    ):
-
-        if allow_empty_fields is None:
-            allow_empty_fields = list()
-        data = dict()
-
-        dataindex = 0
-        for lineno in tabledata:
-            owerflownfields = list()
-            owerflow = False
-
-            line = tabledata[lineno]
-            line_elems = self.__line_to_fields(line, fields_end)
-
-            if allow_overflow:
-                # search for overflown fields
-                for elemno in line_elems:
-                    if elemno not in allow_empty_fields and line_elems[elemno] == "":
-                        owerflow = True
-                    else:
-                        owerflownfields.append(elemno)
-
-                if owerflow:
-                    # concat owerflown elements to previous data
-                    for fieldno in owerflownfields:
-                        data[dataindex - 1][fieldno] += line_elems[fieldno]
-
-                else:
-                    data[dataindex] = line_elems
-                    dataindex += 1
-            else:
-                data[dataindex] = line_elems
-                dataindex += 1
-
-        return data
-
-    def _merge_dicts(self, a, b, path=None):
-        "merges b into a"
-        if path is None:
-            path = []
-
-        # is b empty?
-        if not bool(b):
-            return a
-
-        for key in b:
-            if key in a:
-                if isinstance(a[key], dict) and isinstance(b[key], dict):
-                    self._merge_dicts(a[key], b[key], path + [str(key)])
-                elif a[key] == b[key]:
-                    pass  # same leaf value
-                else:
-                    raise Exception("Conflict at %s" % ".".join(path + [str(key)]))
-            else:
-                a[key] = b[key]
-        return a
-
     def _populate_interfaces_status_interface(self, interface_table):
         interfaces = dict()
 
@@ -579,17 +460,17 @@ class Interfaces(FactsBase):
         return interfaces
 
     def populate_interfaces_status(self, data):
-        tables = self._split_to_tables(data)
+        tables = ciscosmb_split_to_tables(data)
 
-        interface_table = self._parse_table(tables[0])
-        portchanel_table = self._parse_table(tables[1])
+        interface_table = ciscosmb_parse_table(tables[0])
+        portchanel_table = ciscosmb_parse_table(tables[1])
 
         interfaces = self._populate_interfaces_status_interface(interface_table)
-        self.facts["interfaces"] = self._merge_dicts(
+        self.facts["interfaces"] = ciscosmb_merge_dicts(
             self.facts["interfaces"], interfaces
         )
         interfaces = self._populate_interfaces_status_portchanel(portchanel_table)
-        self.facts["interfaces"] = self._merge_dicts(
+        self.facts["interfaces"] = ciscosmb_merge_dicts(
             self.facts["interfaces"], interfaces
         )
 
@@ -621,19 +502,19 @@ class Interfaces(FactsBase):
         return interfaces
 
     def populate_interfaces_configuration(self, data):
-        tables = self._split_to_tables(data)
+        tables = ciscosmb_split_to_tables(data)
 
-        interface_table = self._parse_table(tables[0])
-        portchanel_table = self._parse_table(tables[1])
+        interface_table = ciscosmb_parse_table(tables[0])
+        portchanel_table = ciscosmb_parse_table(tables[1])
 
         interfaces = self._populate_interfaces_configuration_interface(interface_table)
-        self.facts["interfaces"] = self._merge_dicts(
+        self.facts["interfaces"] = ciscosmb_merge_dicts(
             self.facts["interfaces"], interfaces
         )
         interfaces = self._populate_interfaces_configuration_portchanel(
             portchanel_table
         )
-        self.facts["interfaces"] = self._merge_dicts(
+        self.facts["interfaces"] = ciscosmb_merge_dicts(
             self.facts["interfaces"], interfaces
         )
 
@@ -670,17 +551,17 @@ class Interfaces(FactsBase):
         return interfaces
 
     def populate_interfaces_description(self, data):
-        tables = self._split_to_tables(data)
+        tables = ciscosmb_split_to_tables(data)
 
-        interface_table = self._parse_table(tables[0], False)
-        portchanel_table = self._parse_table(tables[1], False)
+        interface_table = ciscosmb_parse_table(tables[0], False)
+        portchanel_table = ciscosmb_parse_table(tables[1], False)
 
         interfaces = self._populate_interfaces_description_interface(interface_table)
-        self.facts["interfaces"] = self._merge_dicts(
+        self.facts["interfaces"] = ciscosmb_merge_dicts(
             self.facts["interfaces"], interfaces
         )
         interfaces = self._populate_interfaces_description_portchanel(portchanel_table)
-        self.facts["interfaces"] = self._merge_dicts(
+        self.facts["interfaces"] = ciscosmb_merge_dicts(
             self.facts["interfaces"], interfaces
         )
 
@@ -707,8 +588,8 @@ class Interfaces(FactsBase):
         return ips
 
     def populate_addresses_ipv4(self, data):
-        tables = self._split_to_tables(data)
-        ip_table = self._parse_table(tables[0])
+        tables = ciscosmb_split_to_tables(data)
+        ip_table = ciscosmb_parse_table(tables[0])
 
         ips = self._populate_address_ipv4(ip_table)
         self.facts["all_ipv4_addresses"] = ips
@@ -748,9 +629,9 @@ class Interfaces(FactsBase):
             return
 
     def populate_addresses_ipv6(self, data):
-        tables = self._split_to_tables(data)
+        tables = ciscosmb_split_to_tables(data)
 
-        ip_table = self._parse_table(tables[0])
+        ip_table = ciscosmb_parse_table(tables[0])
         ips = self._populate_address_ipv6(ip_table)
         self.facts["all_ipv6_addresses"] = ips
 
@@ -765,9 +646,9 @@ class Interfaces(FactsBase):
         self._mtu = mtu
 
     def populate_neighbors(self, data):
-        tables = self._split_to_tables(data)
+        tables = ciscosmb_split_to_tables(data)
 
-        neighbor_table = self._parse_table(tables[0], allow_empty_fields=[3])
+        neighbor_table = ciscosmb_parse_table(tables[0], allow_empty_fields=[3])
 
         neighbors = dict()
         for key in neighbor_table:

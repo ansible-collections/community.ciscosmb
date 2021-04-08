@@ -30,13 +30,15 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import json
+import re
+
 from ansible.module_utils._text import to_text, to_native
 from ansible.module_utils.basic import env_fallback
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import to_list, ComplexList
 from ansible.module_utils.connection import Connection, ConnectionError
 
 # copy of https://github.com/napalm-automation/napalm/blob/develop/napalm/base/canonical_map.py
-from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.ciscosmb_canonical_map import base_interfaces, reverse_mapping
+from ansible_collections.qaxi.ciscosmb.plugins.module_utils.ciscosmb_canonical_map import base_interfaces, reverse_mapping
 
 _DEVICE_CONFIGS = {}
 
@@ -49,6 +51,134 @@ ciscosmb_provider_spec = {
     'timeout': dict(type='int')
 }
 ciscosmb_argument_spec = {}
+
+
+def ciscosmb_split_to_tables(data):
+    TABLE_HEADER = re.compile(r"^---+ +-+.*$")
+    EMPTY_LINE = re.compile(r"^ *$")
+
+    tables = dict()
+    tableno = -1
+    lineno = 0
+    tabledataget = False
+
+    for line in data.splitlines():
+        if re.match(EMPTY_LINE, line):
+            tabledataget = False
+            continue
+
+        if re.match(TABLE_HEADER, line):
+            tableno += 1
+            tabledataget = True
+            lineno = 0
+            tables[tableno] = dict()
+            tables[tableno]["header"] = line
+            tables[tableno]["data"] = dict()
+            continue
+
+        if tabledataget:
+            tables[tableno]["data"][lineno] = line
+            lineno += 1
+            continue
+
+    return tables
+
+
+def ciscosmb_parse_table(table, allow_overflow=True, allow_empty_fields=None):
+
+    if allow_empty_fields is None:
+        allow_empty_fields = list()
+
+    fields_end = __get_table_columns_end(table["header"])
+    data = __get_table_data(
+        table["data"], fields_end, allow_overflow, allow_empty_fields
+    )
+
+    return data
+
+
+def __get_table_columns_end(headerline):
+    """ fields length are diferent device to device, detect them on horizontal lin """
+    fields_end = [m.start() for m in re.finditer("  *", headerline.strip())]
+    # fields_position.insert(0,0)
+    # fields_end.append(len(headerline))
+    fields_end.append(10000)  # allow "long" last field
+
+    return fields_end
+
+
+def __line_to_fields(line, fields_end):
+    """ dynamic fields lenghts """
+    line_elems = {}
+    index = 0
+    f_start = 0
+    for f_end in fields_end:
+        line_elems[index] = line[f_start:f_end].strip()
+        index += 1
+        f_start = f_end
+
+    return line_elems
+
+
+def __get_table_data(
+    tabledata, fields_end, allow_overflow=True, allow_empty_fields=None
+):
+
+    if allow_empty_fields is None:
+        allow_empty_fields = list()
+    data = dict()
+
+    dataindex = 0
+    for lineno in tabledata:
+        owerflownfields = list()
+        owerflow = False
+
+        line = tabledata[lineno]
+        line_elems = __line_to_fields(line, fields_end)
+
+        if allow_overflow:
+            # search for overflown fields
+            for elemno in line_elems:
+                if elemno not in allow_empty_fields and line_elems[elemno] == "":
+                    owerflow = True
+                else:
+                    owerflownfields.append(elemno)
+
+            if owerflow:
+                # concat owerflown elements to previous data
+                for fieldno in owerflownfields:
+                    data[dataindex - 1][fieldno] += line_elems[fieldno]
+
+            else:
+                data[dataindex] = line_elems
+                dataindex += 1
+        else:
+            data[dataindex] = line_elems
+            dataindex += 1
+
+    return data
+
+
+def ciscosmb_merge_dicts(a, b, path=None):
+    "merges b into a"
+    if path is None:
+        path = []
+
+    # is b empty?
+    if not bool(b):
+        return a
+
+    for key in b:
+        if key in a:
+            if isinstance(a[key], dict) and isinstance(b[key], dict):
+                ciscosmb_merge_dicts(a[key], b[key], path + [str(key)])
+            elif a[key] == b[key]:
+                pass  # same leaf value
+            else:
+                raise Exception("Conflict at %s" % ".".join(path + [str(key)]))
+        else:
+            a[key] = b[key]
+    return a
 
 
 def interface_canonical_name(interface):
