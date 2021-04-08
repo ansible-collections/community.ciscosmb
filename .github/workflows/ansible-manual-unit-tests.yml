@@ -1,4 +1,4 @@
-name: Manual unit tests
+name: Ansible dev-guide units tests
 on:
   workflow_dispatch:
 #    inputs:

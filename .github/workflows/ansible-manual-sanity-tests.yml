@@ -1,4 +1,4 @@
-name: Manual sanity tests
+name: Ansible dev-guide sanity tests
 on:
   workflow_dispatch:
 #    inputs:
