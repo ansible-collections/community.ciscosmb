@@ -5,6 +5,14 @@ CiscoSMB Ansible module Release Notes
 .. contents:: Topics
 
 
+v0.9.0
+======
+
+Major Changes
+-------------
+
+- interface name canonicalization
+
 v0.8.0
 ======
 

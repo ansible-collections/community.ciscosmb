@@ -66,3 +66,10 @@ releases:
     - 0.8.0-py27.yml
     - 0.8.0-tests.yml
     release_date: '2021-04-07'
+  0.9.0:
+    changes:
+      major_changes:
+      - interface name canonicalization
+    fragments:
+    - interface_canoticalization.yml
+    release_date: '2021-04-08'
