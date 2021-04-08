@@ -107,7 +107,7 @@ class TestCiscoSMBFactsModuleOnSG50052K9(TestCiscoSMBModule):
         )
         self.assertEqual(
             result['ansible_facts']['ansible_net_all_ipv6_addresses'][0],
-            result['ansible_facts']['ansible_net_interfaces']['vlan 1']['ipv6'][0]['address']
+            result['ansible_facts']['ansible_net_interfaces']['vlan1']['ipv6'][0]['address']
         )
         self.assertEqual(
             len(result['ansible_facts']['ansible_net_interfaces'].keys()), 85

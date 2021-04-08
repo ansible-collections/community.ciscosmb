@@ -35,6 +35,9 @@ from ansible.module_utils.basic import env_fallback
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.utils import to_list, ComplexList
 from ansible.module_utils.connection import Connection, ConnectionError
 
+# copy of https://github.com/napalm-automation/napalm/blob/develop/napalm/base/canonical_map.py
+from ansible_collections.qaxi.ciscosmb.plugins.module_utils.network.ciscosmb.ciscosmb_canonical_map import base_interfaces, reverse_mapping
+
 _DEVICE_CONFIGS = {}
 
 ciscosmb_provider_spec = {
@@ -46,6 +49,18 @@ ciscosmb_provider_spec = {
     'timeout': dict(type='int')
 }
 ciscosmb_argument_spec = {}
+
+
+def interface_canonical_name(interface):
+    iftype = interface.rstrip(r"/\0123456789. ")
+    ifno = interface[len(iftype):].lstrip()
+
+    if iftype in base_interfaces:
+        iftype = base_interfaces[iftype]
+
+    interface = iftype + str(ifno)
+
+    return interface
 
 
 def get_provider_argspec():
