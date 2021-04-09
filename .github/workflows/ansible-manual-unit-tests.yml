@@ -33,7 +33,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
         with:
-          path: ansible_collections/qaxi/ciscosmb
+          path: ansible_collections/community/ciscosmb
 
       - name: Set up Python ${{ matrix.ansible }}
         uses: actions/setup-python@v2
@@ -51,12 +51,12 @@ jobs:
       # Run the unit tests
       - name: Run unit tests for all Python versions
         run: ansible-test units -v --color --docker --coverage
-        working-directory: ./ansible_collections/qaxi/ciscosmb
+        working-directory: ./ansible_collections/community/ciscosmb
 
         # ansible-test support producing code coverage date
       - name: Generate coverage report
         run: ansible-test coverage xml -v --requirements --group-by command --group-by version
-        working-directory: ./ansible_collections/qaxi/ciscosmb
+        working-directory: ./ansible_collections/community/ciscosmb
 
 ###
 # Integration tests (RECOMMENDED)
@@ -95,7 +95,7 @@ jobs:
 #      - name: Check out code
 #        uses: actions/checkout@v2
 #        with:
-#          path: ansible_collections/qaxi/ciscosmb
+#          path: ansible_collections/community/ciscosmb
 #
 #      - name: Set up Python ${{ matrix.ansible }}
 #        uses: actions/setup-python@v2
@@ -113,10 +113,10 @@ jobs:
 #      # Run the integration tests
 #      - name: Run integration test
 #        run: ansible-test integration -v --color --retry-on-error --continue-on-error --diff --python ${{ matrix.python }} --docker --coverage
-#        working-directory: ./ansible_collections/qaxi/ciscosmb
+#        working-directory: ./ansible_collections/community/ciscosmb
 #
 #        # ansible-test support producing code coverage date
 #      - name: Generate coverage report
 #        run: ansible-test coverage xml -v --requirements --group-by command --group-by version
-#        working-directory: ./ansible_collections/qaxi/ciscosmb
+#        working-directory: ./ansible_collections/community/ciscosmb
 #

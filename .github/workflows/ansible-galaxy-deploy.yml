@@ -24,22 +24,22 @@ jobs:
         pip install -r tests/unit/requirements.txt
 
         ansible-galaxy collection install ansible.netcommon
-        mkdir -p ~/.ansible/collections/ansible_collections/qaxi/ciscosmb
-        cp -r * ~/.ansible/collections/ansible_collections/qaxi/ciscosmb/
+        mkdir -p ~/.ansible/collections/ansible_collections/community/ciscosmb
+        cp -r * ~/.ansible/collections/ansible_collections/community/ciscosmb/
     - name: Sanity checks
       run: |
-        cd ~/.ansible/collections/ansible_collections/qaxi/ciscosmb
+        cd ~/.ansible/collections/ansible_collections/community/ciscosmb
         ansible-test sanity --python 3.8
     - name: Unit tests
       run: |
-        cd ~/.ansible/collections/ansible_collections/qaxi/ciscosmb
+        cd ~/.ansible/collections/ansible_collections/community/ciscosmb
         ansible-test units --python 3.8
     - name: Deploy to Galaxy
       run: |
-        rm -f ./qaxi-ciscosmb-*.tar.gz 
+        rm -f ./community-ciscosmb-*.tar.gz 
         ansible-galaxy collection build -vvv --force
         export GALAXY_IMPORTER_CONFIG=./galaxy-importer.cfg
-        python3 -m galaxy_importer.main qaxi-ciscosmb-*.tar.gz
+        python3 -m galaxy_importer.main community-ciscosmb-*.tar.gz
         ansible-galaxy collection publish -vvv \
-            ./qaxi-ciscosmb-*.tar.gz --token ${{ secrets.GALAXY_TOKEN }}
-        rm -f ./qaxi-ciscosmb-*.tar.gz 
+            ./community-ciscosmb-*.tar.gz --token ${{ secrets.GALAXY_TOKEN }}
+        rm -f ./community-ciscosmb-*.tar.gz 
