@@ -3,8 +3,8 @@ __metaclass__ = type
 
 import json
 
-from ansible_collections.qaxi.ciscosmb.tests.unit.compat import unittest
-from ansible_collections.qaxi.ciscosmb.tests.unit.compat.mock import patch
+from ansible_collections.community.ciscosmb.tests.unit.compat import unittest
+from ansible_collections.community.ciscosmb.tests.unit.compat.mock import patch
 from ansible.module_utils import basic
 from ansible.module_utils._text import to_bytes
 

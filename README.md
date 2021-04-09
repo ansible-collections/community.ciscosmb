@@ -5,7 +5,7 @@ Ansible Galaxy module for Cisco SMB switches - SG300, SG500, SG350, SG550, CBS35
 ## Install
 
 ```
-ansible-galaxy collection install qaxi.ciscosmb
+ansible-galaxy collection install community.ciscosmb
 ```
 
 ## Use
@@ -29,10 +29,10 @@ all:
   hosts:
     switch1:
       ansible_host: AAA.BBB.CCC.DDD
-      ansible_network_os: qaxi.ciscosmb.ciscosmb
+      ansible_network_os: community.ciscosmb.ciscosmb
     switch2:
       ansible_host: WWW.XXX.YYY.ZZZ
-      ansible_network_os: qaxi.ciscosmb.ciscosmb
+      ansible_network_os: community.ciscosmb.ciscosmb
 
 ```
 
@@ -49,16 +49,16 @@ playbook `ciscosmb_gather_facts.yml`
     # Collect data
     #
     - name: CiscoSMB - Gather Facts - subset default
-      qaxi.ciscosmb.ciscosmb_facts:
+      communtity.ciscosmb.ciscosmb_facts:
         gather_subset:
           - default
-      # when: ansible_network_os == 'qaxi.ciscosmb.ciscosmb'
+      # when: ansible_network_os == 'community.ciscosmb.ciscosmb'
 
     - name: CiscoSMB - Gather Facts - subset config
-      qaxi.ciscosmb.ciscosmb_facts:
+      community.ciscosmb.ciscosmb_facts:
         gather_subset:
           - config
-      # when: ansible_network_os == 'qaxi.ciscosmb.ciscosmb'
+      # when: ansible_network_os == 'community.ciscosmb.ciscosmb'
 
     - name: Create configuration directory
       local_action: file path={{ configs_dir }} state=directory
@@ -77,11 +77,22 @@ ansible-playbook -i ciscosmb_inventory.yml ciscosmb_gather_facts.yml
 
 ## Developement
 
-### Needs installed
+### Setup environment
 ```
-git
-pip install -r requirements-dev.txt
+git clone https://github.com/ansible-collections/community.ciscosmb
+cd community.ciscosmb
+python3 -m venv .venv
+. .venv/bin/activate
+pip install ansible
+pip install -r tests/unit/requirements.txt
 ansible-galaxy collection install ansible.netcommon
+```
+
+### Develop 
+```
+cd community.ciscosmb
+. .venv/bin/activate
+git pull
 ```
 
 ### Testing
@@ -90,17 +101,17 @@ ansible-galaxy collection install ansible.netcommon
 export PY="--python 3.8" # set your version or unset
    ansible-test sanity --local ${PY}  \
 && ansible-test units  --local ${PY} \
-&& rm -f ./qaxi-ciscosmb-*.tar.gz  \
+&& rm -f ./community-ciscosmb-*.tar.gz  \
 && ansible-galaxy collection build -v --force  \
 && export GALAXY_IMPORTER_CONFIG=./galaxy-importer.cfg  \
-&& python3 -m galaxy_importer.main ./qaxi-ciscosmb-*.tar.gz  \
-&& rm -f ./qaxi-ciscosmb-*.tar.gz
+&& python3 -m galaxy_importer.main ./community-ciscosmb-*.tar.gz  \
+&& rm -f ./community-ciscosmb-*.tar.gz
 ```
 
 ## Publish
 ```
 ansible-galaxy collection build -v --force \
-&& ansible-galaxy collection publish ./qaxi-ciscosmb-X.X.X.tar.gz --token <TOKEN> 
+&& ansible-galaxy collection publish ./community-ciscosmb-X.X.X.tar.gz --token <TOKEN> 
 
 ```
 

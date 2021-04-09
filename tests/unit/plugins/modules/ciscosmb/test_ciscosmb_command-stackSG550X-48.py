@@ -17,11 +17,11 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-from ansible_collections.qaxi.ciscosmb.tests.unit.compat.mock import patch
-from ansible_collections.qaxi.ciscosmb.tests.unit.plugins.modules.utils import set_module_args
+from ansible_collections.community.ciscosmb.tests.unit.compat.mock import patch
+from ansible_collections.community.ciscosmb.tests.unit.plugins.modules.utils import set_module_args
 from .ciscosmb_module import TestCiscoSMBModule, load_fixture
 
-from ansible_collections.qaxi.ciscosmb.plugins.modules import ciscosmb_command
+from ansible_collections.community.ciscosmb.plugins.modules import ciscosmb_command
 
 
 class TestCiscoSMBCommandModule(TestCiscoSMBModule):
@@ -30,7 +30,7 @@ class TestCiscoSMBCommandModule(TestCiscoSMBModule):
 
     def setUp(self):
         super().setUp()
-        self.mock_run_commands = patch('ansible_collections.qaxi.ciscosmb.plugins.modules.ciscosmb_command.run_commands')
+        self.mock_run_commands = patch('ansible_collections.community.ciscosmb.plugins.modules.ciscosmb_command.run_commands')
         self.run_commands = self.mock_run_commands.start()
 
     def tearDown(self):

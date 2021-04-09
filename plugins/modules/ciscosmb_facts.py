@@ -35,16 +35,16 @@ options:
 
 EXAMPLES = """
 - name: Collect all facts from the device
-  qaxi.ciscosmb.ciscosmb_facts:
+  community.ciscosmb.ciscosmb_facts:
     gather_subset: all
 
 - name: Collect only the config and default facts
-  qaxi.ciscosmb.ciscosmb_facts:
+  community.ciscosmb.ciscosmb_facts:
     gather_subset:
       - config
 
 - name: Do not collect hardware facts
-  qaxi.ciscosmb.ciscosmb_facts:
+  community.ciscosmb.ciscosmb_facts:
     gather_subset:
       - "!hardware"
 """
@@ -134,7 +134,7 @@ ansible_net_neighbors:
 """
 import re
 
-from ansible_collections.qaxi.ciscosmb.plugins.module_utils.ciscosmb import (
+from ansible_collections.community.ciscosmb.plugins.module_utils.ciscosmb import (
     run_commands,
     ciscosmb_argument_spec,
     interface_canonical_name,

@@ -66,22 +66,22 @@ options:
 
 EXAMPLES = """
 - name: Run command on remote devices
-  qaxi.ciscosmb.command:
+  community.ciscosmb.command:
     commands: show version
 
 - name: Run command and check to see if output contains PID
-  qaxi.ciscosmb.command:
+  community.ciscosmb.command:
     commands: show inventory
     wait_for: result[0] contains PID
 
 - name: Run multiple commands on remote nodes
-  qaxi.ciscosmb.command:
+  community.ciscosmb.command:
     commands:
       - show version
       - show system
 
 - name: Run multiple commands and evaluate the output
-  qaxi.ciscosmb.command:
+  community.ciscosmb.command:
     commands:
       - show version
       - show system
@@ -111,8 +111,8 @@ failed_conditions:
 import time
 
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.parsing import Conditional
-from ansible_collections.qaxi.ciscosmb.plugins.module_utils.ciscosmb import run_commands
-from ansible_collections.qaxi.ciscosmb.plugins.module_utils.ciscosmb import ciscosmb_argument_spec
+from ansible_collections.community.ciscosmb.plugins.module_utils.ciscosmb import run_commands
+from ansible_collections.community.ciscosmb.plugins.module_utils.ciscosmb import ciscosmb_argument_spec
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.six import string_types
 
