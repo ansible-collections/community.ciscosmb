@@ -1,28 +1,7 @@
-#unittest2 ; python_version < '2.7'
-mock
+git unittest2 ; python_version < '2.7'
+importlib ; python_version < '2.7'
 
 ### ansible
-pycodestyle
-pylint
-voluptuous
-yamllint
-pytest
-pytest-xdist
-pytest-mock
-mock
-galaxy-importer
-antsibull-changelog
+#galaxy-importer
+#antsibull-changelog
 
-# unittest2 ; python_version < '2.7'
-# importlib ; python_version < '2.7'
-# 
-# # requirement for the linode module
-# linode-python  # APIv3
-# linode_api4 ; python_version > '2.6'  # APIv4
-# 
-# # requirement for the gitlab and github modules
-# python-gitlab
-# PyGithub
-# httmock
-# # requirement for datadog_downtime module
-# datadog-api-client >= 1.0.0b3 ; python_version >= '3.6'

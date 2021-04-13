@@ -29,8 +29,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
 
-        pip install -r tests/unit/requirements.txt
-        
         ansible-galaxy collection install ansible.netcommon
         mkdir -p ~/.ansible/collections/ansible_collections/community/ciscosmb
         cp -r * ~/.ansible/collections/ansible_collections/community/ciscosmb/
@@ -44,7 +42,8 @@ jobs:
         ansible-test units --python ${{ matrix.python-version }}
     - name: Test deploy to Galaxy
       run: |
-        rm -f ./community-ciscosmb-*.tar.gz 
+        rm -f ./community-ciscosmb-*.tar.gz
+        pip install #galaxy-importer antsibull-changelog
         ansible-galaxy collection build -vvv --force
         export GALAXY_IMPORTER_CONFIG=./galaxy-importer.cfg
         python -m galaxy_importer.main community-ciscosmb-*.tar.gz
