@@ -174,7 +174,7 @@ class Default(FactsBase):
     ]
 
     def populate(self):
-        super().populate()
+        super(Default, self).populate()
 
         data = self.responses[0]
         if data:
@@ -320,7 +320,7 @@ class Hardware(FactsBase):
     ]
 
     def populate(self):
-        super().populate()
+        super(Hardware, self).populate()
         data = self.responses[0]
         if data:
             self.parse_filesystem_info(data)
@@ -345,7 +345,7 @@ class Config(FactsBase):
     COMMANDS = ["show running-config detailed"]
 
     def populate(self):
-        super().populate()
+        super(Config, self).populate()
         data = self.responses[0]
         if data:
             self.facts["config"] = data
@@ -369,7 +369,7 @@ class Interfaces(FactsBase):
     WRAPPED_LINE_RE = re.compile(r"^\s+(?!\d)")
 
     def populate(self):
-        super().populate()
+        super(Interfaces, self).populate()
 
         self.facts["interfaces"] = dict()
         self.facts["all_ipv4_addresses"] = list()
