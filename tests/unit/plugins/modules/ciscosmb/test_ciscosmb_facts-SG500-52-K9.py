@@ -23,17 +23,17 @@ from ansible_collections.community.ciscosmb.tests.unit.plugins.modules.utils imp
 from .ciscosmb_module import TestCiscoSMBModule, load_fixture
 
 
-class TestCiscoSMBFactsModuleOnSG50052K9(TestCiscoSMBModule):
+class TestCiscoSMBFactsModule(TestCiscoSMBModule):
 
     module = ciscosmb_facts
 
     def setUp(self):
-        super(TestCiscoSMBCommandModule, self).setUp()
+        super(TestCiscoSMBFactsModule, self).setUp()
         self.mock_run_commands = patch('ansible_collections.community.ciscosmb.plugins.modules.ciscosmb_facts.run_commands')
         self.run_commands = self.mock_run_commands.start()
 
     def tearDown(self):
-        super(TestCiscoSMBCommandModule, self).tearDown()
+        super(TestCiscoSMBFactsModule, self).tearDown()
         self.mock_run_commands.stop()
 
     def load_fixtures(self, commands=None):
