@@ -9,12 +9,17 @@ ansible-galaxy collection install community.ciscosmb
 ```
 
 ## Use
-Tested on devices SG350-28-K9, SG500-52-K9, SG550X-24MP-K9, CBS350-24P-4G and on SG550X-48 stack
+Tested on devices:
+* SG350-28-K9
+* SG500-52-K9
+* SG550X-24MP-K9
+* CBS350-24P-4G
+* SG550X-48 stack
 
 Limited capabilities - Work in progress
 
 file `cismosmb_inventory.yml`
-```
+```yaml
 all:
   vars:
     # no automatic facts
@@ -37,7 +42,7 @@ all:
 ```
 
 playbook `ciscosmb_gather_facts.yml`
-```
+```yaml
 - name: Gather Facts
   gather_facts: no
   hosts: all
@@ -108,11 +113,5 @@ export PY="--python 3.8" # set your version or unset
 && rm -f ./community-ciscosmb-*.tar.gz
 ```
 
-## Publish
-```
-ansible-galaxy collection build -v --force \
-&& ansible-galaxy collection publish ./community-ciscosmb-X.X.X.tar.gz --token <TOKEN> 
-
-```
 
 Heavy influenced by Egor Zaitsev (@heuels) RouterOS driver https://galaxy.ansible.com/community/routeros
