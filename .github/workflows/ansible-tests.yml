@@ -80,7 +80,7 @@ jobs:
     name: Units (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
     strategy:
       # As soon as the first unit test fails, cancel the others to free up the CI queue
-      fail-fast: true
+      #fail-fast: true
       matrix:
         ansible:
           # - stable-2.9 # Only if your collection supports Ansible 2.9
