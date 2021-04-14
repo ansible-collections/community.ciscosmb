@@ -99,11 +99,10 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
             result['ansible_facts']['ansible_net_serialnum'], 'ABC1234567A'
         )
 
-        with self.assertRaises(KeyError) as cm:
-            len(result['ansible_facts']['ansible_net_stacked_models'])
-        the_exception = cm.exception
-        print(the_exception)
-        self.assertIsInstance(the_exception, KeyError)
+### TODO         with self.assertRaises(KeyError) as cm:
+### TODO             len(result['ansible_facts']['ansible_net_stacked_models'])
+### TODO         the_exception = cm.exception
+### TODO         self.assertIsInstance(the_exception, KeyError)
 
 #    def test_ciscosmb_facts_hardware(self):
 #        set_module_args(dict(gather_subset='hardware'))
