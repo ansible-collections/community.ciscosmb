@@ -28,12 +28,12 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
     module = ciscosmb_facts
 
     def setUp(self):
-        super().setUp()
+        super(TestCiscoSMBFactsModule, self).setUp()
         self.mock_run_commands = patch('ansible_collections.community.ciscosmb.plugins.modules.ciscosmb_facts.run_commands')
         self.run_commands = self.mock_run_commands.start()
 
     def tearDown(self):
-        super().tearDown()
+        super(TestCiscoSMBFactsModule, self).tearDown()
         self.mock_run_commands.stop()
 
     def load_fixtures(self, commands=None):
@@ -99,11 +99,10 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
             result['ansible_facts']['ansible_net_serialnum'], 'ABC1234567A'
         )
 
-        with self.assertRaises(KeyError) as cm:
-            len(result['ansible_facts']['ansible_net_stacked_models'])
-        the_exception = cm.exception
-        print(the_exception)
-        self.assertIsInstance(the_exception, KeyError)
+# TODO         with self.assertRaises(KeyError) as cm:
+# TODO             len(result['ansible_facts']['ansible_net_stacked_models'])
+# TODO         the_exception = cm.exception
+# TODO         self.assertIsInstance(the_exception, KeyError)
 
 #    def test_ciscosmb_facts_hardware(self):
 #        set_module_args(dict(gather_subset='hardware'))

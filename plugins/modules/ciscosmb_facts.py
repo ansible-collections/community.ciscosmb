@@ -174,7 +174,7 @@ class Default(FactsBase):
     ]
 
     def populate(self):
-        super().populate()
+        super(Default, self).populate()
 
         data = self.responses[0]
         if data:
@@ -320,7 +320,7 @@ class Hardware(FactsBase):
     ]
 
     def populate(self):
-        super().populate()
+        super(Hardware, self).populate()
         data = self.responses[0]
         if data:
             self.parse_filesystem_info(data)
@@ -329,15 +329,15 @@ class Hardware(FactsBase):
         match = re.search(r"Total size of (\S+): (\d+) bytes", data, re.M)
 
         if match:  # fw 1.x
-            self.facts["spacetotal_mb"] = round(int(match[2]) / 1024 / 1024, 1)
+            self.facts["spacetotal_mb"] = round(int(match.group(2)) / 1024 / 1024, 1)
             match = re.search(r"Free size of (\S+): (\d+) bytes", data, re.M)
-            self.facts["spacefree_mb"] = round(int(match[2]) / 1024 / 1024, 1)
+            self.facts["spacefree_mb"] = round(int(match.group(2)) / 1024 / 1024, 1)
 
         else:
             match = re.search(r"(\d+)K of (\d+)K are free", data, re.M)
             if match:  # fw 2.x, 3.x
-                self.facts["spacetotal_mb"] = round(int(match[2]) / 1024, 1)
-                self.facts["spacefree_mb"] = round(int(match[1]) / 1024, 1)
+                self.facts["spacetotal_mb"] = round(int(match.group(2)) / 1024, 1)
+                self.facts["spacefree_mb"] = round(int(match.group(1)) / 1024, 1)
 
 
 class Config(FactsBase):
@@ -345,7 +345,7 @@ class Config(FactsBase):
     COMMANDS = ["show running-config detailed"]
 
     def populate(self):
-        super().populate()
+        super(Config, self).populate()
         data = self.responses[0]
         if data:
             self.facts["config"] = data
@@ -369,7 +369,7 @@ class Interfaces(FactsBase):
     WRAPPED_LINE_RE = re.compile(r"^\s+(?!\d)")
 
     def populate(self):
-        super().populate()
+        super(Interfaces, self).populate()
 
         self.facts["interfaces"] = dict()
         self.facts["all_ipv4_addresses"] = list()

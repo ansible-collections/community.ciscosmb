@@ -1,0 +1,18 @@
+# sanity tests
+antsibull_changelog
+pycodestyle
+pylint
+voluptuous 
+
+# units
+pytest
+pytest
+pytest-xdist
+pytest-mock
+mock
+
+# utils
+yamllint
+galaxy-importer
+antsibull-changelog
+
