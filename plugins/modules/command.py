@@ -7,7 +7,7 @@ __metaclass__ = type
 
 DOCUMENTATION = '''
 ---
-module: ciscosmb_command
+module: command
 author: "Petr Klima (@qaxi)"
 short_description: Run commands on remote Cisco SMB devices
 description:

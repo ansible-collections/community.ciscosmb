@@ -8,7 +8,7 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-module: ciscosmb_facts
+module: facts
 author: "Petr Klima (@qaxi)"
 short_description: Collect facts from remote devices running Cisco SMB
 description:
@@ -35,16 +35,16 @@ options:
 
 EXAMPLES = """
 - name: Collect all facts from the device
-  community.ciscosmb.ciscosmb_facts:
+  community.ciscosmb.facts:
     gather_subset: all
 
 - name: Collect only the config and default facts
-  community.ciscosmb.ciscosmb_facts:
+  community.ciscosmb.facts:
     gather_subset:
       - config
 
 - name: Do not collect hardware facts
-  community.ciscosmb.ciscosmb_facts:
+  community.ciscosmb.facts:
     gather_subset:
       - "!hardware"
 """

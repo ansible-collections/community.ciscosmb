@@ -18,18 +18,18 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 from ansible_collections.community.ciscosmb.tests.unit.compat.mock import patch
-from ansible_collections.community.ciscosmb.plugins.modules import ciscosmb_facts
+from ansible_collections.community.ciscosmb.plugins.modules import facts
 from ansible_collections.community.ciscosmb.tests.unit.plugins.modules.utils import set_module_args
 from .ciscosmb_module import TestCiscoSMBModule, load_fixture
 
 
 class TestCiscoSMBFactsModule(TestCiscoSMBModule):
 
-    module = ciscosmb_facts
+    module = facts
 
     def setUp(self):
         super(TestCiscoSMBFactsModule, self).setUp()
-        self.mock_run_commands = patch('ansible_collections.community.ciscosmb.plugins.modules.ciscosmb_facts.run_commands')
+        self.mock_run_commands = patch('ansible_collections.community.ciscosmb.plugins.modules.facts.run_commands')
         self.run_commands = self.mock_run_commands.start()
 
     def tearDown(self):
