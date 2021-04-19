@@ -84,34 +84,40 @@ ansible-playbook -i ciscosmb_inventory.yml ciscosmb_gather_facts.yml
 
 ### Setup environment
 ```
-git clone https://github.com/ansible-collections/community.ciscosmb
-cd community.ciscosmb
+git clone https://github.com/ansible-collections/community.ciscosmb ansible_collections/community/ciscosmb
+git clone --depth=1 --single-branch https://github.com/ansible-collections/ansible.netcommon.git ansible_collections/ansible/netcommon
+
+cd ansible_collections/community/ciscosmb
+
 python3 -m venv .venv
 . .venv/bin/activate
+
 pip install ansible
-pip install -r tests/unit/requirements.txt
-ansible-galaxy collection install ansible.netcommon
+pip install -r tests/unit/requirements.txt # -r requirements-dev.txt
+
 ```
 
 ### Develop 
 ```
-cd community.ciscosmb
-. .venv/bin/activate
+cd ansible_collections/community/ciscosmb
 git pull
+. .venv/bin/activate
+
 ```
 
 ### Testing
 
 ```
-export PY="--python 3.8" # set your version or unset
-   ansible-test sanity --local ${PY}  \
-&& ansible-test units  --local ${PY} \
-&& rm -f ./community-ciscosmb-*.tar.gz  \
-&& ansible-galaxy collection build -v --force  \
-&& export GALAXY_IMPORTER_CONFIG=./galaxy-importer.cfg  \
-&& python3 -m galaxy_importer.main ./community-ciscosmb-*.tar.gz  \
-&& rm -f ./community-ciscosmb-*.tar.gz
+cd ansible_collections/community/ciscosmb
+. .venv/bin/activate
+
+# PY="--python 3.8" # set your version or unset
+METHOD="--docker" # or --local if you have no Docker installed
+ansible-test sanity ${METHOD} ${PY}  \
+    && ansible-test units  ${METHOD} ${PY} \
+    && rm -f ./community-ciscosmb-*.tar.gz  \
+    && ansible-galaxy collection build -v --force  \
+    && export GALAXY_IMPORTER_CONFIG=./galaxy-importer.cfg  \
+    && python3 -m galaxy_importer.main ./community-ciscosmb-*.tar.gz  \
+    && rm -f ./community-ciscosmb-*.tar.gz
 ```
-
-
-Heavy influenced by Egor Zaitsev (@heuels) RouterOS driver https://galaxy.ansible.com/community/routeros
