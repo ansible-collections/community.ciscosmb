@@ -54,13 +54,13 @@ playbook `ciscosmb_gather_facts.yml`
     # Collect data
     #
     - name: CiscoSMB - Gather Facts - subset default
-      communtity.ciscosmb.ciscosmb_facts:
+      communtity.ciscosmb.facts:
         gather_subset:
           - default
       # when: ansible_network_os == 'community.ciscosmb.ciscosmb'
 
     - name: CiscoSMB - Gather Facts - subset config
-      community.ciscosmb.ciscosmb_facts:
+      community.ciscosmb.facts:
         gather_subset:
           - config
       # when: ansible_network_os == 'community.ciscosmb.ciscosmb'
