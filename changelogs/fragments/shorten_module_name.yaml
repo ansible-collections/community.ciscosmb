@@ -1,3 +1,0 @@
-major_changes:
-  - transform community.ciscosmb.ciscosmb_command to community.ciscosmb.command
-  - transform community.ciscosmb.ciscosmb_facts to community.ciscosmb.facts

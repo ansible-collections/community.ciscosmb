@@ -38,7 +38,7 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.u
 from ansible.module_utils.connection import Connection, ConnectionError
 
 # copy of https://github.com/napalm-automation/napalm/blob/develop/napalm/base/canonical_map.py
-from ansible_collections.community.ciscosmb.plugins.module_utils.ciscosmb_canonical_map import base_interfaces, reverse_mapping
+from ansible_collections.community.ciscosmb.plugins.module_utils.ciscosmb_canonical_map import base_interfaces
 
 _DEVICE_CONFIGS = {}
 

@@ -103,6 +103,25 @@ cd ansible_collections/community/ciscosmb
 git pull
 . .venv/bin/activate
 
+# edit files
+vim file
+git commit -m "xxx" file
+```
+
+### Release 
+```
+cd ansible_collections/community/ciscosmb
+git pull
+. .venv/bin/activate
+
+# edit version in galaxy.yml
+vim galaxy.yml
+# generate CHANGELOG.rst
+antsibull-changelog release
+
+git commit -m "version bump to x.y.z" .
+git tag x.y.z
+git push 
 ```
 
 ### Testing
