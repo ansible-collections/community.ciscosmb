@@ -103,6 +103,9 @@ cd ansible_collections/community/ciscosmb
 git pull
 . .venv/bin/activate
 
+# edit files
+vim file
+git commit -m "xxx" file
 ```
 
 ### Release 
