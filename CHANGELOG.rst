@@ -5,6 +5,21 @@ CiscoSMB Ansible module Release Notes
 .. contents:: Topics
 
 
+v1.0.0
+======
+
+Major Changes
+-------------
+
+- transform collection qaxi.ciscosmb to community.ciscosmb
+- transform community.ciscosmb.ciscosmb_command to community.ciscosmb.command
+- transform community.ciscosmb.ciscosmb_facts to community.ciscosmb.facts
+
+Minor Changes
+-------------
+
+- setup standard Ansible CI
+
 v0.9.1
 ======
 

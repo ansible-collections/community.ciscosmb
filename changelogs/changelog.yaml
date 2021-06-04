@@ -80,3 +80,16 @@ releases:
     fragments:
     - correct_changelog.yml
     release_date: '2021-04-08'
+  1.0.0:
+    changes:
+      major_changes:
+      - transform collection qaxi.ciscosmb to community.ciscosmb
+      - transform community.ciscosmb.ciscosmb_command to community.ciscosmb.command
+      - transform community.ciscosmb.ciscosmb_facts to community.ciscosmb.facts
+      minor_changes:
+      - setup standard Ansible CI
+    fragments:
+    - CI.yaml
+    - shorten_module_name.yaml
+    - transform2community.yml
+    release_date: '2021-06-04'
