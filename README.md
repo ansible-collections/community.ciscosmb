@@ -140,3 +140,15 @@ ansible-test sanity ${METHOD} ${PY}  \
     && python3 -m galaxy_importer.main ./community-ciscosmb-*.tar.gz  \
     && rm -f ./community-ciscosmb-*.tar.gz
 ```
+
+## Releasing, Versioning and Deprecation
+
+See [RELEASE_POLICY.md](./RELEASE_POLICY.md)
+
+## Code of Conduct
+
+This repository adheres to the Ansible Community code of conduct. See [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md)
