@@ -21,7 +21,7 @@ __metaclass__ = type
 
 DOCUMENTATION = '''
 ---
-author: Unknown (!UNKNOWN)
+author: Egor Zaitsev (@heuels)
 cliconf: ciscosmb
 short_description: Use ciscosmb cliconf to run command on Cisco SMB network devices.
 description:
