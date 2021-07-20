@@ -5,6 +5,24 @@ CiscoSMB Ansible module Release Notes
 .. contents:: Topics
 
 
+v1.0.1
+======
+
+Release Summary
+---------------
+
+Minor fixes for ansible collections inclusion
+
+Minor Changes
+-------------
+
+- Added Releasing, CoC and Contributing to README.md
+- Added author
+- Added license header
+- Release policy, versioning, deprecation
+- Updated CoC, added email address
+- more descriptiove Release section on README.md
+
 v1.0.0
 ======
 

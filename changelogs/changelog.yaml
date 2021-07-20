@@ -93,3 +93,16 @@ releases:
     - shorten_module_name.yaml
     - transform2community.yml
     release_date: '2021-06-04'
+  1.0.1:
+    changes:
+      minor_changes:
+      - Added Releasing, CoC and Contributing to README.md
+      - Added author
+      - Added license header
+      - Release policy, versioning, deprecation
+      - Updated CoC, added email address
+      - more descriptiove Release section on README.md
+      release_summary: Minor fixes for ansible collections inclusion
+    fragments:
+    - ansible_collections_inclusion.yml
+    release_date: '2021-07-20'
