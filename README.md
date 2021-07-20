@@ -108,22 +108,6 @@ vim file
 git commit -m "xxx" file
 ```
 
-### Release 
-```
-cd ansible_collections/community/ciscosmb
-git pull
-. .venv/bin/activate
-
-# edit version in galaxy.yml
-vim galaxy.yml
-# generate CHANGELOG.rst
-antsibull-changelog release
-
-git commit -m "version bump to x.y.z" .
-git tag x.y.z
-git push 
-```
-
 ### Testing
 
 ```
@@ -140,6 +124,28 @@ ansible-test sanity ${METHOD} ${PY}  \
     && python3 -m galaxy_importer.main ./community-ciscosmb-*.tar.gz  \
     && rm -f ./community-ciscosmb-*.tar.gz
 ```
+
+### Release 
+```
+cd ansible_collections/community/ciscosmb
+git pull
+. .venv/bin/activate
+
+# edit version in galaxy.yml
+vim galaxy.yml
+
+# edit changelog fragments (template in changelogs/fragments/.keep)
+vim changelogs/fragments/fragment.yml
+
+# generate CHANGELOG.rst
+antsibull-changelog lint -v
+antsibull-changelog release -v
+
+git commit -m "version bump to x.y.z" .
+git tag x.y.z
+git push 
+```
+
 
 ## Releasing, Versioning and Deprecation
 
