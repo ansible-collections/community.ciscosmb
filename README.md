@@ -147,7 +147,7 @@ See [RELEASE_POLICY.md](./RELEASE_POLICY.md)
 
 ## Code of Conduct
 
-This repository adheres to the Ansible Community code of conduct. See [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
+See [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
 
 ## Contributing
 
