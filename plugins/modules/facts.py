@@ -242,26 +242,26 @@ class Default(FactsBase):
     # show inventory
     def parse_inventory(self, data):
         # make 1 module 1 line
-        data = re.sub(r"\nPID", "  PID", data, re.M)
+        data = re.sub(r"\nPID", "  PID", data, flags=re.M)
         # delete empty lines
-        data = re.sub(r"^\n", "", data, re.M)
-        data = re.sub(r"\n\n", "", data, re.M)
-        data = re.sub(r"\n\s*\n", r"\n", data, re.M)
+        data = re.sub(r"^\n", "", data, flags=re.M)
+        data = re.sub(r"\n\n", "", data, flags=re.M)
+        data = re.sub(r"\n\s*\n", r"\n", data, flags=re.M)
 
         lines = data.splitlines()
 
         modules = {}
         for line in lines:
             # remove extra chars
-            line = re.sub(r'"', r"", line, re.M)
-            line = re.sub(r"\s+", r" ", line, re.M)
+            line = re.sub(r'"', r"", line, flags=re.M)
+            line = re.sub(r"\s+", r" ", line, flags=re.M)
             # normalize lines
-            line = re.sub(r":\s", r'"', line, re.M)
-            line = re.sub(r'\s+DESCR"', r'"DESCR"', line, re.M)
-            line = re.sub(r'\s+PID"', r'"PID"', line, re.M)
-            line = re.sub(r'\s+VID"', r'"VID"', line, re.M)
-            line = re.sub(r'\s+SN"', r'"SN"', line, re.M)
-            line = re.sub(r"\s*$", r"", line, re.M)
+            line = re.sub(r":\s", r'"', line, flags=re.M)
+            line = re.sub(r'\s+DESCR"', r'"DESCR"', line, flags=re.M)
+            line = re.sub(r'\s+PID"', r'"PID"', line, flags=re.M)
+            line = re.sub(r'\s+VID"', r'"VID"', line, flags=re.M)
+            line = re.sub(r'\s+SN"', r'"SN"', line, flags=re.M)
+            line = re.sub(r"\s*$", r"", line, flags=re.M)
 
             match = re.search(
                 r'^NAME"(?P<name>[^"]+)"DESCR"(?P<descr>[^"]+)"PID"(?P<pid>[^"]+)"VID"(?P<vid>[^"]+)"SN"(?P<sn>\S+)\s*',
