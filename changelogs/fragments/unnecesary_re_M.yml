@@ -1,0 +1,4 @@
+minor_changes:
+- remove unnecersary parameters on function re.sub()
+bugfixes:
+- solves issue #37 - fail on too large (more than 8 devices) `show inventory`
