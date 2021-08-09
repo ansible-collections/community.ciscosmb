@@ -5,6 +5,26 @@ CiscoSMB Ansible module Release Notes
 .. contents:: Topics
 
 
+v1.0.2
+======
+
+Release Summary
+---------------
+
+Release Date: 2021-08-09
+bugfix release
+
+
+Minor Changes
+-------------
+
+- remove unnecersary parameters on function re.sub()
+
+Bugfixes
+--------
+
+- solves issue #37
+
 v1.0.1
 ======
 
