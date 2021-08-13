@@ -43,7 +43,7 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
             output = list()
 
             for command in commands:
-                filename = str(command).split(' | ')[0].replace(' ', '_')
+                filename = str(command).split(' | ', 1)[0].replace(' ', '_')
                 output.append(load_fixture('ciscosmb_command-stackSG550X-48-%s' % filename))
             return output
 
