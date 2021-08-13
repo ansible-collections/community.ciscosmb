@@ -4,7 +4,7 @@
 # 3. If your collection depends on other collections ensure they are installed, see "Install collection dependencies"
 # If you need help please ask in the #ansible-community channel on Libera.Chat IRC (https://libera.chat/)
 
-name: CI
+name: CI-AdP39
 on:
   workflow_dispatch:
 
