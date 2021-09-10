@@ -5,15 +5,30 @@ CiscoSMB Ansible module Release Notes
 .. contents:: Topics
 
 
+v1.0.3
+======
+
+Release Summary
+---------------
+
+Release Date: 2019-10-31
+Minor changes in documentation, adding Python 3.6 as a supported version
+
+
+Minor Changes
+-------------
+
+- Add Py 3.6 to supported python versions (https://github.com/ansible-collections/community.ciscosmb/pull/44)
+- Fix link to issue tracker in galaxy.yml (https://github.com/ansible-collections/community.ciscosmb/pull/42)
+- Misc doc fixes for collection inclusion (https://github.com/ansible-collections/community.ciscosmb/pull/41)
+
 v1.0.2
 ======
 
 Release Summary
 ---------------
 
-Release Date: 2021-08-09
-bugfix release
-
+Release Date: 2021-08-09 bugfix release
 
 Minor Changes
 -------------
@@ -23,7 +38,7 @@ Minor Changes
 Bugfixes
 --------
 
-- solves issue #37
+- solves issue
 
 v1.0.1
 ======

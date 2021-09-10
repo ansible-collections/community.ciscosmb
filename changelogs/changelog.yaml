@@ -112,9 +112,25 @@ releases:
       - solves issue
       minor_changes:
       - remove unnecersary parameters on function re.sub()
-      release_summary: 'Release Date: 2021-08-09
-        bugfix release'
+      release_summary: 'Release Date: 2021-08-09 bugfix release'
     fragments:
     - release-1.0.2.yml
     - unnecesary_re_M.yml
     release_date: '2021-08-09'
+  1.0.3:
+    changes:
+      minor_changes:
+      - Add Py 3.6 to supported python versions (https://github.com/ansible-collections/community.ciscosmb/pull/44)
+      - Fix link to issue tracker in galaxy.yml (https://github.com/ansible-collections/community.ciscosmb/pull/42)
+      - Misc doc fixes for collection inclusion (https://github.com/ansible-collections/community.ciscosmb/pull/41)
+      release_summary: 'Release Date: 2019-10-31
+
+        Minor changes in documentation, adding Python 3.6 as a supported version
+
+        '
+    fragments:
+    - 41-doc_fixes.yml
+    - 42-fix_galaxy_issue_url.yml
+    - 44-add_py_36.yml
+    - release-1.0.3.yml
+    release_date: '2021-09-10'
