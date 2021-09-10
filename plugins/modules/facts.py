@@ -31,6 +31,8 @@ options:
     elements: str
     choices: [ 'default', 'all', 'hardware', 'config', 'interfaces', '!hardware', '!config', '!interfaces' ]
     default: '!config'
+notes:
+  - Supports C(check_mode).
 """
 
 EXAMPLES = """
@@ -51,83 +53,83 @@ EXAMPLES = """
 
 RETURN = """
 ansible_net_gather_subset:
-  description: The list of fact subsets collected from the device
+  description: The list of fact subsets collected from the device.
   returned: always
   type: list
 
 # default
 ansible_net_model:
-  description: The model name returned from the device
+  description: The model name returned from the device.
   returned: always
   type: str
 ansible_net_serialnum:
-  description: The serial number of the remote device
+  description: The serial number of the remote device.
   returned: always
   type: str
 ansible_net_version:
-  description: The operating system version running on the remote device
+  description: The operating system version running on the remote device.
   returned: always
   type: str
 ansible_net_hostname:
-  description: The configured hostname of the device
+  description: The configured hostname of the device.
   returned: always
   type: str
 ansible_net_uptime:
-  description: The uptime of the device
+  description: The uptime of the device.
   returned: always
   type: str
 ansible_net_cpu_load:
-  description: Current CPU load
+  description: Current CPU load.
   returned: always
   type: str
 ansible_net_stacked_models:
-  description: The model names of each device in the stack
+  description: The model names of each device in the stack.
   returned: when multiple devices are configured in a stack
   type: list
 ansible_net_stacked_serialnums:
-  description: The serial numbers of each device in the stack
+  description: The serial numbers of each device in the stack.
   returned: when multiple devices are configured in a stack
   type: list
 
 # hardware
 ansible_net_spacefree_mb:
-  description: The available disk space on the remote device in MiB
+  description: The available disk space on the remote device in MiB.
   returned: when hardware is configured
   type: dict
 ansible_net_spacetotal_mb:
-  description: The total disk space on the remote device in MiB
+  description: The total disk space on the remote device in MiB.
   returned: when hardware is configured
   type: dict
 ansible_net_memfree_mb:
-  description: The available free memory on the remote device in MiB
+  description: The available free memory on the remote device in MiB.
   returned: when hardware is configured
   type: int
 ansible_net_memtotal_mb:
-  description: The total memory on the remote device in MiB
+  description: The total memory on the remote device in MiB.
   returned: when hardware is configured
   type: int
 
 # config
 ansible_net_config:
-  description: The current active config from the device
+  description: The current active config from the device.
   returned: when config is configured
   type: str
 
 # interfaces
 ansible_net_all_ipv4_addresses:
-  description: All IPv4 addresses configured on the device
+  description: All IPv4 addresses configured on the device.
   returned: when interfaces is configured
   type: list
 ansible_net_all_ipv6_addresses:
-  description: All IPv6 addresses configured on the device
+  description: All IPv6 addresses configured on the device.
   returned: when interfaces is configured
   type: list
 ansible_net_interfaces:
-  description: A hash of all interfaces running on the system
+  description: A hash of all interfaces running on the system.
   returned: when interfaces is configured
   type: dict
 ansible_net_neighbors:
-  description: The list of neighbors from the remote device
+  description: The list of neighbors from the remote device.
   returned: when interfaces is configured
   type: dict
 

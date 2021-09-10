@@ -23,7 +23,7 @@ DOCUMENTATION = '''
 ---
 author: Egor Zaitsev (@heuels)
 cliconf: ciscosmb
-short_description: Use ciscosmb cliconf to run command on Cisco SMB network devices.
+short_description: Use ciscosmb cliconf to run command on Cisco SMB network devices
 description:
   - This ciscosmb plugin provides low level abstraction apis for
     sending and receiving CLI commands from Cisco SMB network devices.
