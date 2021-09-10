@@ -62,6 +62,8 @@ options:
         trying the command again.
     default: 1
     type: int
+notes:
+  - Supports C(check_mode).
 '''
 
 EXAMPLES = """
@@ -92,17 +94,17 @@ EXAMPLES = """
 
 RETURN = """
 stdout:
-  description: The set of responses from the commands
+  description: The set of responses from the commands.
   returned: always apart from low level errors (such as action plugin)
   type: list
   sample: ['...', '...']
 stdout_lines:
-  description: The value of stdout split into a list
+  description: The value of stdout split into a list.
   returned: always apart from low level errors (such as action plugin)
   type: list
   sample: [['...', '...'], ['...'], ['...']]
 failed_conditions:
-  description: The list of conditionals that have failed
+  description: The list of conditionals that have failed.
   returned: failed
   type: list
   sample: ['...', '...']
