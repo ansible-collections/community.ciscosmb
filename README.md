@@ -16,7 +16,12 @@ Tested on devices:
 * CBS350-24P-4G
 * SG550X-48 stack
 
-Limited capabilities - Work in progress
+Tested on Python versions:
+* 2.6
+* 2.7
+* 3.7
+* 3.8
+* 3.9
 
 file `cismosmb_inventory.yml`
 ```yaml
