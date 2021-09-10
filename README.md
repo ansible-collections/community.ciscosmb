@@ -19,6 +19,7 @@ Tested on devices:
 Tested on Python versions:
 * 2.6
 * 2.7
+* 3.6
 * 3.7
 * 3.8
 * 3.9
