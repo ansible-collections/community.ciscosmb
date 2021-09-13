@@ -5,6 +5,20 @@ CiscoSMB Ansible module Release Notes
 .. contents:: Topics
 
 
+v1.0.4
+======
+
+Release Summary
+---------------
+
+Release Date: 2021-09-13
+
+
+Bugfixes
+--------
+
+- Module command does not support check_mode - https://github.com/ansible-collections/community.ciscosmb/pull/45
+
 v1.0.3
 ======
 
