@@ -134,3 +134,13 @@ releases:
     - 44-add_py_36.yml
     - release-1.0.3.yml
     release_date: '2021-09-10'
+  1.0.4:
+    changes:
+      bugfixes:
+      - Module command does not support check_mode - https://github.com/ansible-collections/community.ciscosmb/pull/45
+      release_summary: 'Release Date: 2021-09-13
+
+        '
+    fragments:
+    - 45-no_check_mode.yml
+    release_date: '2021-09-13'
