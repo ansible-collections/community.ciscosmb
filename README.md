@@ -155,12 +155,12 @@ git push
 
 ## Releasing, Versioning and Deprecation
 
-See [RELEASE_POLICY.md](./RELEASE_POLICY.md)
+See [RELEASE_POLICY.md](https://github.com/ansible-collections/community.ciscosmb/blob/main/RELEASE_POLICY.md)
 
 ## Code of Conduct
 
-See [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
+See [CODE_OF_CONDUCT.md](https://github.com/ansible-collections/community.ciscosmb/blob/main/CODE_OF_CONDUCT.md)
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md)
+See [CONTRIBUTING.md](https://github.com/ansible-collections/community.ciscosmb/blob/main/CONTRIBUTING.md)
