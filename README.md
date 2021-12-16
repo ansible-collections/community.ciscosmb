@@ -11,7 +11,7 @@ ansible-galaxy collection install community.ciscosmb
 ## Use
 
 Tested on devices:
-* SG350-10
+* SG350-10-K9
 * SG350-28-K9
 * SG500-52-K9
 * SG550X-24MP-K9
