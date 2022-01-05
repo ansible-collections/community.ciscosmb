@@ -9,7 +9,9 @@ ansible-galaxy collection install community.ciscosmb
 ```
 
 ## Use
+
 Tested on devices:
+* SG350-10-K9
 * SG350-28-K9
 * SG500-52-K9
 * SG550X-24MP-K9
@@ -25,12 +27,10 @@ Tested on Python versions:
 * 3.9
 
 file `cismosmb_inventory.yml`
+
 ```yaml
 all:
-  vars:
-    # no automatic facts
-    gather_facts: no  
-    
+  vars:    
     ansible_connection: network_cli
     ### change what you need
     # ansible_ssh_private_key_file: /dir/private.key
@@ -60,7 +60,7 @@ playbook `ciscosmb_gather_facts.yml`
     # Collect data
     #
     - name: CiscoSMB - Gather Facts - subset default
-      communtity.ciscosmb.facts:
+      community.ciscosmb.facts:
         gather_subset:
           - default
       # when: ansible_network_os == 'community.ciscosmb.ciscosmb'
@@ -82,6 +82,7 @@ playbook `ciscosmb_gather_facts.yml`
 ```
 
 Run
+
 ```
 ansible-playbook -i ciscosmb_inventory.yml ciscosmb_gather_facts.yml
 ```
@@ -89,6 +90,7 @@ ansible-playbook -i ciscosmb_inventory.yml ciscosmb_gather_facts.yml
 ## Developement
 
 ### Setup environment
+
 ```
 git clone https://github.com/ansible-collections/community.ciscosmb ansible_collections/community/ciscosmb
 git clone --depth=1 --single-branch https://github.com/ansible-collections/ansible.netcommon.git ansible_collections/ansible/netcommon
@@ -104,6 +106,7 @@ pip install -r tests/unit/requirements.txt # -r requirements-dev.txt
 ```
 
 ### Develop 
+
 ```
 cd ansible_collections/community/ciscosmb
 git pull
@@ -132,6 +135,7 @@ ansible-test sanity ${METHOD} ${PY}  \
 ```
 
 ### Release 
+
 ```
 cd ansible_collections/community/ciscosmb
 git pull
@@ -151,7 +155,6 @@ git commit -m "version bump to x.y.z" .
 git tag x.y.z
 git push 
 ```
-
 
 ## Releasing, Versioning and Deprecation
 
