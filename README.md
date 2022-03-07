@@ -114,6 +114,8 @@ git pull
 
 # edit files
 vim file
+cp changelogs/fragments/.keep changelogs/fragments/fragment.yml
+changelogs/fragments/fragment.yml
 git commit -m "xxx" file
 ```
 
@@ -145,6 +147,7 @@ git pull
 vim galaxy.yml
 
 # edit changelog fragments (template in changelogs/fragments/.keep)
+cp changelogs/fragments/.keep changelogs/fragments/fragment.yml
 vim changelogs/fragments/fragment.yml
 
 # generate CHANGELOG.rst
