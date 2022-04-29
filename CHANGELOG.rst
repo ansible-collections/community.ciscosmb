@@ -5,6 +5,15 @@ CiscoSMB Ansible module Release Notes
 .. contents:: Topics
 
 
+v1.0.5
+======
+
+Minor Changes
+-------------
+
+- CI  change <plugin_type> <name> to name <name> for validate-module
+- CI - add ansible 2.13 to test matrix
+
 v1.0.4
 ======
 

@@ -144,3 +144,12 @@ releases:
     fragments:
     - 45-no_check_mode.yml
     release_date: '2021-09-13'
+  1.0.5:
+    changes:
+      minor_changes:
+      - CI  change <plugin_type> <name> to name <name> for validate-module
+      - CI - add ansible 2.13 to test matrix
+    fragments:
+    - CI-ansible-2.13.yml
+    - CI-validate-modules.yml
+    release_date: '2022-04-29'
