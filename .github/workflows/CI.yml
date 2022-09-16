@@ -94,16 +94,17 @@ jobs:
           - stable-2.13
           - devel
         python:
-          - 3.6
-          - 3.7
-          - 3.8
-          - 3.9
-          - 3.10
-        #exclude:
-          # no support of Python 3.9 in ansible-2.9
-          #- ansible: stable-2.9
-          #  python: 3.9
-
+          - "3.6"
+          - "3.7"
+          - "3.8"
+          - "3.9"
+          - "3.10"
+        exclude:
+          # no support 
+          - ansible: stable-2.10
+            python: "3.10"
+          - ansible: stable-2.11
+            python: "3.10"
     steps:
       - name: Check out code
         uses: actions/checkout@v2
