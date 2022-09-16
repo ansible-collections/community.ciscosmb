@@ -1,0 +1,10 @@
+minor_changes:
+- no longer testing for ansible 2.9 and for Python 2.6 / 2.7
+
+removed_features:
+- remove testing for ansible 2.9
+- remove testing for Python 2.6 nad 2.7
+
+deprecated_features:
+- support for ansible 2.9
+- support for Python 2.6 nad 2.7

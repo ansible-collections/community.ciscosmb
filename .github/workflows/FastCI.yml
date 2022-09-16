@@ -56,7 +56,7 @@ jobs:
         with:
           # it is just required to run that once as "ansible-test sanity" in the docker image
           # will run on all python versions it supports.
-          python-version: 3.8
+          python-version: 3.9
 
       # Install the head of the given branch (devel, stable-2.10)
       - name: Install ansible-base (${{ matrix.ansible }})
@@ -95,12 +95,12 @@ jobs:
           #- 2.6
           #- 2.7
           #- 3.7
-          - 3.8
-          #- 3.9
-        exclude:
+          #- 3.8
+          - 3.9
+        #exclude:
           # no support of Python 3.9 in ansible-2.9
-          - ansible: stable-2.9
-            python: 3.9
+          #- ansible: stable-2.9
+          #  python: 3.9
 
     steps:
       - name: Check out code
@@ -113,7 +113,7 @@ jobs:
         with:
           # it is just required to run that once as "ansible-test units" in the docker image
           # will run on all python versions it supports.
-          python-version: 3.8
+          python-version: 3.9
 
       - name: Install ansible-base (${{ matrix.ansible }})
         run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
