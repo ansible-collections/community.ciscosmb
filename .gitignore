@@ -1,4 +1,10 @@
-#builded package
+# newer version real inventory
+ciscosmb_inventory.yml
+
+# configs output
+configs
+
+# builded package
 community-ciscosmb-*.tar.gz
 
 # galaxy-importer output
@@ -6,7 +12,6 @@ importer_result.json
 
 # unit test output
 tests/output/
-
 changelogs/.plugin-cache.yaml
 
 # Byte-compiled / optimized / DLL files

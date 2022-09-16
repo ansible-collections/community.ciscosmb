@@ -1,0 +1,55 @@
+- name: Gather Facts
+  gather_facts: no
+  hosts: all
+  vars:
+    - configs_dir: configs
+
+  tasks:
+
+    - name: Host info
+      ansible.builtin.debug:
+        verbosity: 3
+        var: "hostvars"
+
+    ###
+    # Collect data
+    #
+    - name: CiscoSMB - Gather Facts - subset default
+      community.ciscosmb.facts:
+        gather_subset:
+          - default
+      # when: ansible_network_os == 'community.ciscosmb.ciscosmb'
+
+#    - name: CiscoSMB - Gather Facts - subset config
+#      community.ciscosmb.facts:
+#        gather_subset:
+#          - config
+#      vars:
+#        ansible_become: yes
+#      # when: ansible_network_os == 'community.ciscosmb.ciscosmb'
+
+    - name: CSV output
+      ansible.builtin.debug:
+        verbosity: 1
+        msg:
+          - "{{ ansible_facts['net_hostname'] }};{{ ansible_facts['net_model'] }};{{ ansible_facts['net_serialnum'] }};{{ ansible_facts['net_version'] }};{{ ansible_facts['net_hw_version'] }}"
+
+    - name: Verbose output
+      ansible.builtin.debug:
+        verbosity: 2
+        msg:
+          - "Hostname:     {{ ansible_facts['net_hostname'] }}"
+          - "Model:        {{ ansible_facts['net_model'] }}"
+          - "SN:           {{ ansible_facts['net_serialnum'] }}"
+          - "SW version    {{ ansible_facts['net_version'] }}"
+          - "HW version:   {{ ansible_facts['net_hw_version'] }}"
+          - "config:       {{ ansible_facts['net_config'] | default('') }}"
+
+#    - name: Create configuration directory
+#      local_action: file path={{ configs_dir }} state=directory
+#      run_once: true
+#      check_mode: no
+#      changed_when: no
+#
+#    - name: Save running config
+#      local_action: copy content={{ ansible_net_config }} dest={{ configs_dir }}/{{ inventory_hostname }}_net_config

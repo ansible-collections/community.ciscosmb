@@ -8,7 +8,7 @@ Ansible Galaxy module for Cisco SMB switches - SG300, SG500, SG350, SG550, CBS35
 ansible-galaxy collection install community.ciscosmb
 ```
 
-## Use
+## Usage examples
 
 Tested on devices:
 * SG350-10-K9
@@ -25,66 +25,20 @@ Tested on Python versions:
 * 3.7
 * 3.8
 * 3.9
+* 3.10
 
-file `cismosmb_inventory.yml`
+For your tests or quick startup use files form repository: [cismosmb_inventory_template.yml](https://github.com/ansible-collections/community.ciscosmb/blob/main/cismosmb_inventory_template.yml), [cismosmb_gather_facts.yml](https://github.com/ansible-collections/community.ciscosmb/blob/main/cismosmb_gather_facts.yml),  [cismosmb_commands.yml](https://github.com/ansible-collections/community.ciscosmb/blob/main/cismosmb_commands.yml) .
 
-```yaml
-all:
-  vars:    
-    ansible_connection: network_cli
-    ### change what you need
-    # ansible_ssh_private_key_file: /dir/private.key
-    # ansible_ssh_user: user
-    # ansible_ssh_pass: password
+Prepare your inventory file - copy file [cismosmb_inventory_template.yml](https://github.com/ansible-collections/community.ciscosmb/blob/main/cismosmb_inventory_template.yml) to `cismosmb_inventory.yml` and make your changes.
 
-  hosts:
-    switch1:
-      ansible_host: AAA.BBB.CCC.DDD
-      ansible_network_os: community.ciscosmb.ciscosmb
-    switch2:
-      ansible_host: WWW.XXX.YYY.ZZZ
-      ansible_network_os: community.ciscosmb.ciscosmb
+Then you can run
 
 ```
-
-playbook `ciscosmb_gather_facts.yml`
-```yaml
-- name: Gather Facts
-  gather_facts: no
-  hosts: all
-  vars:
-    - configs_dir: configs
-
-  tasks:
-    ###
-    # Collect data
-    #
-    - name: CiscoSMB - Gather Facts - subset default
-      community.ciscosmb.facts:
-        gather_subset:
-          - default
-      # when: ansible_network_os == 'community.ciscosmb.ciscosmb'
-
-    - name: CiscoSMB - Gather Facts - subset config
-      community.ciscosmb.facts:
-        gather_subset:
-          - config
-      # when: ansible_network_os == 'community.ciscosmb.ciscosmb'
-
-    - name: Create configuration directory
-      local_action: file path={{ configs_dir }} state=directory
-      run_once: true
-      check_mode: no
-      changed_when: no
-
-    - name: Save running config
-      local_action: copy content={{ ansible_net_config }} dest={{ configs_dir }}/{{ inventory_hostname }}_net_config
+ansible-playbook -i ciscosmb_inventory.yml cismosmb_gather_facts.yml
 ```
-
-Run
-
+or
 ```
-ansible-playbook -i ciscosmb_inventory.yml ciscosmb_gather_facts.yml
+ansible-playbook -i ciscosmb_inventory.yml cismosmb_commands.yml
 ```
 
 ## Developement
@@ -116,7 +70,7 @@ git pull
 # edit files
 vim file
 cp changelogs/fragments/.keep changelogs/fragments/fragment.yml
-changelogs/fragments/fragment.yml
+vim changelogs/fragments/fragment.yml
 git commit -m "xxx" file
 ```
 

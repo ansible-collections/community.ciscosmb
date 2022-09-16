@@ -1,0 +1,23 @@
+all:
+  vars:
+    ansible_connection: network_cli
+    ansible_network_cli_ssh_type: paramiko
+    #ansible_network_cli_ssh_type: libssh
+    ### change what you need
+    # ansible_ssh_private_key_file: /dir/private.key
+    # ansible_ssh_user: user
+    # ansible_ssh_pass: password
+    # ansible_become_method: enable
+    # ansible_become_password: password
+    #
+    ### Enable become globaly, by host, by playbook or by task
+    # ansible_become: yes
+
+  hosts:
+    switch1:
+      ansible_host: AAA.BBB.CCC.DDD
+      ansible_network_os: community.ciscosmb.ciscosmb
+      # ansible_become: yes
+    switch2:
+      ansible_host: WWW.XXX.YYY.ZZZ
+      ansible_network_os: community.ciscosmb.ciscosmb
