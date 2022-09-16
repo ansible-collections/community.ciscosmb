@@ -1,3 +1,7 @@
+# connection libraries
+paramiko
+ansible-pylibssh
+
 # sanity tests
 antsibull_changelog
 pycodestyle

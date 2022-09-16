@@ -2,6 +2,6 @@ unittest2 ; python_version < '2.7'
 importlib ; python_version < '2.7'
 
 ### ansible
-#galaxy-importer
-#antsibull-changelog
+galaxy-importer
+antsibull-changelog
 

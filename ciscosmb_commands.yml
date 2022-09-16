@@ -1,0 +1,31 @@
+- name: CiscoSMB - test commands
+  gather_facts: no
+  hosts: all
+  # vars:
+  #  ansible_become: yes
+
+  tasks:
+    - name: CiscoSMB - show clock
+      community.ciscosmb.command:
+        commands:
+          - show version
+          - show clock
+      register: show_clock
+    
+    - name: show output
+      ansible.builtin.debug: 
+        var:  show_clock
+    
+
+    - name: CiscoSMB - set timezone
+      community.ciscosmb.command:
+        commands:
+          - configure terminal
+          - clock timezone CET +1
+      vars:
+        ansible_become: yes
+      register: set_timezone
+
+    - name: show output
+      ansible.builtin.debug: 
+        var: set_timezone
