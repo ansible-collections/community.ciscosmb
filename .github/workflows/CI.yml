@@ -75,7 +75,7 @@ jobs:
 
   units:
     runs-on: ubuntu-latest
-    name: Units (Ansible ${{ matrix.ansible }})
+    name: Units (Ansible ${{ matrix.ansible }}+py${{ matrix.python }})
     strategy:
       # As soon as the first unit test fails, cancel the others to free up the CI queue
       fail-fast: false
@@ -89,6 +89,18 @@ jobs:
           # - stable-2.14
           # - devel
           # - milestone
+        python:
+          - "3.6"
+          - "3.7"
+          - "3.8"
+          - "3.9"
+          - "3.10"
+        exclude:
+          # no support 
+          - ansible: stable-2.10
+            python: "3.10"
+          - ansible: stable-2.11
+            python: "3.10"
     steps:
       - name: >-
           Perform unit testing against
@@ -96,6 +108,7 @@ jobs:
         uses: ansible-community/ansible-test-gh-action@release/v1
         with:
           ansible-core-version: ${{ matrix.ansible }}
+          target-python-version: ${{ matrix.python }}
           testing-type: units
           # OPTIONAL If your unit tests require code
           # from other collections, install them like this
