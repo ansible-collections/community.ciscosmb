@@ -37,7 +37,7 @@ jobs:
 # https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
 
   sanity:
-    name: Fast Sanity (Ansible ${{ matrix.ansible }})
+    name: Sanity (Ansible ${{ matrix.ansible }})
     strategy:
       matrix:
         ansible:
@@ -79,7 +79,7 @@ jobs:
 
   units:
     runs-on: ubuntu-latest
-    name: Fast Units (Ansible ${{ matrix.ansible }}+py${{ matrix.python }})
+    name: Units (Ansible ${{ matrix.ansible }})
     strategy:
       # As soon as the first unit test fails, cancel the others to free up the CI queue
       fail-fast: false
