@@ -25,10 +25,6 @@ on:
   # manual
   workflow_dispatch:
 
-env:
-  NAMESPACE: community
-  COLLECTION_NAME: ciscosmb
-
 jobs:
 
 ###
