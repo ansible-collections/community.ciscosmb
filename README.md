@@ -27,9 +27,9 @@ Tested on Python versions:
 * 3.9
 * 3.10
 
-For your tests or quick startup use files form repository: [cismosmb_inventory_template.yml](https://github.com/ansible-collections/community.ciscosmb/blob/main/cismosmb_inventory_template.yml), [cismosmb_gather_facts.yml](https://github.com/ansible-collections/community.ciscosmb/blob/main/cismosmb_gather_facts.yml),  [cismosmb_commands.yml](https://github.com/ansible-collections/community.ciscosmb/blob/main/cismosmb_commands.yml) .
+For your tests or quick startup use files form repository: [cismosmb_inventory_template.yml](./ciscosmb_inventory_template.yml), [cismosmb_gather_facts.yml](./ciscosmb_gather_facts.yml),  [cismosmb_commands.yml](./ciscosmb_commands.yml) .
 
-Prepare your inventory file - copy file [cismosmb_inventory_template.yml](https://github.com/ansible-collections/community.ciscosmb/blob/main/cismosmb_inventory_template.yml) to `cismosmb_inventory.yml` and make your changes.
+Prepare your inventory file - copy file [cismosmb_inventory_template.yml](./ciscosmb_inventory_template.yml) to `cismosmb_inventory.yml` and make your changes.
 
 Then you can run
 
