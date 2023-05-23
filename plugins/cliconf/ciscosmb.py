@@ -42,24 +42,6 @@ class Cliconf(CliconfBase):
         device_info = {}
         device_info['network_os'] = 'ciscosmb'
 
-        resource = self.get('show verison')
-        data = to_text(resource, errors='surrogate_or_strict').strip()
-        match = re.search(r'SW version  +(\S+) \(.*$', data)
-        if match:
-            device_info['network_os_version'] = match.group(1)
-
-        model = self.get('show inventory')
-        data = to_text(model, errors='surrogate_or_strict').strip()
-        match = re.search(r'PID: (.+)$', data, re.M)
-        if match:
-            device_info['network_os_model'] = match.group(1)
-
-        identity = self.get('show system')
-        data = to_text(identity, errors='surrogate_or_strict').strip()
-        match = re.search(r'System Name: +(\S+)', data, re.M)
-        if match:
-            device_info['network_os_hostname'] = match.group(1)
-
         return device_info
 
     @enable_mode
