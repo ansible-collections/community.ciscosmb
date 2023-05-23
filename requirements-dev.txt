@@ -16,6 +16,5 @@ mock
 
 # utils
 yamllint
-galaxy-importer
+galaxy_importer
 antsibull-changelog
-
