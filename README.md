@@ -19,8 +19,6 @@ Tested on devices:
 * SG550X-48 stack
 
 Tested on Python versions:
-* 2.6
-* 2.7
 * 3.6
 * 3.7
 * 3.8
@@ -69,8 +67,11 @@ git pull
 
 # edit files
 vim file
-cp changelogs/fragments/.keep changelogs/fragments/fragment.yml
-vim changelogs/fragments/fragment.yml
+cp changelogs/fragments/.keep changelogs/fragments/featureXYZ.yml
+vim changelogs/fragments/featureXYZ.yml
+
+# test your changes see "Testing"
+
 git commit -m "xxx" file
 ```
 
@@ -98,14 +99,14 @@ cd ansible_collections/community/ciscosmb
 git pull
 . .venv/bin/activate
 
-# edit version in galaxy.yml
+# edit version x.y.z. in galaxy.yml
 vim galaxy.yml
 
 # edit changelog fragments (template in changelogs/fragments/.keep)
-cp changelogs/fragments/.keep changelogs/fragments/fragment.yml
+cp changelogs/fragments/.keep changelogs/fragments/release-x.y.z.yml
 vim changelogs/fragments/fragment.yml
 
-# generate CHANGELOG.rst
+# change and generate CHANGELOG.rst
 antsibull-changelog lint -v
 antsibull-changelog release -v
 
