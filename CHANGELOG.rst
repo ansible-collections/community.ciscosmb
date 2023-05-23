@@ -5,6 +5,35 @@ CiscoSMB Ansible module Release Notes
 .. contents:: Topics
 
 
+v1.0.6
+======
+
+Release Summary
+---------------
+
+Code cleaning, better documentation   
+
+
+Minor Changes
+-------------
+
+- added Ansible playbook examples ``cismosmb_inventory_template.yml``, ``cismosmb_gather_facts.yml``, ``cismosmb_commands.yml``
+- no longer testing for ansible 2.9 and for Python 2.6 / 2.7
+- removed unused portion of code in cliconf/ciscosmb.yml
+- test Ansible 2.14
+
+Deprecated Features
+-------------------
+
+- support for Python 2.6 nad 2.7
+- support for ansible 2.9
+
+Removed Features (previously deprecated)
+----------------------------------------
+
+- remove testing for Python 2.6 nad 2.7
+- remove testing for ansible 2.9
+
 v1.0.5
 ======
 

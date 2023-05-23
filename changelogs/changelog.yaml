@@ -153,3 +153,24 @@ releases:
     - CI-ansible-2.13.yml
     - CI-validate-modules.yml
     release_date: '2022-04-29'
+  1.0.6:
+    changes:
+      deprecated_features:
+      - support for Python 2.6 nad 2.7
+      - support for ansible 2.9
+      minor_changes:
+      - added Ansible playbook examples ``cismosmb_inventory_template.yml``, ``cismosmb_gather_facts.yml``,
+        ``cismosmb_commands.yml``
+      - no longer testing for ansible 2.9 and for Python 2.6 / 2.7
+      - removed unused portion of code in cliconf/ciscosmb.yml
+      - test Ansible 2.14
+      release_summary: "Code cleaning, better documentation   \n"
+      removed_features:
+      - remove testing for Python 2.6 nad 2.7
+      - remove testing for ansible 2.9
+    fragments:
+    - CIchanges.yml
+    - cliconf.yml
+    - playbook_examples.yml
+    - release-1.0.6.yml
+    release_date: '2023-05-23'
