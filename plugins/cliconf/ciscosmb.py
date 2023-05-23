@@ -29,10 +29,8 @@ description:
     sending and receiving CLI commands from Cisco SMB network devices.
 '''
 
-import re
 import json
 
-from ansible.module_utils._text import to_text
 from ansible.plugins.cliconf import CliconfBase, enable_mode
 
 
