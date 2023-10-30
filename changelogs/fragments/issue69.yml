@@ -1,0 +1,3 @@
+# fragment.xml
+bugfixes:
+  - added extra "\n" to sending commands to address issue #69 on SBS device
