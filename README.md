@@ -18,12 +18,48 @@ Tested on devices:
 * CBS350-24P-4G
 * SG550X-48 stack
 
+### Required device configuration
+
+Access setup
+```
+! you should set enable password
+enable password level 15
+
+! on user you have two choices
+! use unpriviledged user (for example priv. 7) and "become mode"
+username user1 privilege 7
+
+! or user with full privileges (priv 15)
+username user2 privelege 15
+```
+
+Cisco's SSH server setup
+```
+! you have to enable SSH server
+ip ssh server
+! enable password and/or key
+ip ssh password-auth      
+ip ssh pubkey-auth auto-login
+! generate switch ssh key pair if you did not before
+crypto key generate rsa
+
+! if you use public keys for users login configure that keys
+crypto key pubkey-chain ssh
+user-key user2 rsa
+key-string AAAAB3NzaC1......XYZ==
+exit
+```
+
+### Python versions
+
 Tested on Python versions:
 * 3.6
 * 3.7
 * 3.8
 * 3.9
 * 3.10
+
+### Running examples
 
 For your tests or quick startup use files form repository: [cismosmb_inventory_template.yml](./ciscosmb_inventory_template.yml), [cismosmb_gather_facts.yml](./ciscosmb_gather_facts.yml),  [cismosmb_commands.yml](./ciscosmb_commands.yml) .
 
