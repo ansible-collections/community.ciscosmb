@@ -174,3 +174,20 @@ releases:
     - playbook_examples.yml
     - release-1.0.6.yml
     release_date: '2023-05-23'
+  1.0.7:
+    changes:
+      bugfixes:
+      - added Cisco device config guide to address issue
+      - added extra "\n" to sending commands to address issue
+      release_summary: 'Release Date: 2023-10-30
+
+        Fix issue on CSB-350 #69
+
+        Clarify configuration doc #66 #64
+
+        '
+    fragments:
+    - issue66.yml
+    - issue69.yml
+    - release-1.0.7.yml
+    release_date: '2023-10-30'

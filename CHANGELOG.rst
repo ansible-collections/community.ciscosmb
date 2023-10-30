@@ -5,6 +5,23 @@ CiscoSMB Ansible module Release Notes
 .. contents:: Topics
 
 
+v1.0.7
+======
+
+Release Summary
+---------------
+
+Release Date: 2023-10-30
+Fix issue on CSB-350 #69
+Clarify configuration doc #66 #64
+
+
+Bugfixes
+--------
+
+- added Cisco device config guide to address issue
+- added extra "\n" to sending commands to address issue
+
 v1.0.6
 ======
 
