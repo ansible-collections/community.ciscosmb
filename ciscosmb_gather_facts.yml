@@ -1,5 +1,5 @@
 - name: Gather Facts
-  gather_facts: no
+  gather_facts: yes
   hosts: all
   vars:
     - configs_dir: configs

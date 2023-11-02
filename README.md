@@ -1,6 +1,6 @@
 # Ansible Cisco Small Bussiness Switches (SMB) module
 
-Ansible Galaxy module for Cisco SMB switches - SG300, SG500, SG350, SG550, CBS350
+Ansible Galaxy module for Cisco SMB switches - SG250, SG300, SG500, SG350, SG550, CBS350
 
 ## Install
 
@@ -11,6 +11,7 @@ ansible-galaxy collection install community.ciscosmb
 ## Usage examples
 
 Tested on devices:
+* SG250-10P
 * SG350-10-K9
 * SG350-28-K9
 * SG500-52-K9
