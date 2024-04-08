@@ -80,9 +80,6 @@ class TerminalModule(TerminalBase):
             )
 
     def on_become(self, passwd=None):
-        if self._get_prompt().endswith(b"#"):
-            return
-
         cmd = {u"command": u"enable"}
         if passwd:
             # Note: python-3.5 cannot combine u"" and r"" together.  Thus make
