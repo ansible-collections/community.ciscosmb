@@ -33,40 +33,31 @@ jobs:
 # https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
 
   sanity:
-    name: Sanity (Ansible ${{ matrix.ansible }})
+    name: Sanity tests
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
+        # Ansible Support Matrix
+        # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
         ansible:
-          # It's important that Sanity is tested against all stable-X.Y branches
-          # Testing against `devel` may fail as new tests are added.
-          # An alternative to `devel` is the `milestone` branch with
-          # gets synchronized with `devel` every few weeks and therefore
-          # tends to be a more stable target. Be aware that it is not updated
-          # around creation of a new stable branch, this might cause a problem
-          # that two different versions of ansible-test use the same sanity test
-          # ignore.txt file.
-        # - stable-2.9 # Only if your collection supports Ansible 2.9
-          - stable-2.10 # Only if your collection supports ansible-base 2.10
-          - stable-2.11
-          - stable-2.12
-          - stable-2.13
           - stable-2.14
+          - stable-2.15
+          - stable-2.16
           - devel
-        # - milestone
-    runs-on: ubuntu-latest
+        python:
+          - 3.11
+        os:
+          - ubuntu-22.04
     steps:
-      # Run sanity tests inside a Docker container.
-      # The docker container has all the pinned dependencies that are
-      # required and all Python versions Ansible supports.
-      - name: Perform sanity testing
+      - name: Sanity testing
         uses: ansible-community/ansible-test-gh-action@release/v1
         with:
           ansible-core-version: ${{ matrix.ansible }}
+          target-python-version: ${{ matrix.python }}
           testing-type: sanity
-          # OPTIONAL If your sanity tests require code
-          # from other collections, install them like this
           test-deps: >-
-            git+https://github.com/ansible-collections/ansible.netcommon.git
+            ansible.netcommon
 
 ###
 # Unit tests (OPTIONAL)
@@ -74,44 +65,52 @@ jobs:
 # https://docs.ansible.com/ansible/latest/dev_guide/testing_units.html
 
   units:
-    runs-on: ubuntu-latest
-    name: Units (Ansible ${{ matrix.ansible }}+py${{ matrix.python }})
+    name: Unit tests (${{ matrix.ansible }}+py${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
     strategy:
-      # As soon as the first unit test fails, cancel the others to free up the CI queue
       fail-fast: false
       matrix:
+        # Ansible Support matrix
+        # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
         ansible:
-          # - stable-2.9 # Only if your collection supports Ansible 2.9
-          - stable-2.10 # Only if your collection supports ansible-base 2.10
-          - stable-2.11
-          - stable-2.12
-          - stable-2.13
           - stable-2.14
+          - stable-2.15
+          - stable-2.16
           - devel
-          # - milestone
         python:
+          # - "2.7" no support for old Python
+          - "3.5"
           - "3.6"
           - "3.7"
           - "3.8"
           - "3.9"
           - "3.10"
+          - "3.11"
+          - "3.12"
+        os:
+          - ubuntu-22.04
         exclude:
           # no support 
-          - ansible: stable-2.10
-            python: "3.10"
-          - ansible: stable-2.11
-            python: "3.10"
+          - ansible: stable-2.14
+            python: "3.12"
+          - ansible: stable-2.15
+            python: "3.12"
+          - ansible: stable-2.16
+            python: "3.5"
+          - ansible: devel
+            python: "3.5"
+          - ansible: devel
+            python: "3.6"
+          - ansible: devel
+            python: "3.7"
+
     steps:
-      - name: >-
-          Perform unit testing against
-          Ansible version ${{ matrix.ansible }}
+      - name: Unit testing
         uses: ansible-community/ansible-test-gh-action@release/v1
         with:
           ansible-core-version: ${{ matrix.ansible }}
           target-python-version: ${{ matrix.python }}
           testing-type: units
-          # OPTIONAL If your unit tests require code
-          # from other collections, install them like this
           test-deps: >-
             ansible.netcommon
             ansible.utils

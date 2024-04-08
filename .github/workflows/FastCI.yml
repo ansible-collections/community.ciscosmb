@@ -28,72 +28,52 @@ jobs:
 # https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
 
   sanity:
-    name: Fast Sanity (Ansible ${{ matrix.ansible }})
+    name: Sanity tests
+    runs-on: ${{ matrix.os }}
     strategy:
-      matrix:
-        ansible:
-          # It's important that Sanity is tested against all stable-X.Y branches
-          # Testing against `devel` may fail as new tests are added.
-          # An alternative to `devel` is the `milestone` branch with
-          # gets synchronized with `devel` every few weeks and therefore
-          # tends to be a more stable target. Be aware that it is not updated
-          # around creation of a new stable branch, this might cause a problem
-          # that two different versions of ansible-test use the same sanity test
-          # ignore.txt file.
-        # - stable-2.9 # Only if your collection supports Ansible 2.9
-        # - stable-2.10 # Only if your collection supports ansible-base 2.10
-        # - stable-2.11
-        # - stable-2.12
-          - stable-2.13
-        # - stable-2.14
-        # - devel
-        # - milestone
-    runs-on: ubuntu-latest
-    steps:
-      # Run sanity tests inside a Docker container.
-      # The docker container has all the pinned dependencies that are
-      # required and all Python versions Ansible supports.
-      - name: Perform sanity testing
-        uses: ansible-community/ansible-test-gh-action@release/v1
-        with:
-          ansible-core-version: ${{ matrix.ansible }}
-          testing-type: sanity
-          # OPTIONAL If your sanity tests require code
-          # from other collections, install them like this
-          test-deps: >-
-            git+https://github.com/ansible-collections/ansible.netcommon.git
-
-###
-# Unit tests (OPTIONAL)
-#
-# https://docs.ansible.com/ansible/latest/dev_guide/testing_units.html
-
-  units:
-    runs-on: ubuntu-latest
-    name: Fast Units (Ansible ${{ matrix.ansible }}+py${{ matrix.python }})
-    strategy:
-      # As soon as the first unit test fails, cancel the others to free up the CI queue
       fail-fast: false
       matrix:
+        # Ansible Support matrix
+        # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
         ansible:
-          # - stable-2.9 # Only if your collection supports Ansible 2.9
-          # - stable-2.10 # Only if your collection supports ansible-base 2.10
-          # - stable-2.11
-          # - stable-2.12
-          - stable-2.13
-          # - stable-2.14
-          # - devel
-          # - milestone
+          - stable-2.14
+        python:
+          - 3.11
+        os:
+          - ubuntu-22.04
+
     steps:
-      - name: >-
-          Perform unit testing against
-          Ansible version ${{ matrix.ansible }}
+      - name: Sanity testing
         uses: ansible-community/ansible-test-gh-action@release/v1
         with:
           ansible-core-version: ${{ matrix.ansible }}
+          target-python-version: ${{ matrix.python }}
+          testing-type: sanity
+          test-deps: >-
+            ansible.netcommon
+
+  unit:
+    name: Unit tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Ansible Support matrix
+        # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
+        ansible:
+          - stable-2.14
+        python:
+          - 3.11
+        os:
+          - ubuntu-22.04
+
+    steps:
+      - name: Unit testing
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: ${{ matrix.ansible }}
+          target-python-version: ${{ matrix.python }}
           testing-type: units
-          # OPTIONAL If your unit tests require code
-          # from other collections, install them like this
           test-deps: >-
             ansible.netcommon
             ansible.utils
