@@ -423,9 +423,9 @@ class Interfaces(FactsBase):
             interface["mode"] = i[8].lower()
 
             if i[6] == "Up":
-                interface["bandwith"] = int(i[3]) * 1000  # to get speed in kb
+                interface["bandwidth"] = int(i[3]) * 1000  # to get speed in kb
             else:
-                interface["bandwith"] = None
+                interface["bandwidth"] = None
 
             for key in interface:
                 if interface[key] == "--":
@@ -449,9 +449,9 @@ class Interfaces(FactsBase):
             interface["control"] = i[5].lower()
 
             if i[6] == "Up":
-                interface["bandwith"] = int(i[3]) * 1000  # to get speed in kb
+                interface["bandwidth"] = int(i[3]) * 1000  # to get speed in kb
             else:
-                interface["bandwith"] = None
+                interface["bandwidth"] = None
 
             for key in interface:
                 if interface[key] == "--":
@@ -624,7 +624,7 @@ class Interfaces(FactsBase):
             self.facts["interfaces"][interface]["admin_state"] = "up"
             self.facts["interfaces"][interface]["description"] = None
             self.facts["interfaces"][interface]["state"] = "up"
-            self.facts["interfaces"][interface]["bandwith"] = None
+            self.facts["interfaces"][interface]["bandwidth"] = None
             self.facts["interfaces"][interface]["duplex"] = None
             self.facts["interfaces"][interface]["negotiation"] = None
             self.facts["interfaces"][interface]["control"] = None
