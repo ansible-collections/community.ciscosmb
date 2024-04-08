@@ -1,5 +1,7 @@
 # Ansible Cisco Small Bussiness Switches (SMB) module
 
+Thorough project check - [![CI](https://github.com/ansible-collections/community.ciscosmb/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/ansible-collections/community.ciscosmb/actions/workflows/CI.yml)
+
 Ansible Galaxy module for Cisco SMB switches - SG250, SG300, SG500, SG350, SG550, CBS350
 
 ## Install
