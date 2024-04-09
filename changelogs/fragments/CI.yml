@@ -1,0 +1,3 @@
+# fragment.xml
+trivial:
+  - updated CI tests to reflect support matrix https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix

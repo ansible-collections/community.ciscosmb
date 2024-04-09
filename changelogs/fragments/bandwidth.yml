@@ -1,0 +1,7 @@
+# fragment.xml
+
+bugfixes:
+  - solved issue #71 - typo in interface list - bandwidth 
+
+breaking_changes:
+  - in facts of interface 'bandwith' changed to 'bandwidth'

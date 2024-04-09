@@ -61,6 +61,8 @@ Tested on Python versions:
 * 3.8
 * 3.9
 * 3.10
+* 3.11
+* 3.12
 
 ### Running examples
 
@@ -143,7 +145,7 @@ vim galaxy.yml
 
 # edit changelog fragments (template in changelogs/fragments/.keep)
 cp changelogs/fragments/.keep changelogs/fragments/release-x.y.z.yml
-vim changelogs/fragments/fragment.yml
+vim changelogs/fragments/release-x.y.z.yml
 
 # change and generate CHANGELOG.rst
 antsibull-changelog lint -v
