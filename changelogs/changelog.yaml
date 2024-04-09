@@ -191,3 +191,20 @@ releases:
     - issue69.yml
     - release-1.0.7.yml
     release_date: '2023-10-30'
+  1.0.8:
+    changes:
+      breaking_changes:
+      - in facts of interface 'bandwith' changed to 'bandwidth'
+      bugfixes:
+      - issue
+      - solved issue
+      minor_changes:
+      - docs - addeed info about SG-250 support and testing
+      release_summary: "Release Date: 2024-04-09\n\n  Minor bugfixes, updated CI\n"
+    fragments:
+    - CI.yml
+    - add-SG250.yml
+    - bandwidth.yml
+    - on_become.yml
+    - release-1.0.8.yml
+    release_date: '2024-04-09'

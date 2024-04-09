@@ -4,6 +4,31 @@ CiscoSMB Ansible module Release Notes
 
 .. contents:: Topics
 
+v1.0.8
+======
+
+Release Summary
+---------------
+
+Release Date: 2024-04-09
+
+  Minor bugfixes, updated CI
+
+Minor Changes
+-------------
+
+- docs - addeed info about SG-250 support and testing
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- in facts of interface 'bandwith' changed to 'bandwidth'
+
+Bugfixes
+--------
+
+- issue
+- solved issue
 
 v1.0.7
 ======
@@ -14,7 +39,6 @@ Release Summary
 Release Date: 2023-10-30
 Fix issue on CSB-350 #69
 Clarify configuration doc #66 #64
-
 
 Bugfixes
 --------
@@ -29,7 +53,6 @@ Release Summary
 ---------------
 
 Code cleaning, better documentation   
-
 
 Minor Changes
 -------------
@@ -68,7 +91,6 @@ Release Summary
 
 Release Date: 2021-09-13
 
-
 Bugfixes
 --------
 
@@ -82,7 +104,6 @@ Release Summary
 
 Release Date: 2019-10-31
 Minor changes in documentation, adding Python 3.6 as a supported version
-
 
 Minor Changes
 -------------
