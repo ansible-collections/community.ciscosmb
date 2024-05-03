@@ -116,6 +116,13 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
             len(result['ansible_facts']['ansible_net_neighbors']), 9
         )
 
+        interfaces = result['ansible_facts']['ansible_net_interfaces']
+        ge42 = interfaces['GigabitEthernet1/42']
+
+        self.assertEqual(ge42['bandwidth'], 1000000)
+
+        self.assertEqual(ge42['bandwidth'], ge42['bandwith'])
+
 #     def test_ciscosmb_facts_routing(self):
 #         set_module_args(dict(gather_subset='routing'))
 #         result = self.execute_module()
