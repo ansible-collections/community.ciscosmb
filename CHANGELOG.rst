@@ -4,6 +4,29 @@ CiscoSMB Ansible module Release Notes
 
 .. contents:: Topics
 
+v1.0.9
+======
+
+Release Summary
+---------------
+
+Primarily revert release. Previous release (1.0.8) fixed typo in attribute name, but it was breaking change.
+This release brought the typo back (bandwith) and just added the new attribute with correct name "bandwidth" as a copy of the mistypped attribute.
+
+Attribude "bandwith" will be removed in next minor release.
+
+Minor Changes
+-------------
+
+- added additional attribute - add interface 'bandwidth' attribute
+- reverted attribute change - keep interface 'bandwith' attribute
+
+Bugfixes
+--------
+
+- typo in changelog fragment template
+- typo in test script
+
 v1.0.8
 ======
 

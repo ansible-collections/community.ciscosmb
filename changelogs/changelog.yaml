@@ -208,3 +208,24 @@ releases:
     - on_become.yml
     - release-1.0.8.yml
     release_date: '2024-04-09'
+  1.0.9:
+    changes:
+      bugfixes:
+      - typo in changelog fragment template
+      - typo in test script
+      minor_changes:
+      - added additional attribute - add interface 'bandwidth' attribute
+      - reverted attribute change - keep interface 'bandwith' attribute
+      release_summary: 'Primarily revert release. Previous release (1.0.8) fixed typo
+        in attribute name, but it was breaking change.
+
+        This release brought the typo back (bandwith) and just added the new attribute
+        with correct name "bandwidth" as a copy of the mistypped attribute.
+
+
+        Attribude "bandwith" will be removed in next minor release.
+
+        '
+    fragments:
+    - 75-versioning_violation.yml
+    release_date: '2024-05-03'
