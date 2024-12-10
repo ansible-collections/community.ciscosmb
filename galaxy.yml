@@ -5,10 +5,10 @@
 namespace: community
 
 # The name of the collection. Has the same character restrictions as 'namespace'
-name: ciscosmb 
+name: ciscosmb
 
 # The version of the collection. Must be compatible with semantic versioning
-version: 1.0.9
+version: 1.0.10
 
 # The path to the Markdown (.md) readme file. This path is relative to the root of the collection
 readme: README.md
@@ -20,7 +20,7 @@ authors:
 
 ### OPTIONAL but strongly recommended
 # A short summary description of the collection
-description: Cisco SMB switches - SG300, SG500, SG350, SG550, CBS350
+description: Cisco SMB switches - SG300, SG500, SG350, SG550, CBS350, C1300
 
 # The path to the license file for the collection. This path is relative to the root of the collection. This key is
 # mutually exclusive with 'license'
@@ -28,13 +28,13 @@ license_file: 'LICENSE'
 
 # A list of tags you want to associate with the collection for indexing/searching. A tag name has the same character
 # requirements as 'namespace' and 'name'
-tags: [network, switch, ciscosmb, cisco, sg300, sg500, sg350, sg550, cbs350, smb, small_bussiness]
+tags: [network, switch, ciscosmb, cisco, sg300, sg500, sg350, sg550, cbs350, c1300, smb, small_bussiness]
 
 # Collections that this collection requires to be installed for it to be usable. The key of the dict is the
 # collection label 'namespace.name'. The value is a version range
 # L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
 # range specifiers can be set and are separated by ','
-dependencies: 
+dependencies:
   ansible.netcommon: '>=1.5.0'
 
 # The URL of the originating SCM repository

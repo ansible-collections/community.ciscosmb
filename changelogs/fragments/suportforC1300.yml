@@ -1,3 +1,0 @@
-minor_changes:
-  - parsing neighbour table allowes empty 4th column to allow Cisco Catalyst 1300 support
-  - added Catalyst 1300 to supported platforms

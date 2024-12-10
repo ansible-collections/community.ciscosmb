@@ -4,6 +4,21 @@ CiscoSMB Ansible module Release Notes
 
 .. contents:: Topics
 
+v1.0.10
+=======
+
+Release Summary
+---------------
+
+Release Date: 2024-12-10
+Add compatibility with Cisco Catalyst C1300 by solving issue #79 thanx to @alexandrud .
+
+Minor Changes
+-------------
+
+- added Catalyst 1300 to supported platforms
+- parsing neighbour table allowes empty 4th column to allow Cisco Catalyst 1300 support
+
 v1.0.9
 ======
 
