@@ -5,7 +5,7 @@ ansible-pylibssh
 # sanity tests
 pycodestyle
 pylint
-voluptuous 
+voluptuous
 
 # units
 pytest
@@ -17,3 +17,4 @@ mock
 yamllint
 galaxy_importer
 antsibull-changelog
+setuptools

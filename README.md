@@ -2,7 +2,7 @@
 
 Thorough project check - [![CI](https://github.com/ansible-collections/community.ciscosmb/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/ansible-collections/community.ciscosmb/actions/workflows/CI.yml)
 
-Ansible Galaxy module for Cisco SMB switches - SG250, SG300, SG500, SG350, SG550, CBS350
+Ansible Galaxy module for Cisco SMB switches - SG250, SG300, SG500, SG350, SG550, CBS350, C1300
 
 ## Communication
 
@@ -32,6 +32,15 @@ Tested on devices:
 * CBS350-24P-4G
 * SG550X-48 stack
 
+Known to be used with broad range of:
+* Cisco 250 Series Smart Switches
+* Cisco Business 350 Series Managed Switches
+* Cisco 350 Series Stackable Managed Switches
+* Cisco 350X Series Stackable Managed Switches
+* Cisco 500 Series Stackable Managed Switches
+* Cisco 550X Series Stackable Managed Switches
+* Cisco Catalyst 1300 Series Switches
+
 ### Required device configuration
 
 Access setup
@@ -52,7 +61,7 @@ Cisco's SSH server setup
 ! you have to enable SSH server
 ip ssh server
 ! enable password and/or key
-ip ssh password-auth      
+ip ssh password-auth
 ip ssh pubkey-auth auto-login
 ! generate switch ssh key pair if you did not before
 crypto key generate rsa
@@ -110,7 +119,7 @@ pip install -r tests/unit/requirements.txt
 
 ```
 
-### Develop 
+### Develop
 
 ```
 cd ansible_collections/community/ciscosmb
@@ -144,7 +153,7 @@ ansible-test sanity ${METHOD} ${PY}  \
     && rm -f ./community-ciscosmb-*.tar.gz
 ```
 
-### Release 
+### Release
 
 ```
 cd ansible_collections/community/ciscosmb
@@ -164,7 +173,7 @@ antsibull-changelog release -v
 
 git commit -m "version bump to x.y.z" .
 git tag x.y.z
-git push 
+git push
 ```
 
 ## Releasing, Versioning and Deprecation

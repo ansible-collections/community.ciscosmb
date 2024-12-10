@@ -655,7 +655,10 @@ class Interfaces(FactsBase):
     def populate_neighbors(self, data):
         tables = ciscosmb_split_to_tables(data)
 
-        neighbor_table = ciscosmb_parse_table(tables[0], allow_empty_fields=[3])
+        neighbor_table = ciscosmb_parse_table(
+            tables[0],
+            allow_empty_fields=[3, 4]
+        )
 
         neighbors = dict()
         for key in neighbor_table:
