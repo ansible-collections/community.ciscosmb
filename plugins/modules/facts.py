@@ -270,8 +270,9 @@ class Default(FactsBase):
                 line,
             )
 
-            modul = match.groupdict()
-            modules[modul["name"]] = modul
+            if match:
+                modul = match.groupdict()
+                modules[modul["name"]] = modul
 
         if modules:
             return modules
