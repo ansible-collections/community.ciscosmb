@@ -18,15 +18,8 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-# from ansible_collections.community.ciscosmb.tests.unit.compat.mock import patch
-# from ansible_collections.community.ciscosmb.tests.unit.plugins.modules.utils import (
-#    set_module_args,
-# )
-
-from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import (
-    patch,
-)
-from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import (
+from ansible_collections.community.ciscosmb.tests.unit.compat.mock import patch
+from ansible_collections.community.ciscosmb.tests.unit.plugins.modules.utils import (
     set_module_args,
 )
 
@@ -79,7 +72,7 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
     def test_ciscosmb_command_wait_for(self):
         wait_for = 'result[0] contains "system/images/image"'
         set_module_args(dict(commands=["show version"], wait_for=wait_for))
-        self.execute_module()
+        result = self.execute_module()
 
     def test_ciscosmb_command_wait_for_fails(self):
         wait_for = 'result[0] contains "test string"'
