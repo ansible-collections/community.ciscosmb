@@ -1,0 +1,10 @@
+
+
+IP Address         I/F       I/F Status Type    Directed  Prec Redirect Status
+                             admin/oper         Broadcast
+------------------ --------- ---------- ------- --------- ---- -------- ------
+0.0.0.0/32         vlan 1    UP/DOWN    DHCP    disable   No   enable   Not
+                                                                        receiv
+                                                                        ed
+10.10.10.2/24      vlan 999  UP/UP      Static  disable   No   enable   Valid
+

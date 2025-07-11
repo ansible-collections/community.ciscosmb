@@ -1,0 +1,25 @@
+                                                Flow    Admin     Back   Mdix
+Port      Type         Duplex  Speed  Neg      control  State   Pressure Mode
+--------- ------------ ------  -----  -------- -------  -----   -------- ----
+gi1       1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi2       1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi3       1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi4       1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi5       1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi6       1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi7       1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi8       1G-Copper    Full    1000   Enabled  Off      Up      Disabled Auto
+gi9       1G-Combo-C   Full    1000   Enabled  Off      Up      Disabled Auto
+gi10      1G-Combo-C   Full    1000   Enabled  Off      Up      Disabled Auto
+
+                                  Flow    Admin
+Ch       Type    Speed  Neg      control  State
+-------- ------- -----  -------- -------  -----
+Po1         --     --   Enabled  Off      Up
+Po2         --     --   Enabled  Off      Up
+Po3         --     --   Enabled  Off      Up
+Po4         --     --   Enabled  Off      Up
+Po5         --     --   Enabled  Off      Up
+Po6         --     --   Enabled  Off      Up
+Po7         --     --   Enabled  Off      Up
+Po8         --     --   Enabled  Off      Up
