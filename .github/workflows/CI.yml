@@ -21,16 +21,15 @@ on:
   # testing against latest version of ansible-test for each ansible-core
   # version
   schedule:
-    - cron: '0 6 * * 0'
+    - cron: "0 6 * * 0"
   # manual
   workflow_dispatch:
 
 jobs:
-
-###
-# Sanity tests (REQUIRED)
-#
-# https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
+  ###
+  # Sanity tests (REQUIRED)
+  #
+  # https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
 
   sanity:
     name: Sanity tests
@@ -44,6 +43,7 @@ jobs:
           - stable-2.14
           - stable-2.15
           - stable-2.16
+          - stable-2.19
           - devel
         python:
           - 3.11
@@ -59,10 +59,10 @@ jobs:
           test-deps: >-
             ansible.netcommon
 
-###
-# Unit tests (OPTIONAL)
-#
-# https://docs.ansible.com/ansible/latest/dev_guide/testing_units.html
+  ###
+  # Unit tests (OPTIONAL)
+  #
+  # https://docs.ansible.com/ansible/latest/dev_guide/testing_units.html
 
   units:
     name: Unit tests (${{ matrix.ansible }}+py${{ matrix.python }})
@@ -76,33 +76,23 @@ jobs:
           - stable-2.14
           - stable-2.15
           - stable-2.16
+          - stable-2.19
           - devel
         python:
-          # - "2.7" no support for old Python
-          - "3.5"
-          - "3.6"
-          - "3.7"
           - "3.8"
           - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
+          - "3.13"
         os:
           - ubuntu-22.04
         exclude:
-          # no support 
+          # no support
           - ansible: stable-2.14
             python: "3.12"
           - ansible: stable-2.15
             python: "3.12"
-          - ansible: stable-2.16
-            python: "3.5"
-          - ansible: devel
-            python: "3.5"
-          - ansible: devel
-            python: "3.6"
-          - ansible: devel
-            python: "3.7"
 
     steps:
       - name: Unit testing
@@ -112,5 +102,4 @@ jobs:
           target-python-version: ${{ matrix.python }}
           testing-type: units
           test-deps: >-
-            ansible.netcommon
-            ansible.utils
+            ansible.netcommon ansible.utils
