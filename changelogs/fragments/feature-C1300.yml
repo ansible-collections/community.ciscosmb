@@ -1,0 +1,3 @@
+# fragment.yml
+minor_changes:
+  - solves #80 and #82 - bad parsin of facts for C1300
