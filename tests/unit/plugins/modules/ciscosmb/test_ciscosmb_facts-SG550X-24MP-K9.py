@@ -63,28 +63,30 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
         self.run_commands.side_effect = load_from_file
 
     def test_ciscosmb_facts_default(self):
-        set_module_args(dict(gather_subset="default"))
-        result = self.execute_module()
+        with set_module_args(dict(gather_subset="default")):
+            result = self.execute_module()
+
         self.assertEqual(result["ansible_facts"]["ansible_net_version"], "2.4.5.71")
         self.assertEqual(result["ansible_facts"]["ansible_net_hw_version"], "V02")
         self.assertEqual(result["ansible_facts"]["ansible_net_uptime"], 9127415)
         self.assertEqual(result["ansible_facts"]["ansible_net_hostname"], "sw-abcdefgh")
         self.assertEqual(result["ansible_facts"]["ansible_net_cpu_load"], "8")
-
         self.assertEqual(result["ansible_facts"]["ansible_net_model"], "SG550X-24MP-K9")
         self.assertEqual(
             result["ansible_facts"]["ansible_net_serialnum"], "ABC123456AB"
         )
 
     def test_ciscosmb_facts_hardware(self):
-        set_module_args(dict(gather_subset="hardware"))
-        result = self.execute_module()
+        with set_module_args(dict(gather_subset="hardware")):
+            result = self.execute_module()
+
         self.assertEqual(result["ansible_facts"]["ansible_net_spacefree_mb"], 122.5)
         self.assertEqual(result["ansible_facts"]["ansible_net_spacetotal_mb"], 219.3)
 
     def test_ciscosmb_facts_config(self):
-        set_module_args(dict(gather_subset="config"))
-        result = self.execute_module()
+        with set_module_args(dict(gather_subset="config")):
+            result = self.execute_module()
+
         self.assertIsInstance(result["ansible_facts"]["ansible_net_config"], str)
 
 
