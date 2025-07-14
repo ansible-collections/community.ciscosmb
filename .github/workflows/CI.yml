@@ -35,7 +35,7 @@ jobs:
     name: Sanity tests (Ⓐ${{ matrix.ansible }}, P${{matrix.python}})
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         # Ansible Support Matrix
         # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
@@ -50,21 +50,19 @@ jobs:
         os:
           - ubuntu-22.04
     steps:
-      # - name: Sanity testing
-      #   uses: ansible-community/ansible-test-gh-action@release/v1
-      #   with:
-      #     ansible-core-version: ${{ matrix.ansible }}
-      #     target-python-version: ${{ matrix.python }}
-      #     testing-type: sanity
-      #     test-deps: >-
-      #       ansible.netcommon
+      - name: Sanity testing
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: ${{ matrix.ansible }}
+          target-python-version: ${{ matrix.python }}
+          testing-type: sanity
+          test-deps: >-
+            ansible.netcommon
 
       - name: Perform sanity testing
         uses: felixfontein/ansible-test-gh-action@main
         with:
-          ansible-core-github-repository-slug:
-            ${{ contains(fromJson('["stable-2.9", "stable-2.10", "stable-2.11"]'), matrix.ansible) &&
-            'ansible-community/eol-ansible' || 'ansible/ansible' }}
+          ansible-core-github-repository-slug: ${{ contains(fromJson('["stable-2.9", "stable-2.10", "stable-2.11"]'), matrix.ansible) && 'ansible-community/eol-ansible' || 'ansible/ansible' }}
           ansible-core-version: ${{ matrix.ansible }}
           codecov-token: ${{ secrets.CODECOV_TOKEN }}
           testing-type: sanity
@@ -110,21 +108,20 @@ jobs:
             python: "3.12"
 
     steps:
-      # - name: Unit testing
-      #   uses: ansible-community/ansible-test-gh-action@release/v1
-      #   with:
-      #     ansible-core-version: ${{ matrix.ansible }}
-      #     target-python-version: ${{ matrix.python }}
-      #     testing-type: units
-      #     test-deps: >-
-      #       ansible.netcommon ansible.utils
+      - name: Unit testing
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: ${{ matrix.ansible }}
+          target-python-version: ${{ matrix.python }}
+          testing-type: units
+          test-deps: >-
+            ansible.netcommon ansible.utils
       - name: >-
-          Perform unit testing against Ansible version ${{ matrix.ansible }}
+          Perform unit testing against
+          Ansible version ${{ matrix.ansible }}
         uses: felixfontein/ansible-test-gh-action@main
         with:
-          ansible-core-github-repository-slug:
-            ${{ contains(fromJson('["stable-2.9", "stable-2.10", "stable-2.11"]'), matrix.ansible) &&
-            'ansible-community/eol-ansible' || 'ansible/ansible' }}
+          ansible-core-github-repository-slug: ${{ contains(fromJson('["stable-2.9", "stable-2.10", "stable-2.11"]'), matrix.ansible) && 'ansible-community/eol-ansible' || 'ansible/ansible' }}
           ansible-core-version: ${{ matrix.ansible }}
           codecov-token: ${{ secrets.CODECOV_TOKEN }}
           testing-type: units

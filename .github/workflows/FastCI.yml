@@ -39,7 +39,7 @@ jobs:
         python:
           - 3.11
         os:
-          - ubuntu-24.04
+          - ubuntu-22.04
 
     steps:
       - name: Sanity testing
@@ -49,7 +49,7 @@ jobs:
           target-python-version: ${{ matrix.python }}
           testing-type: sanity
           test-deps: >-
-            ansible.netcommon ansible.utils community.internal_test_tools
+            ansible.netcommon
 
   unit:
     name: Unit tests
@@ -74,4 +74,4 @@ jobs:
           target-python-version: ${{ matrix.python }}
           testing-type: units
           test-deps: >-
-            ansible.netcommon ansible.utils community.internal_test_tools
+            ansible.netcommon ansible.utils
