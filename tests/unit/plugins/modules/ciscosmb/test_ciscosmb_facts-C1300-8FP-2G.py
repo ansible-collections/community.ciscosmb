@@ -18,11 +18,14 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ansible_collections.community.ciscosmb.tests.unit.compat.mock import patch
-from ansible_collections.community.ciscosmb.plugins.modules import facts
-from ansible_collections.community.ciscosmb.tests.unit.plugins.modules.utils import (
+from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import (
+    patch,
+)
+from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import (
     set_module_args,
 )
+
+from ansible_collections.community.ciscosmb.plugins.modules import facts
 from .ciscosmb_module import TestCiscoSMBModule, load_fixture
 
 
@@ -55,8 +58,8 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
         self.run_commands.side_effect = load_from_file
 
     def test_ciscosmb_facts_default(self):
-        set_module_args(dict(gather_subset="default"))
-        result = self.execute_module()
+        with set_module_args(dict(gather_subset="default")):
+            result = self.execute_module()
 
         self.assertEqual(result["ansible_facts"]["ansible_net_hw_version"], "V02")
         self.assertEqual(result["ansible_facts"]["ansible_net_model"], "C1300-8FP-2G")

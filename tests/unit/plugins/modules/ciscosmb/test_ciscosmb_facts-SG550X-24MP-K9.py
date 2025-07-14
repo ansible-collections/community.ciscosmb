@@ -25,9 +25,6 @@ from ansible_collections.community.internal_test_tools.tests.unit.plugins.module
     set_module_args,
 )
 
-# from ansible_collections.community.ciscosmb.tests.unit.compat.mock import patch
-# from ansible_collections.community.internal_test_toolscommunity.ciscosmb.tests.unit.plugins.modules.utils import set_module_args
-
 from ansible_collections.community.ciscosmb.plugins.modules import facts
 from .ciscosmb_module import TestCiscoSMBModule, load_fixture
 
@@ -91,8 +88,9 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
 
 
 #     def test_ciscosmb_facts_interfaces(self):
-#         set_module_args(dict(gather_subset='interfaces'))
-#         result = self.execute_module()
+#         with set_module_args(dict(gather_subset='interfaces')):
+#           result = self.execute_module()
+#
 #         self.assertIn(
 #             result['ansible_facts']['ansible_net_all_ipv4_addresses'][0], ['10.37.129.3', '10.37.0.0', '192.168.88.1']
 #         )
@@ -121,8 +119,9 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
 #         self.assertEqual(result, None)
 #
 #     def test_ciscosmb_facts_routing(self):
-#         set_module_args(dict(gather_subset='routing'))
-#         result = self.execute_module()
+#         with set_module_args(dict(gather_subset='routing')):
+#           result = self.execute_module()
+#
 #         self.assertIn(
 #             result['ansible_facts']['ansible_net_bgp_peer']['iBGP_BRAS.TYRMA']['name'], ['iBGP_BRAS.TYRMA']
 #         )
