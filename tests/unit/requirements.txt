@@ -1,3 +1,1 @@
-ansible-core >=2.19.0rc2
-unittest2
-ordereddict
+ansible-core ==2.19.0rc2
