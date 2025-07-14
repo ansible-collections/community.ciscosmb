@@ -1,0 +1,3 @@
+# fragment.yml
+minor_changes:
+  - Update modules to conform core 2.19 and templating changes
