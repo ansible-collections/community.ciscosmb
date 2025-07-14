@@ -4,6 +4,20 @@ CiscoSMB Ansible module Release Notes
 
 .. contents:: Topics
 
+v1.0.11
+=======
+
+Release Summary
+---------------
+
+Release Date: 2025-07-14
+
+Minor Changes
+-------------
+
+- Update modules to conform core 2.19 and templating changes
+- solves
+
 v1.0.10
 =======
 

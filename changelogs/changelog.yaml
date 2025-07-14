@@ -123,6 +123,19 @@ releases:
     - release-1.0.10.yml
     - suportforC1300.yml
     release_date: '2024-12-10'
+  1.0.11:
+    changes:
+      minor_changes:
+      - Update modules to conform core 2.19 and templating changes
+      - solves
+      release_summary: 'Release Date: 2025-07-14
+
+        '
+    fragments:
+    - feature-C1300.yml
+    - feature-core-2.19.yml
+    - release-1.0.11.yml
+    release_date: '2025-07-14'
   1.0.2:
     changes:
       bugfixes:
