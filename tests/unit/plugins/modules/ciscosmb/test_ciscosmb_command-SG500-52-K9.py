@@ -14,13 +14,18 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 
 # Make coding more python3-ish
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.community.ciscosmb.tests.unit.compat.mock import patch
-from ansible_collections.community.ciscosmb.tests.unit.plugins.modules.utils import set_module_args
-from .ciscosmb_module import TestCiscoSMBModule, load_fixture
+from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import (
+    patch,
+)
+from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import (
+    set_module_args,
+)
 
+from .ciscosmb_module import TestCiscoSMBModule, load_fixture
 from ansible_collections.community.ciscosmb.plugins.modules import command
 
 
@@ -30,7 +35,9 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
 
     def setUp(self):
         super(TestCiscoSMBFactsModule, self).setUp()
-        self.mock_run_commands = patch('ansible_collections.community.ciscosmb.plugins.modules.command.run_commands')
+        self.mock_run_commands = patch(
+            "ansible_collections.community.ciscosmb.plugins.modules.command.run_commands"
+        )
         self.run_commands = self.mock_run_commands.start()
 
     def tearDown(self):
@@ -43,41 +50,47 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
             output = list()
 
             for command in commands:
-                filename = str(command).split(' | ', 1)[0].replace(' ', '_')
-                output.append(load_fixture('ciscosmb_command-SG500-52-K9-%s' % filename))
+                filename = str(command).split(" | ", 1)[0].replace(" ", "_")
+                output.append(
+                    load_fixture("ciscosmb_command-SG500-52-K9-%s" % filename)
+                )
             return output
 
         self.run_commands.side_effect = load_from_file
 
     def test_ciscosmb_command_simple(self):
-        set_module_args(dict(commands=["show version"]))
-        result = self.execute_module()
+        with set_module_args(dict(commands=["show version"])):
+            result = self.execute_module()
+
         self.assertEqual(len(result["stdout"]), 1)
         self.assertTrue(result["stdout"][0].startswith("SW version"))
 
     def test_ciscosmb_command_multiple(self):
-        set_module_args(dict(commands=["show version", "show version"]))
-        result = self.execute_module()
+        with set_module_args(dict(commands=["show version", "show version"])):
+            result = self.execute_module()
+
         self.assertEqual(len(result["stdout"]), 2)
         self.assertTrue(result["stdout"][0].startswith("SW version"))
 
     def test_ciscosmb_command_wait_for(self):
         wait_for = 'result[0] contains "Boot version"'
-        set_module_args(dict(commands=["show version"], wait_for=wait_for))
-        self.execute_module()
+        with set_module_args(dict(commands=["show version"], wait_for=wait_for)):
+            self.execute_module()
 
     def test_ciscosmb_command_wait_for_fails(self):
         wait_for = 'result[0] contains "test string"'
-        set_module_args(dict(commands=["show version"], wait_for=wait_for))
-        self.execute_module(failed=True)
+        with set_module_args(dict(commands=["show version"], wait_for=wait_for)):
+            self.execute_module(failed=True)
+
         self.assertEqual(self.run_commands.call_count, 10)
 
     def test_ciscosmb_command_retries(self):
         wait_for = 'result[0] contains "test string"'
-        set_module_args(
+        with set_module_args(
             dict(commands=["show version"], wait_for=wait_for, retries=2)
-        )
-        self.execute_module(failed=True)
+        ):
+            self.execute_module(failed=True)
+
         self.assertEqual(self.run_commands.call_count, 2)
 
     def test_ciscosmb_command_match_any(self):
@@ -85,20 +98,20 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
             'result[0] contains "Boot version"',
             'result[0] contains "test string"',
         ]
-        set_module_args(
+        with set_module_args(
             dict(commands=["show version"], wait_for=wait_for, match="any")
-        )
-        self.execute_module()
+        ):
+            self.execute_module()
 
     def test_ciscosmb_command_match_all(self):
         wait_for = [
             'result[0] contains "SW version"',
             'result[0] contains "Boot version"',
         ]
-        set_module_args(
+        with set_module_args(
             dict(commands=["show version"], wait_for=wait_for, match="all")
-        )
-        self.execute_module()
+        ):
+            self.execute_module()
 
     def test_ciscosmb_command_match_all_failure(self):
         wait_for = [
@@ -106,7 +119,5 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
             'result[0] contains "test string"',
         ]
         commands = ["show version", "show version"]
-        set_module_args(
-            dict(commands=commands, wait_for=wait_for, match="all")
-        )
-        self.execute_module(failed=True)
+        with set_module_args(dict(commands=commands, wait_for=wait_for, match="all")):
+            self.execute_module(failed=True)

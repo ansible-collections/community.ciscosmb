@@ -52,9 +52,7 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
 
             for command in commands:
                 filename = str(command).split(" | ", 1)[0].replace(" ", "_")
-                output.append(
-                    load_fixture("ciscosmb_facts-SX550X-24F-K9-%s" % filename)
-                )
+                output.append(load_fixture("ciscosmb_facts-C1300-8FP-2G-%s" % filename))
             return output
 
         self.run_commands.side_effect = load_from_file
@@ -64,7 +62,7 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
             result = self.execute_module()
 
         self.assertEqual(result["ansible_facts"]["ansible_net_hw_version"], "V02")
-        self.assertEqual(result["ansible_facts"]["ansible_net_model"], "SX550X-24F-K9")
+        self.assertEqual(result["ansible_facts"]["ansible_net_model"], "C1300-8FP-2G")
         self.assertEqual(
-            result["ansible_facts"]["ansible_net_serialnum"], "DNI22500E5F"
+            result["ansible_facts"]["ansible_net_serialnum"], "FOC2222291D"
         )

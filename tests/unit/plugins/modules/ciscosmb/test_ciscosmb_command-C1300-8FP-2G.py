@@ -52,7 +52,7 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
             for command in commands:
                 filename = str(command).split(" | ", 1)[0].replace(" ", "_")
                 output.append(
-                    load_fixture("ciscosmb_command-CBS350-24P-4G-%s" % filename)
+                    load_fixture("ciscosmb_command-C1300-8FP-2G-%s" % filename)
                 )
             return output
 
@@ -73,7 +73,7 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
         self.assertTrue(result["stdout"][0].startswith("Active-image: flash:"))
 
     def test_ciscosmb_command_wait_for(self):
-        wait_for = 'result[0] contains "3.0.0.61"'
+        wait_for = 'result[0] contains "system/images/image"'
         with set_module_args(dict(commands=["show version"], wait_for=wait_for)):
             self.execute_module()
 
@@ -95,7 +95,7 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
 
     def test_ciscosmb_command_match_any(self):
         wait_for = [
-            'result[0] contains "3.0.0.61"',
+            'result[0] contains "system/images/image"',
             'result[0] contains "test string"',
         ]
         with set_module_args(
@@ -106,7 +106,7 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
     def test_ciscosmb_command_match_all(self):
         wait_for = [
             'result[0] contains "Active-image"',
-            'result[0] contains "3.0.0.61"',
+            'result[0] contains "system/images/image"',
         ]
         with set_module_args(
             dict(commands=["show version"], wait_for=wait_for, match="all")
@@ -115,7 +115,7 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
 
     def test_ciscosmb_command_match_all_failure(self):
         wait_for = [
-            'result[0] contains "3.0.0.61"',
+            'result[0] contains "system/images/image"',
             'result[0] contains "test string"',
         ]
         commands = ["show version", "show version"]

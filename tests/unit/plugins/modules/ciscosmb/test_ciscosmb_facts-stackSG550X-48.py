@@ -14,12 +14,18 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 
 # Make coding more python3-ish
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.community.ciscosmb.tests.unit.compat.mock import patch
+from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import (
+    patch,
+)
+from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import (
+    set_module_args,
+)
+
 from ansible_collections.community.ciscosmb.plugins.modules import facts
-from ansible_collections.community.ciscosmb.tests.unit.plugins.modules.utils import set_module_args
 from .ciscosmb_module import TestCiscoSMBModule, load_fixture
 
 
@@ -29,7 +35,9 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
 
     def setUp(self):
         super(TestCiscoSMBFactsModule, self).setUp()
-        self.mock_run_commands = patch('ansible_collections.community.ciscosmb.plugins.modules.facts.run_commands')
+        self.mock_run_commands = patch(
+            "ansible_collections.community.ciscosmb.plugins.modules.facts.run_commands"
+        )
         self.run_commands = self.mock_run_commands.start()
 
     def tearDown(self):
@@ -39,115 +47,109 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
     def load_fixtures(self, commands=None):
         def load_from_file(*args, **kwargs):
             module = args
-            commands = kwargs['commands']
+            commands = kwargs["commands"]
             output = list()
 
             for command in commands:
-                filename = str(command).split(' | ', 1)[0].replace(' ', '_')
-                output.append(load_fixture('ciscosmb_facts-stackSG550X-48-%s' % filename))
+                filename = str(command).split(" | ", 1)[0].replace(" ", "_")
+                output.append(
+                    load_fixture("ciscosmb_facts-stackSG550X-48-%s" % filename)
+                )
             return output
 
         self.run_commands.side_effect = load_from_file
 
     def test_ciscosmb_facts_default(self):
-        set_module_args(dict(gather_subset='default'))
-        result = self.execute_module()
+        with set_module_args(dict(gather_subset="default")):
+            result = self.execute_module()
+
+        self.assertEqual(result["ansible_facts"]["ansible_net_version"], "2.5.0.83")
+        self.assertEqual(result["ansible_facts"]["ansible_net_uptime"], 5537299)
         self.assertEqual(
-            result['ansible_facts']['ansible_net_version'], '2.5.0.83'
+            result["ansible_facts"]["ansible_net_hostname"], "sw-abcdefgh-1"
+        )
+        self.assertEqual(result["ansible_facts"]["ansible_net_cpu_load"], "10")
+        self.assertEqual(
+            result["ansible_facts"]["ansible_net_stacked_models"],
+            ["SG550X-48P-K9", "SG550X-48-K9"],
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_uptime'], 5537299
+            result["ansible_facts"]["ansible_net_stacked_serialnums"],
+            ["ABC1234567A", "ABC123456AB"],
         )
+        self.assertEqual(result["ansible_facts"]["ansible_net_model"], "Stack SG550X")
         self.assertEqual(
-            result['ansible_facts']['ansible_net_hostname'], 'sw-abcdefgh-1'
+            result["ansible_facts"]["ansible_net_serialnum"], "ABC1234567A"
         )
+        self.assertEqual(result["ansible_facts"]["ansible_net_hw_version"], "V04")
         self.assertEqual(
-            result['ansible_facts']['ansible_net_cpu_load'], '10'
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_stacked_models'], ['SG550X-48P-K9', 'SG550X-48-K9']
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_stacked_serialnums'], ['ABC1234567A', 'ABC123456AB']
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_model'], 'Stack SG550X'
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_serialnum'], 'ABC1234567A'
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_hw_version'], 'V04'
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_hw_modules'],
+            result["ansible_facts"]["ansible_net_hw_modules"],
             {
                 "1": {
                     "descr": "SG550X-48P 48-Port Gigabit PoE Stackable Managed Switch",
                     "name": "1",
                     "pid": "SG550X-48P-K9",
                     "sn": "ABC1234567A",
-                    "vid": "V04"
+                    "vid": "V04",
                 },
                 "2": {
                     "descr": "SG550X-48 48-Port Gigabit Stackable Managed Switch",
                     "name": "2",
                     "pid": "SG550X-48-K9",
                     "sn": "ABC123456AB",
-                    "vid": "V02"
+                    "vid": "V02",
                 },
                 "TenGigabitEthernet1/0/1": {
                     "descr": "SFP-10G-LR",
                     "name": "TenGigabitEthernet1/0/1",
                     "pid": "SFP-10G-LR",
                     "sn": "AB12345678",
-                    "vid": "V03"
+                    "vid": "V03",
                 },
                 "TenGigabitEthernet1/0/2": {
                     "descr": "SFP-1000Base-LX",
                     "name": "TenGigabitEthernet1/0/2",
                     "pid": "GLC-LH-SMD",
                     "sn": "AB12345678",
-                    "vid": "Information Unavailable"
+                    "vid": "Information Unavailable",
                 },
                 "TenGigabitEthernet2/0/1": {
                     "descr": "SFP-10G-LR",
                     "name": "TenGigabitEthernet2/0/1",
                     "pid": "SFP-10G-LR",
                     "sn": "AB12345678",
-                    "vid": "V03"
+                    "vid": "V03",
                 },
                 "TenGigabitEthernet2/0/2": {
                     "descr": "SFP-1000Base-LX",
                     "name": "TenGigabitEthernet2/0/2",
                     "pid": "GLC-LH-SMD",
                     "sn": "AB12345678",
-                    "vid": "Information Unavailable"
-                }
-            }
-
+                    "vid": "Information Unavailable",
+                },
+            },
         )
 
     def test_ciscosmb_facts_hardware(self):
-        set_module_args(dict(gather_subset='hardware'))
-        result = self.execute_module()
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_spacefree_mb'], 106.5
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_spacetotal_mb'], 219.1
-        )
+        with set_module_args(dict(gather_subset="hardware")):
+            result = self.execute_module()
+
+        self.assertEqual(result["ansible_facts"]["ansible_net_spacefree_mb"], 106.5)
+        self.assertEqual(result["ansible_facts"]["ansible_net_spacetotal_mb"], 219.1)
+
 
 #     def test_ciscosmb_facts_config(self):
-#         set_module_args(dict(gather_subset='config'))
-#         result = self.execute_module()
+#         with set_module_args(dict(gather_subset='config')):
+#           result = self.execute_module()
+#
 #         self.assertIsInstance(
 #             result['ansible_facts']['ansible_net_config'], str
 #         )
 #
 #     def test_ciscosmb_facts_interfaces(self):
-#         set_module_args(dict(gather_subset='interfaces'))
-#         result = self.execute_module()
+#         with set_module_args(dict(gather_subset='interfaces')):
+#           result = self.execute_module()
+#
 #         self.assertIn(
 #             result['ansible_facts']['ansible_net_all_ipv4_addresses'][0], ['10.37.129.3', '10.37.0.0', '192.168.88.1']
 #         )
@@ -176,8 +178,9 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
 #         self.assertEqual(result, None)
 #
 #     def test_ciscosmb_facts_routing(self):
-#         set_module_args(dict(gather_subset='routing'))
-#         result = self.execute_module()
+#         with set_module_args(dict(gather_subset='routing')):
+#           result = self.execute_module()
+#
 #         self.assertIn(
 #             result['ansible_facts']['ansible_net_bgp_peer']['iBGP_BRAS.TYRMA']['name'], ['iBGP_BRAS.TYRMA']
 #         )

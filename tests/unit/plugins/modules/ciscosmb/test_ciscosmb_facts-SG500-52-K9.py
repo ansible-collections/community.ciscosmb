@@ -14,12 +14,18 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 
 # Make coding more python3-ish
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.community.ciscosmb.tests.unit.compat.mock import patch
+from ansible_collections.community.internal_test_tools.tests.unit.compat.mock import (
+    patch,
+)
+from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import (
+    set_module_args,
+)
+
 from ansible_collections.community.ciscosmb.plugins.modules import facts
-from ansible_collections.community.ciscosmb.tests.unit.plugins.modules.utils import set_module_args
 from .ciscosmb_module import TestCiscoSMBModule, load_fixture
 
 
@@ -29,7 +35,9 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
 
     def setUp(self):
         super(TestCiscoSMBFactsModule, self).setUp()
-        self.mock_run_commands = patch('ansible_collections.community.ciscosmb.plugins.modules.facts.run_commands')
+        self.mock_run_commands = patch(
+            "ansible_collections.community.ciscosmb.plugins.modules.facts.run_commands"
+        )
         self.run_commands = self.mock_run_commands.start()
 
     def tearDown(self):
@@ -39,93 +47,81 @@ class TestCiscoSMBFactsModule(TestCiscoSMBModule):
     def load_fixtures(self, commands=None):
         def load_from_file(*args, **kwargs):
             module = args
-            commands = kwargs['commands']
+            commands = kwargs["commands"]
             output = list()
 
             for command in commands:
-                filename = str(command).split(' | ', 1)[0].replace(' ', '_')
-                output.append(load_fixture('ciscosmb_facts-SG500-52-K9-%s' % filename))
+                filename = str(command).split(" | ", 1)[0].replace(" ", "_")
+                output.append(load_fixture("ciscosmb_facts-SG500-52-K9-%s" % filename))
             return output
 
         self.run_commands.side_effect = load_from_file
 
     def test_ciscosmb_facts_default(self):
-        set_module_args(dict(gather_subset='default'))
-        result = self.execute_module()
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_version'], '1.4.8.6'
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_boot_version'], '1.3.7.01'
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_hw_version'], 'V02'
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_uptime'], 41737187
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_hostname'], 'sw-abcdefg-1'
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_cpu_load'], '7'
-        )
+        with set_module_args(dict(gather_subset="default")):
+            result = self.execute_module()
 
+        self.assertEqual(result["ansible_facts"]["ansible_net_version"], "1.4.8.6")
         self.assertEqual(
-            result['ansible_facts']['ansible_net_model'], 'SG500-52-K9'
+            result["ansible_facts"]["ansible_net_boot_version"], "1.3.7.01"
         )
+        self.assertEqual(result["ansible_facts"]["ansible_net_hw_version"], "V02")
+        self.assertEqual(result["ansible_facts"]["ansible_net_uptime"], 41737187)
         self.assertEqual(
-            result['ansible_facts']['ansible_net_serialnum'], 'ABC12345678'
+            result["ansible_facts"]["ansible_net_hostname"], "sw-abcdefg-1"
+        )
+        self.assertEqual(result["ansible_facts"]["ansible_net_cpu_load"], "7")
+        self.assertEqual(result["ansible_facts"]["ansible_net_model"], "SG500-52-K9")
+        self.assertEqual(
+            result["ansible_facts"]["ansible_net_serialnum"], "ABC12345678"
         )
 
     def test_ciscosmb_facts_hardware(self):
-        set_module_args(dict(gather_subset='hardware'))
-        result = self.execute_module()
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_spacefree_mb'], 6.8
-        )
-        self.assertEqual(
-            result['ansible_facts']['ansible_net_spacetotal_mb'], 31.4
-        )
+        with set_module_args(dict(gather_subset="hardware")):
+            result = self.execute_module()
+
+        self.assertEqual(result["ansible_facts"]["ansible_net_spacefree_mb"], 6.8)
+        self.assertEqual(result["ansible_facts"]["ansible_net_spacetotal_mb"], 31.4)
 
     def test_ciscosmb_facts_config(self):
-        set_module_args(dict(gather_subset='config'))
-        result = self.execute_module()
-        self.assertIsInstance(
-            result['ansible_facts']['ansible_net_config'], str
-        )
+        with set_module_args(dict(gather_subset="config")):
+            result = self.execute_module()
+
+        self.assertIsInstance(result["ansible_facts"]["ansible_net_config"], str)
 
     def test_ciscosmb_facts_interfaces(self):
-        set_module_args(dict(gather_subset='interfaces'))
-        result = self.execute_module()
+        with set_module_args(dict(gather_subset="interfaces")):
+            result = self.execute_module()
 
         self.assertIn(
-            result['ansible_facts']['ansible_net_all_ipv4_addresses'][0], ['11.30.5.12']
+            result["ansible_facts"]["ansible_net_all_ipv4_addresses"][0], ["11.30.5.12"]
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_all_ipv6_addresses'], ['fe80::36db:fdff:fe64:5bce']
+            result["ansible_facts"]["ansible_net_all_ipv6_addresses"],
+            ["fe80::36db:fdff:fe64:5bce"],
         )
         self.assertEqual(
-            result['ansible_facts']['ansible_net_all_ipv6_addresses'][0],
-            result['ansible_facts']['ansible_net_interfaces']['vlan1']['ipv6'][0]['address']
+            result["ansible_facts"]["ansible_net_all_ipv6_addresses"][0],
+            result["ansible_facts"]["ansible_net_interfaces"]["vlan1"]["ipv6"][0][
+                "address"
+            ],
         )
         self.assertEqual(
-            len(result['ansible_facts']['ansible_net_interfaces'].keys()), 85
+            len(result["ansible_facts"]["ansible_net_interfaces"].keys()), 85
         )
-        self.assertEqual(
-            len(result['ansible_facts']['ansible_net_neighbors']), 9
-        )
+        self.assertEqual(len(result["ansible_facts"]["ansible_net_neighbors"]), 9)
 
-        interfaces = result['ansible_facts']['ansible_net_interfaces']
-        ge42 = interfaces['GigabitEthernet1/42']
+        interfaces = result["ansible_facts"]["ansible_net_interfaces"]
+        ge42 = interfaces["GigabitEthernet1/42"]
 
-        self.assertEqual(ge42['bandwidth'], 1000000)
+        self.assertEqual(ge42["bandwidth"], 1000000)
+        self.assertEqual(ge42["bandwidth"], ge42["bandwith"])
 
-        self.assertEqual(ge42['bandwidth'], ge42['bandwith'])
 
 #     def test_ciscosmb_facts_routing(self):
-#         set_module_args(dict(gather_subset='routing'))
-#         result = self.execute_module()
+#         with set_module_args(dict(gather_subset='routing')):
+#           result = self.execute_module()
+#
 #         self.assertIn(
 #             result['ansible_facts']['ansible_net_bgp_peer']['iBGP_BRAS.TYRMA']['name'], ['iBGP_BRAS.TYRMA']
 #         )

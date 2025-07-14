@@ -21,11 +21,10 @@ on:
   workflow_dispatch:
 
 jobs:
-
-###
-# Sanity tests (REQUIRED)
-#
-# https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
+  ###
+  # Sanity tests (REQUIRED)
+  #
+  # https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
 
   sanity:
     name: Sanity tests
@@ -36,11 +35,11 @@ jobs:
         # Ansible Support matrix
         # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
         ansible:
-          - stable-2.14
+          - stable-2.19
         python:
-          - 3.11
+          - 3.13
         os:
-          - ubuntu-22.04
+          - ubuntu-24.04
 
     steps:
       - name: Sanity testing
@@ -50,8 +49,7 @@ jobs:
           target-python-version: ${{ matrix.python }}
           testing-type: sanity
           test-deps: >-
-            ansible.netcommon
-
+            ansible.netcommon ansible.utils community.internal_test_tools
   unit:
     name: Unit tests
     runs-on: ${{ matrix.os }}
@@ -61,11 +59,11 @@ jobs:
         # Ansible Support matrix
         # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
         ansible:
-          - stable-2.14
+          - stable-2.19
         python:
-          - 3.11
+          - 3.13
         os:
-          - ubuntu-22.04
+          - ubuntu-24.04
 
     steps:
       - name: Unit testing
@@ -75,5 +73,4 @@ jobs:
           target-python-version: ${{ matrix.python }}
           testing-type: units
           test-deps: >-
-            ansible.netcommon
-            ansible.utils
+            ansible.netcommon ansible.utils community.internal_test_tools

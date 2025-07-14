@@ -1,19 +1,24 @@
 # Ansible Cisco Small Bussiness Switches (SMB) module
 
-Thorough project check - [![CI](https://github.com/ansible-collections/community.ciscosmb/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/ansible-collections/community.ciscosmb/actions/workflows/CI.yml)
+Thorough project check -
+[![CI](https://github.com/ansible-collections/community.ciscosmb/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/ansible-collections/community.ciscosmb/actions/workflows/CI.yml)
 
 Ansible Galaxy module for Cisco SMB switches - SG250, SG300, SG500, SG350, SG550, CBS350, C1300
 
 ## Communication
 
-* Join the Ansible forum:
-  * [Get Help](https://forum.ansible.com/c/help/6): get help or help others.
-  * [Social Spaces](https://forum.ansible.com/c/chat/4): gather and interact with fellow enthusiasts.
-  * [News & Announcements](https://forum.ansible.com/c/news/5): track project-wide announcements including social events.
+- Join the Ansible forum:
 
-* The Ansible [Bullhorn newsletter](https://docs.ansible.com/ansible/devel/community/communication.html#the-bullhorn): used to announce releases and important changes.
+  - [Get Help](https://forum.ansible.com/c/help/6): get help or help others.
+  - [Social Spaces](https://forum.ansible.com/c/chat/4): gather and interact with fellow enthusiasts.
+  - [News & Announcements](https://forum.ansible.com/c/news/5): track project-wide announcements including social
+    events.
 
-For more information about communication, see the [Ansible communication guide](https://docs.ansible.com/ansible/devel/community/communication.html).
+- The Ansible [Bullhorn newsletter](https://docs.ansible.com/ansible/devel/community/communication.html#the-bullhorn):
+  used to announce releases and important changes.
+
+For more information about communication, see the
+[Ansible communication guide](https://docs.ansible.com/ansible/devel/community/communication.html).
 
 ## Install
 
@@ -24,26 +29,30 @@ ansible-galaxy collection install community.ciscosmb
 ## Usage examples
 
 Tested on devices:
-* SG250-10P
-* SG350-10-K9
-* SG350-28-K9
-* SG500-52-K9
-* SG550X-24MP-K9
-* CBS350-24P-4G
-* SG550X-48 stack
+
+- SG250-10P
+- SG350-10-K9
+- SG350-28-K9
+- SG500-52-K9
+- SG550X-24MP-K9
+- CBS350-24P-4G
+- SG550X-48 stack
+- C1300
 
 Known to be used with broad range of:
-* Cisco 250 Series Smart Switches
-* Cisco Business 350 Series Managed Switches
-* Cisco 350 Series Stackable Managed Switches
-* Cisco 350X Series Stackable Managed Switches
-* Cisco 500 Series Stackable Managed Switches
-* Cisco 550X Series Stackable Managed Switches
-* Cisco Catalyst 1300 Series Switches
+
+- Cisco 250 Series Smart Switches
+- Cisco Business 350 Series Managed Switches
+- Cisco 350 Series Stackable Managed Switches
+- Cisco 350X Series Stackable Managed Switches
+- Cisco 500 Series Stackable Managed Switches
+- Cisco 550X Series Stackable Managed Switches
+- Cisco Catalyst 1300 Series Switches
 
 ### Required device configuration
 
 Access setup
+
 ```
 ! you should set enable password
 enable password level 15
@@ -57,6 +66,7 @@ username user2 privelege 15
 ```
 
 Cisco's SSH server setup
+
 ```
 ! you have to enable SSH server
 ip ssh server
@@ -76,26 +86,32 @@ exit
 ### Python versions
 
 Tested on Python versions:
-* 3.6
-* 3.7
-* 3.8
-* 3.9
-* 3.10
-* 3.11
-* 3.12
+
+- 3.6
+- 3.7
+- 3.8
+- 3.9
+- 3.10
+- 3.11
+- 3.12
 
 ### Running examples
 
-For your tests or quick startup use files form repository: [cismosmb_inventory_template.yml](./ciscosmb_inventory_template.yml), [cismosmb_gather_facts.yml](./ciscosmb_gather_facts.yml),  [cismosmb_commands.yml](./ciscosmb_commands.yml) .
+For your tests or quick startup use files form repository:
+[cismosmb_inventory_template.yml](./ciscosmb_inventory_template.yml),
+[cismosmb_gather_facts.yml](./ciscosmb_gather_facts.yml), [cismosmb_commands.yml](./ciscosmb_commands.yml) .
 
-Prepare your inventory file - copy file [cismosmb_inventory_template.yml](./ciscosmb_inventory_template.yml) to `cismosmb_inventory.yml` and make your changes.
+Prepare your inventory file - copy file [cismosmb_inventory_template.yml](./ciscosmb_inventory_template.yml) to
+`cismosmb_inventory.yml` and make your changes.
 
 Then you can run
 
 ```
 ansible-playbook -i ciscosmb_inventory.yml cismosmb_gather_facts.yml
 ```
+
 or
+
 ```
 ansible-playbook -i ciscosmb_inventory.yml cismosmb_commands.yml
 ```
