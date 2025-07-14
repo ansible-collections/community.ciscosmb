@@ -32,10 +32,10 @@ jobs:
   # https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
 
   sanity:
-    name: Sanity tests (Ⓐ${{ matrix.ansible }}, P${{matrix.python}})
+    name: Sanity tests
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         # Ansible Support Matrix
         # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
@@ -59,26 +59,13 @@ jobs:
           test-deps: >-
             ansible.netcommon
 
-      - name: Perform sanity testing
-        uses: felixfontein/ansible-test-gh-action@main
-        with:
-          ansible-core-github-repository-slug: ${{ contains(fromJson('["stable-2.9", "stable-2.10", "stable-2.11"]'), matrix.ansible) && 'ansible-community/eol-ansible' || 'ansible/ansible' }}
-          ansible-core-version: ${{ matrix.ansible }}
-          codecov-token: ${{ secrets.CODECOV_TOKEN }}
-          testing-type: sanity
-          # NOTE: we're installing with git to work around Galaxy being a huge PITA (https://github.com/ansible/galaxy/issues/2429)
-          pre-test-cmd: |-
-            git clone --depth=1 --single-branch https://github.com/ansible-collections/ansible.netcommon.git ../../ansible/netcommon
-            git clone --depth=1 --single-branch https://github.com/ansible-collections/ansible.utils.git ../../ansible/utils
-            git clone --depth=1 --single-branch https://github.com/ansible-collections/community.internal_test_tools.git ../../community/internal_test_tools
-
   ###
   # Unit tests (OPTIONAL)
   #
   # https://docs.ansible.com/ansible/latest/dev_guide/testing_units.html
 
   units:
-    name: Unit tests (Ⓐ${{ matrix.ansible }} P${{ matrix.python }})
+    name: Unit tests (${{ matrix.ansible }}+py${{ matrix.python }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -116,17 +103,3 @@ jobs:
           testing-type: units
           test-deps: >-
             ansible.netcommon ansible.utils
-      - name: >-
-          Perform unit testing against
-          Ansible version ${{ matrix.ansible }}
-        uses: felixfontein/ansible-test-gh-action@main
-        with:
-          ansible-core-github-repository-slug: ${{ contains(fromJson('["stable-2.9", "stable-2.10", "stable-2.11"]'), matrix.ansible) && 'ansible-community/eol-ansible' || 'ansible/ansible' }}
-          ansible-core-version: ${{ matrix.ansible }}
-          codecov-token: ${{ secrets.CODECOV_TOKEN }}
-          testing-type: units
-          # NOTE: we're installing with git to work around Galaxy being a huge PITA (https://github.com/ansible/galaxy/issues/2429)
-          pre-test-cmd: |-
-            git clone --depth=1 --single-branch https://github.com/ansible-collections/ansible.netcommon.git ../../ansible/netcommon
-            git clone --depth=1 --single-branch https://github.com/ansible-collections/ansible.utils.git ../../ansible/utils
-            git clone --depth=1 --single-branch https://github.com/ansible-collections/community.internal_test_tools.git ../../community/internal_test_tools
