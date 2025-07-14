@@ -27,7 +27,7 @@ jobs:
   # https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
 
   sanity:
-    name: Sanity tests (A ${{ matrix.ansible }}, P ${{ matrix.python }}, O ${{ matrix.os }})
+    name: Sanity tests
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -37,7 +37,7 @@ jobs:
         ansible:
           - stable-2.19
         python:
-          - 3.13
+          - 3.11
         os:
           - ubuntu-24.04
 
@@ -66,7 +66,7 @@ jobs:
             git clone --depth=1 --single-branch https://github.com/ansible-collections/community.internal_test_tools.git ../../community/internal_test_tools
 
   unit:
-    name: Unit tests (A ${{ matrix.ansible }}, P ${{ matrix.python }}, O ${{ matrix.os }})
+    name: Unit tests
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -76,9 +76,9 @@ jobs:
         ansible:
           - stable-2.19
         python:
-          - 3.13
+          - 3.11
         os:
-          - ubuntu-24.04
+          - ubuntu-22.04
 
     steps:
       # - name: Unit testing
@@ -104,3 +104,4 @@ jobs:
             git clone --depth=1 --single-branch https://github.com/ansible-collections/ansible.netcommon.git ../../ansible/netcommon
             git clone --depth=1 --single-branch https://github.com/ansible-collections/ansible.utils.git ../../ansible/utils
             git clone --depth=1 --single-branch https://github.com/ansible-collections/community.internal_test_tools.git ../../community/internal_test_tools
+
