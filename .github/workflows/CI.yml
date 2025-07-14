@@ -46,9 +46,9 @@ jobs:
           - stable-2.19
           - devel
         python:
-          - 3.11
+          - 3.13
         os:
-          - ubuntu-22.04
+          - ubuntu-24.04
     steps:
       - name: Sanity testing
         uses: ansible-community/ansible-test-gh-action@release/v1
@@ -57,7 +57,7 @@ jobs:
           target-python-version: ${{ matrix.python }}
           testing-type: sanity
           test-deps: >-
-            ansible.netcommon
+            ansible.netcommon ansible.utils community.internal_test_tools
 
   ###
   # Unit tests (OPTIONAL)
@@ -79,21 +79,25 @@ jobs:
           - stable-2.19
           - devel
         python:
-          - "3.8"
           - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
         os:
-          - ubuntu-22.04
+          - ubuntu-24.04
         exclude:
           # no support
           - ansible: stable-2.14
             python: "3.12"
+          - ansible: stable-2.14
+            python: "3.13"
           - ansible: stable-2.15
             python: "3.12"
-
+          - ansible: stable-2.15
+            python: "3.13"
+          - ansible: stable-2.16
+            python: "3.13"
     steps:
       - name: Unit testing
         uses: ansible-community/ansible-test-gh-action@release/v1
@@ -102,4 +106,4 @@ jobs:
           target-python-version: ${{ matrix.python }}
           testing-type: units
           test-deps: >-
-            ansible.netcommon ansible.utils
+            ansible.netcommon ansible.utils community.internal_test_tools
