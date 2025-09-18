@@ -44,7 +44,7 @@ jobs:
           - stable-2.15
           - stable-2.16
           - stable-2.19
-          - devel
+        #  - devel   - unstable
         python:
           - "3.9"
           - "3.10"

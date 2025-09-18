@@ -18,7 +18,7 @@ changelogs/.plugin-cache.yaml
 __pycache__/
 *.py[cod]
 *$py.class
-
+ansible_collections
 # C extensions
 *.so
 
