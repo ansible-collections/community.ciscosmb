@@ -40,31 +40,47 @@ jobs:
         # Ansible Support Matrix
         # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
         ansible:
-          - stable-2.14
-          - stable-2.15
           - stable-2.16
+          - stable-2.17
+          - stable-2.18
           - stable-2.19
+          - stable-2.20
+          - stable-2.21
         #  - devel   - unstable
         python:
-          - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
+          - "3.14"
         os:
           - ubuntu-24.04
         exclude:
           # no support
-          - ansible: stable-2.14
-            python: "3.12"
-          - ansible: stable-2.14
-            python: "3.13"
-          - ansible: stable-2.15
-            python: "3.12"
-          - ansible: stable-2.15
-            python: "3.13"
           - ansible: stable-2.16
             python: "3.13"
+          - ansible: stable-2.16
+            python: "3.14"
+          - ansible: stable-2.17
+            python: "3.13"
+          - ansible: stable-2.17
+            python: "3.14"
+          - ansible: stable-2.18
+            python: "3.10"
+          - ansible: stable-2.18
+            python: "3.14"
+          - ansible: stable-2.19
+            python: "3.10"
+          - ansible: stable-2.19
+            python: "3.14"
+          - ansible: stable-2.20
+            python: "3.10"
+          - ansible: stable-2.20
+            python: "3.11"
+          - ansible: stable-2.21
+            python: "3.10"
+          - ansible: stable-2.21
+            python: "3.11"
     steps:
       - name: Sanity testing
         uses: ansible-community/ansible-test-gh-action@release/v1
@@ -89,31 +105,48 @@ jobs:
         # Ansible Support matrix
         # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
         ansible:
-          - stable-2.14
-          - stable-2.15
           - stable-2.16
+          - stable-2.17
+          - stable-2.18
           - stable-2.19
-          - devel
+          - stable-2.20
+          - stable-2.21
+        #  - devel   - unstable
         python:
-          - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
+          - "3.14"
         os:
           - ubuntu-24.04
         exclude:
           # no support
-          - ansible: stable-2.14
-            python: "3.12"
-          - ansible: stable-2.14
-            python: "3.13"
-          - ansible: stable-2.15
-            python: "3.12"
-          - ansible: stable-2.15
-            python: "3.13"
           - ansible: stable-2.16
             python: "3.13"
+          - ansible: stable-2.16
+            python: "3.14"
+          - ansible: stable-2.17
+            python: "3.13"
+          - ansible: stable-2.17
+            python: "3.14"
+          - ansible: stable-2.18
+            python: "3.10"
+          - ansible: stable-2.18
+            python: "3.14"
+          - ansible: stable-2.19
+            python: "3.10"
+          - ansible: stable-2.19
+            python: "3.14"
+          - ansible: stable-2.20
+            python: "3.10"
+          - ansible: stable-2.20
+            python: "3.11"
+          - ansible: stable-2.21
+            python: "3.10"
+          - ansible: stable-2.21
+            python: "3.11"
+
     steps:
       - name: Unit testing
         uses: ansible-community/ansible-test-gh-action@release/v1
