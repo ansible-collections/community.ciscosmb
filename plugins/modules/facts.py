@@ -145,11 +145,9 @@ from ansible_collections.community.ciscosmb.plugins.module_utils.ciscosmb import
     ciscosmb_merge_dicts,
 )
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.six import iteritems
 
 
 class FactsBase(object):
-
     COMMANDS = list()
 
     def __init__(self, module):
@@ -167,7 +165,6 @@ class FactsBase(object):
 
 
 class Default(FactsBase):
-
     COMMANDS = [
         "show version",
         "show system",
@@ -317,7 +314,6 @@ class Default(FactsBase):
 
 
 class Hardware(FactsBase):
-
     COMMANDS = [
         "dir",
     ]
@@ -344,7 +340,6 @@ class Hardware(FactsBase):
 
 
 class Config(FactsBase):
-
     COMMANDS = ["show running-config detailed"]
 
     def populate(self):
@@ -355,7 +350,6 @@ class Config(FactsBase):
 
 
 class Interfaces(FactsBase):
-
     COMMANDS = [
         "show ports jumbo-frame",
         "show ip interface",
@@ -411,7 +405,6 @@ class Interfaces(FactsBase):
         interfaces = dict()
 
         for key in interface_table:
-
             i = interface_table[key]
             interface = dict()
             interface["state"] = i[6].lower()
@@ -441,7 +434,6 @@ class Interfaces(FactsBase):
         interfaces = dict()
 
         for key in interface_table:
-
             interface = dict()
             i = interface_table[key]
             interface["state"] = i[6].lower()
@@ -485,7 +477,6 @@ class Interfaces(FactsBase):
         interfaces = dict()
 
         for key in interface_table:
-
             i = interface_table[key]
             interface = dict()
             interface["admin_state"] = i[6].lower()
@@ -498,7 +489,6 @@ class Interfaces(FactsBase):
         interfaces = dict()
 
         for key in interface_table:
-
             interface = dict()
             i = interface_table[key]
 
@@ -529,7 +519,6 @@ class Interfaces(FactsBase):
         interfaces = dict()
 
         for key in interface_table:
-
             i = interface_table[key]
             interface = dict()
             interface["description"] = i[1]
@@ -544,7 +533,6 @@ class Interfaces(FactsBase):
         interfaces = dict()
 
         for key in interface_table:
-
             interface = dict()
             i = interface_table[key]
 
@@ -620,7 +608,6 @@ class Interfaces(FactsBase):
         return ips
 
     def _new_interface(self, interface):
-
         if interface in self.facts["interfaces"]:
             return
         else:
@@ -656,10 +643,7 @@ class Interfaces(FactsBase):
     def populate_neighbors(self, data):
         tables = ciscosmb_split_to_tables(data)
 
-        neighbor_table = ciscosmb_parse_table(
-            tables[0],
-            allow_empty_fields=[3, 4]
-        )
+        neighbor_table = ciscosmb_parse_table(tables[0], allow_empty_fields=[3, 4])
 
         neighbors = dict()
         for key in neighbor_table:
@@ -761,7 +745,7 @@ def main():
         facts.update(inst.facts)
 
     ansible_facts = dict()
-    for key, value in iteritems(facts):
+    for key, value in facts.items():
         key = "ansible_net_%s" % key
         ansible_facts[key] = value
 

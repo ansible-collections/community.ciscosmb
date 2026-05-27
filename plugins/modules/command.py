@@ -2,10 +2,11 @@
 
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-DOCUMENTATION = '''
+DOCUMENTATION = """
 ---
 module: command
 author: "Petr Klima (@qaxi)"
@@ -62,7 +63,7 @@ options:
         trying the command again.
     default: 1
     type: int
-'''
+"""
 
 EXAMPLES = """
 - name: Run command on remote devices
@@ -110,53 +111,54 @@ failed_conditions:
 
 import time
 
-from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.parsing import Conditional
-from ansible_collections.community.ciscosmb.plugins.module_utils.ciscosmb import run_commands
-from ansible_collections.community.ciscosmb.plugins.module_utils.ciscosmb import ciscosmb_argument_spec
+from ansible_collections.ansible.netcommon.plugins.module_utils.network.common.parsing import (
+    Conditional,
+)
+from ansible_collections.community.ciscosmb.plugins.module_utils.ciscosmb import (
+    run_commands,
+)
+from ansible_collections.community.ciscosmb.plugins.module_utils.ciscosmb import (
+    ciscosmb_argument_spec,
+)
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.six import string_types
 
 
 def to_lines(stdout):
     for item in stdout:
-        if isinstance(item, string_types):
-            item = str(item).split('\n')
+        if isinstance(item, str):
+            item = str(item).split("\n")
         yield item
 
 
 def main():
-    """main entry point for module execution
-    """
+    """main entry point for module execution"""
     argument_spec = dict(
-        commands=dict(type='list', elements='str', required=True),
-
-        wait_for=dict(type='list', elements='str'),
-        match=dict(default='all', choices=['all', 'any']),
-
-        retries=dict(default=10, type='int'),
-        interval=dict(default=1, type='int')
+        commands=dict(type="list", elements="str", required=True),
+        wait_for=dict(type="list", elements="str"),
+        match=dict(default="all", choices=["all", "any"]),
+        retries=dict(default=10, type="int"),
+        interval=dict(default=1, type="int"),
     )
 
     argument_spec.update(ciscosmb_argument_spec)
 
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=False)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=False)
 
-    result = {'changed': False}
+    result = {"changed": False}
 
-    wait_for = module.params['wait_for'] or list()
+    wait_for = module.params["wait_for"] or list()
     conditionals = [Conditional(c) for c in wait_for]
 
-    retries = module.params['retries']
-    interval = module.params['interval']
-    match = module.params['match']
+    retries = module.params["retries"]
+    interval = module.params["interval"]
+    match = module.params["match"]
 
     while retries > 0:
-        responses = run_commands(module, module.params['commands'])
+        responses = run_commands(module, module.params["commands"])
 
         for item in list(conditionals):
             if item(responses):
-                if match == 'any':
+                if match == "any":
                     conditionals = list()
                     break
                 conditionals.remove(item)
@@ -169,17 +171,19 @@ def main():
 
     if conditionals:
         failed_conditions = [item.raw for item in conditionals]
-        msg = 'One or more conditional statements have not been satisfied'
+        msg = "One or more conditional statements have not been satisfied"
         module.fail_json(msg=msg, failed_conditions=failed_conditions)
 
-    result.update({
-        'changed': False,
-        'stdout': responses,
-        'stdout_lines': list(to_lines(responses))
-    })
+    result.update(
+        {
+            "changed": False,
+            "stdout": responses,
+            "stdout_lines": list(to_lines(responses)),
+        }
+    )
 
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
