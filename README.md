@@ -129,9 +129,7 @@ cd ansible_collections/community/ciscosmb
 python3 -m venv .venv
 . .venv/bin/activate
 
-pip install ansible
-pip install -r requirements-dev.txt
-pip install -r tests/unit/requirements.txt
+pip install -r requirements-dev.txt -r tests/unit/requirements.txt
 
 ```
 

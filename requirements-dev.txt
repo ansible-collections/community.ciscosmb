@@ -1,5 +1,7 @@
+ansible-core==2.20
+
 # connection libraries
-paramiko
+paramiko==3.5.1
 ansible-pylibssh
 
 # sanity tests
@@ -9,9 +11,6 @@ voluptuous
 
 # units
 pytest
-pytest-xdist
-pytest-mock
-mock
 
 # utils
 yamllint
