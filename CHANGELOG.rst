@@ -4,6 +4,20 @@ CiscoSMB Ansible module Release Notes
 
 .. contents:: Topics
 
+v1.0.12
+=======
+
+Release Summary
+---------------
+
+Release Date: 2026-05-28
+
+Minor Changes
+-------------
+
+- Solve CI doesn't satisfy ACP requirements
+- Update unit tests to use collection-local helpers instead of community.internal_test_tools, and make set_module_args compatible with current Ansible module argument serialization.
+
 v1.0.11
 =======
 

@@ -1,3 +1,0 @@
-trivial:
-  - Update unit tests to use collection-local helpers instead of community.internal_test_tools, and make set_module_args compatible with current Ansible module argument serialization.
-  - Prepare 1.0.12 patch release.
