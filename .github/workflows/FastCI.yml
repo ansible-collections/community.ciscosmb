@@ -35,7 +35,7 @@ jobs:
         # Ansible Support matrix
         # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
         ansible:
-          - stable-2.19
+          - stable-2.20
         python:
           - 3.13
         os:
@@ -49,7 +49,7 @@ jobs:
           target-python-version: ${{ matrix.python }}
           testing-type: sanity
           test-deps: >-
-            ansible.netcommon ansible.utils community.internal_test_tools
+            ansible.netcommon ansible.utils
   unit:
     name: Unit tests
     runs-on: ${{ matrix.os }}
@@ -59,7 +59,7 @@ jobs:
         # Ansible Support matrix
         # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
         ansible:
-          - stable-2.19
+          - stable-2.20
         python:
           - 3.13
         os:
@@ -73,4 +73,4 @@ jobs:
           target-python-version: ${{ matrix.python }}
           testing-type: units
           test-deps: >-
-            ansible.netcommon ansible.utils community.internal_test_tools
+            ansible.netcommon ansible.utils

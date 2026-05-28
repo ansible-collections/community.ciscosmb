@@ -89,7 +89,7 @@ jobs:
           target-python-version: ${{ matrix.python }}
           testing-type: sanity
           test-deps: >-
-            ansible.netcommon ansible.utils community.internal_test_tools
+            ansible.netcommon ansible.utils
 
   ###
   # Unit tests (OPTIONAL)
@@ -158,4 +158,4 @@ jobs:
           target-python-version: ${{ matrix.python }}
           testing-type: units
           test-deps: >-
-            ansible.netcommon ansible.utils community.internal_test_tools
+            ansible.netcommon ansible.utils

@@ -87,13 +87,11 @@ exit
 
 Tested on Python versions:
 
-- 3.6
-- 3.7
-- 3.8
-- 3.9
 - 3.10
 - 3.11
 - 3.12
+- 3.13
+- 3.14
 
 ### Running examples
 
@@ -156,7 +154,7 @@ git commit -m "xxx" file
 cd ansible_collections/community/ciscosmb
 . .venv/bin/activate
 
-# PY="--python 3.8" # set your version or unset
+# PY="--python 3.13" # set your version or unset
 METHOD="--docker" # or --local if you have no Docker installed
 ansible-test sanity ${METHOD} ${PY}  \
     && ansible-test units  ${METHOD} ${PY} \
